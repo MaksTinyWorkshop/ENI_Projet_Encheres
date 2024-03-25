@@ -1,0 +1,24 @@
+.form-creation {
+  margin: 3rem 6rem 3rem 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem;
+}
+
+.form-creation label {
+  margin-left: 6rem;
+}
+
+.btn-box {
+  margin-left: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  grid-column: 1 / -1;
+}
+
+.btn-box button {
+  width: 200px;
+  height: 80px;
+  font-size: 2rem;
+}
