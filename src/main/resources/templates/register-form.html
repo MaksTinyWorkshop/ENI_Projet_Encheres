@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<!-- Mise en place du layout -->
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-projet(titrePage=~{:: title},
+					contenuPage=~{:: .center-main},
+					ressourcesSupp=~{})}">
+
+
+<head>
+<meta charset="UTF-8">
+<title>S'enregistrer</title>
+ 	<th:block id="ressources-css">
+<link rel="stylesheet" data-th-href="@{/css/form.css}" />
+</th:block>
+ </head>
+<body>
+    <h1>Mon profil</h1>
+    <form action="traitement.php" method="post" class="formulaire">
+        <!-- Première colonne -->
+        <div class="colonne">
+            <div class="champ">
+                <label for="champ1">Pseudo :</label>
+                <input type="text" id="champ1" name="pseudo" required>
+            </div>
+            <div class="champ">
+                <label for="champ2">Prénom :</label>
+                <input type="text" id="champ2" name="surname" required>
+            </div>
+            <div class="champ">
+                <label for="champ3">Téléphone :</label>
+                <input type="text" id="champ3" name="telephone" required>
+            </div>
+            <div class="champ">
+                <label for="champ4">Code postal :</label>
+                <input type="text" id="champ4" name="zipcode" required>
+            </div>
+            <div class="champ">
+                <label for="champ5">Mot de passe :</label>
+                <input type="text" id="champ5" name="password" required>
+            </div>
+        </div>
+        
+        <!-- Deuxième colonne -->
+        <div class="colonne">
+            <div class="champ">
+                <label for="champ6">Nom :</label>
+                <input type="text" id="champ6" name="name" required>
+            </div>
+            <div class="champ">
+                <label for="champ7">Email :</label>
+                <input type="text" id="champ7" name="email" required>
+            </div>
+            <div class="champ">
+                <label for="champ8">Rue :</label>
+                <input type="text" id="champ8" name="street" required>
+            </div>
+            <div class="champ">
+                <label for="champ9">Ville :</label>
+                <input type="text" id="champ9" name="city" required>
+            </div>
+            <div class="champ">
+                <label for="champ10">Confirmation :</label>
+                <input type="text" id="champ10" name="confirmation" required>
+            </div>
+        </div>
+
+		   <!-- Construire fonction JS pour le ONCLICK  -->
+        <input type="submit" value="Créer">
+        <button type="button">Annuler</button>
+    </form>
+    </body>
+</html>

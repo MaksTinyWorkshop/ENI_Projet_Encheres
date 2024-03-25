@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<!-- Mise en place du layout -->
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-projet(titrePage=~{:: title},
+					contenuPage=~{:: .center-main},
+					ressourcesSupp=~{})}">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<main >
+		<form th:action="@{/login}" method="post">
+			<div class="cards" th:if="${param.error}" data-th-text="#{login.error}"></div>
+			<div th:if="${param.logout}" data-th-text="#{login.logout}"></div>
+				<ul class="flex-outer">
+					<li>
+						<label for="inputUsername" data-th-text="#{login.username}"></label>
+						<input id="inputUsername" type="text" name="username" />
+					</li>
+					<li>
+						<label for="inputPwd" data-th-text="#{login.pwd}"></label>
+						<input id="inputPwd" type="password" name="password" />
+					</li>
+					<li>
+						<button type="submit" data-th-text="#{login.button}" ></button>
+					</li>
+					<li>
+						<button type="submit" data-th-text="#{register.button}" ></button>
+					</li>
+				</ul>
+			</form>
+		</main>
+	</body>
+</html>					
