@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<!-- Mise en place du layout -->
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-projet(titrePage=~{:: title},
+					contenuPage=~{:: .center-main},
+					ressourcesSupp=~{})}">
+
+
+<head>
+<meta charset="UTF-8">
+<!-- Accueil comme titre de page -->
+<title data-th-text="#{index.title}"></title>
+
+</head>
+<body>
+	<main>
+		<!-- Liste des enchères ACTIVES -->
+	</main>
+</body>
+</html>
