@@ -55,13 +55,23 @@ public class Utilisateur implements Serializable{
 		this.adresse = adresse;
 	}
 	
+	public Utilisateur(String pseudo2, String email2, String motDePasseHash) {
+		this.getPseudo();
+		this.getEmail();
+		this.getMotDePasse();
+	}
+	
+	public Utilisateur(String pseudo2, String nom2, String prenom2, String telephone2, String email2, String rue,
+			String codePostal, String ville, String motDePasseHash) {
+		super();
+		
+	}
+	
 ////////////////////////////////////////////Setters / getters
 	
 	//Locaux
 	
-	public Utilisateur(String pseudo2, String email2, String motDePasseHash) {
-		// TODO Auto-generated constructor stub
-	}
+	
 	public String getPseudo() {
 		return pseudo;
 	}
@@ -162,16 +172,5 @@ public class Utilisateur implements Serializable{
 		builder.append("]");
 		return builder.toString();
 	}
-	public boolean existsByPseudo(String pseudo2) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public boolean existsByEmail(String email2) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public void save(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
 		
-	}		
 }
