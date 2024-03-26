@@ -24,9 +24,9 @@ public class EncheresSecurityConfig {
 		
 		//requêtes SQL
 		// 1. Requête recherchant les utilisateurs par leur identifiant, en utilisant un paramètre positionnel (?)
-		jdbcUserManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 1 FROM UTILISATEUR WHERE pseudo = ?");
+		jdbcUserManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 1 FROM UTILISATEURS WHERE pseudo = ?");
 		// 2. Requête recherchant les utilisateurs par leurs rôles, en utilisant un paramètre positionnel (?)
-		jdbcUserManager.setAuthoritiesByUsernameQuery("SELECT u.pseudo, r.role FROM UTILISATEUR u INNER JOIN ROLES r ON u.administrateur = r.is_admin WHERE pseudo = ?");
+		jdbcUserManager.setAuthoritiesByUsernameQuery("SELECT u.pseudo, r.role FROM UTILISATEURS u INNER JOIN ROLES r ON u.administrateur = r.is_admin WHERE pseudo = ?");
 		return jdbcUserManager;
 	}
 	
