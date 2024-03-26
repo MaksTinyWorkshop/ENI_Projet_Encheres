@@ -190,7 +190,7 @@ private static final long serialVersionUID = 1L;
 		builder.append(vendeur);
 		builder.append(", categorie=");
 		builder.append(categorie);
-		builder.append("]");
+		builder.append("]").append("\n").append("\n");
 		return builder.toString();
 	}
 }
