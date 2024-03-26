@@ -59,6 +59,9 @@ public class Utilisateur implements Serializable{
 	
 	//Locaux
 	
+	public Utilisateur(String pseudo2, String email2, String motDePasseHash) {
+		// TODO Auto-generated constructor stub
+	}
 	public String getPseudo() {
 		return pseudo;
 	}
@@ -158,5 +161,17 @@ public class Utilisateur implements Serializable{
 		builder.append(adresse);
 		builder.append("]");
 		return builder.toString();
+	}
+	public boolean existsByPseudo(String pseudo2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean existsByEmail(String email2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public void save(Utilisateur utilisateur) {
+		// TODO Auto-generated method stub
+		
 	}		
 }
