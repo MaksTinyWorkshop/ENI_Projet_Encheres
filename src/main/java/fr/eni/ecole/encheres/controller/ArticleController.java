@@ -30,10 +30,6 @@ public class ArticleController {
 		//intégration des articles au modèle pour thymleaf
 		model.addAttribute("articles", articles);
 		//retour à l'index
-		System.out.println(" ");
-		System.out.println("//////////////////////// Liste des Articles ////////////////////////");
-		System.out.println(articles);//trace de controle
-		System.out.println(" ");
 		return "index";
 	}
 }
