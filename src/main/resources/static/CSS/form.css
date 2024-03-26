@@ -1,24 +1,86 @@
+/*Formulaire d'inscription*/
 .form-creation {
-  margin: 3rem 6rem 3rem 0;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 3rem;
+	margin: 3rem 6rem 3rem 0;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 3rem;
 }
 
 .form-creation label {
-  margin-left: 6rem;
+	margin-left: 6rem;
 }
 
-.btn-box {
-  margin-left: 6rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  grid-column: 1 / -1;
+.form-creation .btn-box {
+	margin-left: 6rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	grid-column: 1/-1;
 }
 
-.btn-box button {
-  width: 200px;
-  height: 80px;
-  font-size: 2rem;
+.form-creation .btn-box button {
+	width: 200px;
+	height: 80px;
+	font-size: 2rem;
+}
+
+/*Formulaire de connexion*/
+.form-login {
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.form-inputs {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: repeat(2, 60px) 150px;
+	gap: 1rem;
+	margin: 2rem;
+	padding: 2rem;
+	border: 1px solid rgb(29, 28, 28);
+	border-radius: 10px;
+}
+
+.form-inputs label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.form-inputs input {
+	font-size : 1rem;
+	background-color: #282c34;
+	border: 1px solid #ABB2BF;
+	border-radius: 10px;
+	font-size: 1rem;
+}
+
+.form-inputs .btn-box {
+	display:flex;
+	flex-direction: column;
+	font-size: 2rem;
+	grid-column: 1/-1;
+}
+
+.form-inputs .btn-box button {
+	font-size: 2rem;
+}
+
+.form-inputs .btn-box a {
+	margin: 1rem;
+	line-height: 3.5rem;
+	text-align: center;
+	font-size: 2rem;
+	background-color: #134A7F;
+	border: 1px solid rgb(29, 28, 28);
+	border-radius: 10px;
+	box-shadow: 5px 5px 15px 3px rgba(19, 74, 127, 0.85);
+}
+
+.form-inputs .btn-box a:hover {
+  transform: translateY(-2px);
+  background-color: rgba(#ABB2BF, 0.3);
 }

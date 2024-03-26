@@ -41,22 +41,7 @@ html {
   scroll-behavior: smooth;
 }
 
-li {
-  margin-right: 1rem;
-  width: calc(4rem + 4vw);
-  height: 2.5rem;
-  background-color: #134A7F;
-  border: 1px solid rgb(29, 28, 28);
-  border-radius: 10px;
-  box-shadow: 5px 5px 15px 3px rgba(19, 74, 127, 0.85);
-  cursor: pointer;
-}
 
-li:hover {
-  transform: translateY(-2px);
-  background-color: rgba(#ABB2BF, 0.3);
-  color: rgb(29, 28, 28);
-}
 
 button {
   margin: 1rem;

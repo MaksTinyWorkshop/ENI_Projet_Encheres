@@ -1,19 +1,32 @@
 <header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
 	<div class="left-box">
-	
-	<h1>
-		<a href="/">
+		<h1>
+			<a href="/">
 				<img data-th-src="@{/images/logoENI.png}">
 				<span data-th-text="#{nom-application}"></span>
-		</a>
-	</h1>
-               
-     </div>
-      <nav class="nav-box">
-        <ul class="nav-list">
-          <li><a href="/">S'inscrire</a></li>
-          <li><a href="/">Se connecter</a></li>
-        </ul>
-      </nav>
-      
+			</a>
+		</h1>
+
+		<!-- Pseudo et rôles de l'utilisateur via Spring Security Dialect -->
+		<!-- Uniquement si un utilisateur est connecté -->
+		<div class="header-card" data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<span data-th-text="#{frag-entete.security.pseudo} + ${#authentication.name}"></span>
+			<span data-th-text="#{frag-entete.security.roles} + ${#authentication.principal.authorities}"></span>
+		</div>
+
+	</div>
+	<nav class="nav-box">
+		<ul class="nav-list">
+			<li>
+				<a href="/register-form" data-th-text="#{frag-entete.a.inscription}"></a>
+			</li>
+			<li data-th-if="${!#authorization.expression('isAuthenticated()')}">
+				<a href="/login" data-th-text="#{frag-entete.a.connexion}"></a>
+			</li>
+			<li data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<a href="/logout" data-th-text="#{frag-entete.a.deconnexion}"></a>
+			</li>
+		</ul>
+	</nav>
+
 </header>

@@ -49,14 +49,14 @@ public class EncheresSecurityConfig {
 		});
 		
 		//on demande à spring security de charger son formulaire de connexion à défaut d'en avoir créé un nous-même
-			http.formLogin(Customizer.withDefaults());
+		//	http.formLogin(Customizer.withDefaults());
 		
 		//on créera ici notre propre page de connexion qu'on utilisera avec cette base :
-		/*http.formLogin(form -> {
+		http.formLogin(form -> {
 			form.loginPage("/login").permitAll();
 			form.defaultSuccessUrl("/");
 		});
-		*/
+		
 		
 		//on gère le logout pour vider la session et le contexte de sécurité
 		http.logout(logout -> logout//lambda utilisée pour lancer la série d'instructions
