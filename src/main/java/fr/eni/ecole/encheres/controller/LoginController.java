@@ -26,7 +26,7 @@ public class LoginController {
 		return "login";
 	}
 	
-	@GetMapping("login-success")
+	@GetMapping("/login-success")
 	public String login(Principal ppal, HttpSession session, Utilisateur utilisateurEnSession) {
 		String pseudoMembre = ppal.getName();
 		Utilisateur aCharger = service.charger(pseudoMembre);
@@ -36,5 +36,6 @@ public class LoginController {
 		return "redirect:/";
 	}
 
+	
 	
 }

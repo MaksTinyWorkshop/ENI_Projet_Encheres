@@ -57,7 +57,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	        // Conversion 
 	        LocalDate date = LocalDate.parse(dateFromBDD, formatter);
-			a.setDateFinEncheres(date);;
+			a.setDateFinEncheres(date);
 			
 			// Association pour le vendeur
 			Utilisateur vendeur = new Utilisateur();

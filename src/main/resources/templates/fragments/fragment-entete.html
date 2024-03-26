@@ -24,6 +24,9 @@
 				<a href="/login" data-th-text="#{frag-entete.a.connexion}"></a>
 			</li>
 			<li data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<a href="/profil" data-th-text="#{frag-entete.a.profil}"></a>
+			</li>
+			<li data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<a href="/logout" data-th-text="#{frag-entete.a.deconnexion}"></a>
 			</li>
 		</ul>
