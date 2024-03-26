@@ -1,14 +1,21 @@
 package fr.eni.ecole.encheres.bo;
 
-public class Adresse {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Adresse implements Serializable{
 	
+///////////////////////////////////////////// num Série
+
+private static final long serialVersionUID = 1L;
+
 ///////////////////////////////////////////// Attributs
 
-	public Long id;
-	public String complement;
-	public String rue;
-	public String codePostal;
-	public String ville;
+	private Long id;
+	private String complement;
+	private String rue;
+	private String codePostal;
+	private String ville;
 	
 ///////////////////////////////////////////// Constructeurs
 	
@@ -57,6 +64,22 @@ public class Adresse {
 	
 ///////////////////////////////////////////// Autre méthodes
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(codePostal, complement, id, rue, ville);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Adresse other = (Adresse) obj;
+		return Objects.equals(codePostal, other.codePostal) && Objects.equals(complement, other.complement)
+				&& Objects.equals(id, other.id) && Objects.equals(rue, other.rue) && Objects.equals(ville, other.ville);
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

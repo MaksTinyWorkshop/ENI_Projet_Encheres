@@ -1,11 +1,18 @@
 package fr.eni.ecole.encheres.bo;
 
-public class Categorie {
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Categorie implements Serializable{
 	
+///////////////////////////////////////////// num Série
+
+private static final long serialVersionUID = 1L;
+
 ///////////////////////////////////////////// Attributs
 
-	public Long id;
-	public String libelle;
+	private Long id;
+	private String libelle;
 	
 /////////////////////////////////////////////Constructeurs
 
@@ -33,6 +40,22 @@ public class Categorie {
 	
 ////////////////////////////////////////////////Autres méthodes
 	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, libelle);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Categorie other = (Categorie) obj;
+		return Objects.equals(id, other.id) && Objects.equals(libelle, other.libelle);
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -43,7 +66,4 @@ public class Categorie {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
 }

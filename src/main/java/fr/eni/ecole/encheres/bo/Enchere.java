@@ -1,31 +1,34 @@
 package fr.eni.ecole.encheres.bo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
-public class Enchere {
+public class Enchere implements Serializable{
 	
+///////////////////////////////////////////// num Série
+	
+	private static final long serialVersionUID = 1L;
+
 ///////////////////////////////////////////// Attributs
 	//Locaux
-	public LocalDate date;
-	public int montant;
+	private LocalDate date;
+	private int montant;
 	//Liens
-	public Utilisateur acquereur;
-	public ArticleAVendre articleAVendre;
+	private Utilisateur acquereur;
+	private ArticleAVendre articleAVendre;
 	
 /////////////////////////////////////////////Constructeurs
 	
 	public Enchere() {
-		super();
 	}
 	//Locaux
 	public Enchere(LocalDate date, int montant) {
-		super();
 		this.date = date;
 		this.montant = montant;
 	}
 	//All
 	public Enchere(LocalDate date, int montant, Utilisateur acquereur, ArticleAVendre articleAVendre) {
-		super();
 		this.date = date;
 		this.montant = montant;
 		this.acquereur = acquereur;
@@ -61,6 +64,23 @@ public class Enchere {
 	
 ////////////////////////////////////////////////Autres méthodes
 	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(acquereur, articleAVendre, date, montant);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Enchere other = (Enchere) obj;
+		return Objects.equals(acquereur, other.acquereur) && Objects.equals(articleAVendre, other.articleAVendre)
+				&& Objects.equals(date, other.date) && montant == other.montant;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -75,8 +95,4 @@ public class Enchere {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
-	
 }

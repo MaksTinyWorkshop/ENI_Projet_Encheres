@@ -1,22 +1,26 @@
 package fr.eni.ecole.encheres.bo;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Objects;
 
-public class Utilisateur {
+public class Utilisateur implements Serializable{
+	
+///////////////////////////////////////////// num Série
+	
+	private static final long serialVersionUID = 1L;
 	
 ///////////////////////////////////////////// Attributs
 	//Locaux
-	public String pseudo;
-	public String nom;
-	public String prenom;
-	public String email;
-	public String telephone;
-	public String motDePasse;
-	public int credit;
-	public boolean admin;
+	private String pseudo;
+	private String nom;
+	private String prenom;
+	private String email;
+	private String telephone;
+	private String motDePasse;
+	private int credit;
+	private boolean admin;
 	//Liens
-	public Adresse adresse;
-	public List<ArticleAVendre> articlesAVendre;
+	private Adresse adresse;
 	
 /////////////////////////////////////////////Constructeurs
 	
@@ -38,9 +42,8 @@ public class Utilisateur {
 	//All
 	public Utilisateur(	String pseudo, String nom, String prenom, String email,
 						String telephone, String motDePasse, int credit, boolean admin,
-						Adresse adresse, List<ArticleAVendre> articlesAVendre) {
+						Adresse adresse) {
 		
-		super();
 		this.pseudo = pseudo;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -50,7 +53,6 @@ public class Utilisateur {
 		this.credit = credit;
 		this.admin = admin;
 		this.adresse = adresse;
-		this.articlesAVendre = articlesAVendre;
 	}
 	
 ////////////////////////////////////////////Setters / getters
@@ -114,15 +116,27 @@ public class Utilisateur {
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
 	}
-	public List<ArticleAVendre> getArticlesAVendre() {
-		return articlesAVendre;
-	}
-	public void setArticlesAVendre(List<ArticleAVendre> articlesAVendre) {
-		this.articlesAVendre = articlesAVendre;
-	}
 	
 ////////////////////////////////////////////////Autres méthodes
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(admin, adresse, credit, email, motDePasse, nom, prenom, pseudo, telephone);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Utilisateur other = (Utilisateur) obj;
+		return admin == other.admin && Objects.equals(adresse, other.adresse) && credit == other.credit
+				&& Objects.equals(email, other.email) && Objects.equals(motDePasse, other.motDePasse)
+				&& Objects.equals(nom, other.nom) && Objects.equals(prenom, other.prenom)
+				&& Objects.equals(pseudo, other.pseudo) && Objects.equals(telephone, other.telephone);
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -136,16 +150,12 @@ public class Utilisateur {
 		builder.append(email);
 		builder.append(", telephone=");
 		builder.append(telephone);
-		builder.append(", motDePasse=");
-		builder.append(motDePasse);
 		builder.append(", credit=");
 		builder.append(credit);
 		builder.append(", admin=");
 		builder.append(admin);
 		builder.append(", adresse=");
 		builder.append(adresse);
-		builder.append(", articlesAVendre=");
-		builder.append(articlesAVendre);
 		builder.append("]");
 		return builder.toString();
 	}		

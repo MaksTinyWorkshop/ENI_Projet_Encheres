@@ -1,24 +1,30 @@
 package fr.eni.ecole.encheres.bo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 
-public class ArticleAVendre {
+public class ArticleAVendre implements Serializable{
 	
+///////////////////////////////////////////// num Série
+
+private static final long serialVersionUID = 1L;
+
 ///////////////////////////////////////////// Attributs
 	//Locaux
-	public Long id;
-	public String nom;
-	public String description;
-	public String photo;
-	public LocalDate dateDebutEncheres;
-	public LocalDate dateFinEncheres;
-	public int statu;
-	public int prixInitial;
-	public int prixVente;
+	private Long id;
+	private String nom;
+	private String description;
+	private String photo;
+	private LocalDate dateDebutEncheres;
+	private LocalDate dateFinEncheres;
+	private int statu;
+	private int prixInitial;
+	private int prixVente;
 	//Liens
-	public Adresse retrait;
-	public Utilisateur vendeur;
-	public Categorie categorie;
+	private Adresse retrait;
+	private Utilisateur vendeur;
+	private Categorie categorie;
 	
 /////////////////////////////////////////////Constructeurs
 
@@ -27,7 +33,6 @@ public class ArticleAVendre {
 	//Locaux
 	public ArticleAVendre(	Long id, String nom, String description, String photo, LocalDate dateDebutEncheres,
 							LocalDate dateFinEncheres, int statu, int prixInitial, int prixVente) {
-		super();
 		this.id = id;
 		this.nom = nom;
 		this.description = description;
@@ -137,6 +142,28 @@ public class ArticleAVendre {
 ////////////////////////////////////////////////Autres méthodes
 	
 	@Override
+	public int hashCode() {
+		return Objects.hash(categorie, dateDebutEncheres, dateFinEncheres, description, id, nom, photo, prixInitial,
+				prixVente, retrait, statu, vendeur);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ArticleAVendre other = (ArticleAVendre) obj;
+		return Objects.equals(categorie, other.categorie) && Objects.equals(dateDebutEncheres, other.dateDebutEncheres)
+				&& Objects.equals(dateFinEncheres, other.dateFinEncheres)
+				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(nom, other.nom) && Objects.equals(photo, other.photo)
+				&& prixInitial == other.prixInitial && prixVente == other.prixVente
+				&& Objects.equals(retrait, other.retrait) && statu == other.statu
+				&& Objects.equals(vendeur, other.vendeur);
+	}
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ArticleAVendre [id=");
@@ -165,5 +192,5 @@ public class ArticleAVendre {
 		builder.append(categorie);
 		builder.append("]");
 		return builder.toString();
-	}	
+	}
 }
