@@ -45,7 +45,7 @@ function registerUser() {
         return;
     }
 
-    // Si toutes les validations sont réussies, vous pouvez afficher un message de succès ou effectuer d'autres actions nécessaires
+    
     alert("Formulaire validé avec succès !");
 
     

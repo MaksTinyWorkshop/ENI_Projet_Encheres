@@ -4,7 +4,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	data-th-replace="~{layouts/layout :: layout-projet(titrePage=~{:: title},
 					contenuPage=~{:: .center-main},
-					ressourcesSupp=~{})}">
+					ressourcesSupp=~{:: #ressources-css})}">
 
 
 <head>
@@ -17,7 +17,7 @@
  </head>
 <body>
     <h1>Mon profil</h1>
-    <form action="traitement.php" method="post" class="formulaire">
+    <form action="@{/register-form}" method="post" class="formulaire">
         <!-- Première colonne -->
         <div class="colonne">
             <div class="champ">
@@ -67,8 +67,8 @@
         </div>
 
 		   <!-- Construire fonction JS pour le ONCLICK  -->
-        <input type="submit" value="Créer">
-        <button type="button">Annuler</button>
+        <input id="creer type="submit" value="Créer">
+        <button id="annuler" type="button">Annuler</button>
     </form>
     </body>
 </html>
