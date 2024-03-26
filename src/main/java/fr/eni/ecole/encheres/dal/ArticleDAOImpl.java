@@ -21,7 +21,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private NamedParameterJdbcTemplate jdbcTemp;
 	
 	
-	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_enchere, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere > 0";
+	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere >= 1";
 	//private final String FIND_BY_NAME = " ";	
 	//private final String FIND_BY_CATEGORIE = " ";
 	
@@ -52,12 +52,12 @@ public class ArticleDAOImpl implements ArticleDAO {
 			
 			//date finale
 			//récupératio nde la date provenant de la BDD
-	        String dateFromBDD = rs.getString("date_fin_enchere");
+	        String dateFromBDD = rs.getString("date_fin_encheres");
 	        // Définition du format de date de la BDD
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	        // Conversion 
 	        LocalDate date = LocalDate.parse(dateFromBDD, formatter);
-			a.setDateFinEncheres(date);;
+			a.setDateFinEncheres(date);
 			
 			// Association pour le vendeur
 			Utilisateur vendeur = new Utilisateur();

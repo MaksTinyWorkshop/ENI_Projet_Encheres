@@ -3,7 +3,11 @@
 <!-- Mise en place du layout -->
 <html xmlns:th="http://www.thymeleaf.org"
 	data-th-replace="~{layouts/layout :: layout-projet(titrePage=~{:: title},
+<<<<<<< HEAD
 					contenuPage=~{:: .center-main},
+=======
+					contenuPage=~{:: .form-creation},
+>>>>>>> d764328e84adcb78f29369628e55210f552df37d
 					ressourcesSupp=~{:: #ressources-css})}">
 
 
@@ -11,11 +15,12 @@
 <meta charset="UTF-8">
 <script src="script.js"></script>
 <title>S'enregistrer</title>
- 	<th:block id="ressources-css">
-<link rel="stylesheet" data-th-href="@{/css/form.css}" />
+<th:block id="ressources-css">
+	<link rel="stylesheet" data-th-href="@{/css/form.css}" />
 </th:block>
- </head>
+</head>
 <body>
+<<<<<<< HEAD
     <h1>Mon profil</h1>
     <form action="@{/register-form}" method="post" class="formulaire">
         <!-- Première colonne -->
@@ -71,4 +76,50 @@
         <button id="annuler" type="button">Annuler</button>
     </form>
     </body>
+=======
+	<h1>Mon profil</h1>
+	<form action="@{/register-form}" method="post" class="form-creation">
+		<!-- Première colonne -->
+		<label for="pseudo">Pseudo :</label>
+		<input type="text" id="pseudo" name="pseudo" required autofocus>
+
+		<label for="nom">Nom :</label>
+		<input type="text" id="nom" name="name" required>
+
+		<label for="prenom">Prénom :</label>
+		<input type="text" id="prenom" name="surname" required>
+
+		<label for="telephone">Téléphone :</label>
+		<input type="number" id="telephone" name="telephone" required>
+
+		<label for="email">Email :</label>
+		<input type="text" id="email" name="email" required>
+
+
+		<!-- Deuxième colonne -->
+
+		<label for="codePostal">Code postal :</label>
+		<input type="number" id="codePostal" name="zipcode" required>
+
+		<label for="rue">Rue :</label>
+		<input type="text" id="rue" name="street" required>
+
+		<label for="ville">Ville :</label>
+		<input type="text" id="ville" name="city" required>
+
+		<label for="motDePasse">Mot de passe :</label>
+		<input type="password" id="motDePasse" name="password" required>
+
+		<label for="confirmation">Confirmation :</label>
+		<input type="password" id="confirmation" name="confirmation" required>
+
+		<div class="btn-box">
+			<!-- Construire fonction JS pour le ONCLICK  -->
+			<input type="submit" value="Créer">
+			<button type="button">Annuler</button>
+		</div>
+
+	</form>
+</body>
+>>>>>>> d764328e84adcb78f29369628e55210f552df37d
 </html>

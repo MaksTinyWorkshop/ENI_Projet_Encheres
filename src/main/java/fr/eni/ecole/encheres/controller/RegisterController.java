@@ -13,6 +13,7 @@ public class RegisterController {
         return "register-form";
     }
     
+<<<<<<< HEAD
     @PostMapping("/register")
     public String registerUser(
     		@RequestParam("pseudo") String pseudo,
@@ -34,3 +35,8 @@ public class RegisterController {
             return "redirect:/index";
         }
     }
+=======
+    
+    
+}
+>>>>>>> d764328e84adcb78f29369628e55210f552df37d
