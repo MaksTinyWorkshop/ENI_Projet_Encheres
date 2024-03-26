@@ -1,10 +1,18 @@
-<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete(navigation)">
-	<section id="nav-title">
-		<h1>En-tête</h1>
-		<div>
-			
-		</div>
-	</section>
-<!-- A définir quoi intégrer;  Navigation variable? -->
-	<nav></nav>
+<header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
+	<div class="left-box">
+	<h1>
+		<a href="/">
+				<img data-th-src="@{/images/logoENI.png}">
+				<span data-th-text="#{nom-application}"></span>
+		</a>
+	</h1>
+       
+        
+     </div>
+      <nav class="nav-box">
+        <ul class="nav-list">
+          <li><a href="/">S'inscrire</a></li>
+          <li><a href="/">Se connecter</a></li>
+        </ul>
+      </nav>
 </header>

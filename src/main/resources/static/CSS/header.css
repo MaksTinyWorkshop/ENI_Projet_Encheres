@@ -10,14 +10,13 @@ header {
   align-items: center;
 }
 
-.left-box h2 {
+.left-box h1 {
   margin-left: 2rem;
 }
 
-.img {
+img {
   width: 100px;
   height: 100px;
-  background: #000;
 }
 
 .nav-box {

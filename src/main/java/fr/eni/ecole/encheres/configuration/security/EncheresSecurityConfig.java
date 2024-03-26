@@ -36,11 +36,11 @@ public class EncheresSecurityConfig {
 		// définition des roles associés aux URL correspondants
 		http.authorizeHttpRequests(auth -> {
 			//les trois modèles courants à définir (rappel : 'hasAnyRole' pour plusieurs et 'hasRole' pour un seul role
-			auth
-				.requestMatchers(HttpMethod.GET, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
-				.requestMatchers(HttpMethod.POST, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
-				.requestMatchers(" ").hasRole("ADMINISTRATEUR");
-						
+//			auth
+//				.requestMatchers(HttpMethod.GET, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
+//				.requestMatchers(HttpMethod.POST, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
+//				.requestMatchers(" ").hasRole("ADMINISTRATEUR");
+//						
 			auth.requestMatchers("/*").permitAll();//l'url racine pour tout le monde
 			auth.requestMatchers("/css/*").permitAll();//CSS pour tout le monde
 			auth.requestMatchers("/images/*").permitAll();//images pour tout le monde
