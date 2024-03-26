@@ -40,7 +40,7 @@ public class Utilisateur {
 						String telephone, String motDePasse, int credit, boolean admin,
 						Adresse adresse, List<ArticleAVendre> articlesAVendre) {
 		
-		super();
+		
 		this.pseudo = pseudo;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -136,8 +136,8 @@ public class Utilisateur {
 		builder.append(email);
 		builder.append(", telephone=");
 		builder.append(telephone);
-		builder.append(", motDePasse=");
-		builder.append(motDePasse);
+//		builder.append(", motDePasse=");
+//		builder.append(motDePasse);
 		builder.append(", credit=");
 		builder.append(credit);
 		builder.append(", admin=");

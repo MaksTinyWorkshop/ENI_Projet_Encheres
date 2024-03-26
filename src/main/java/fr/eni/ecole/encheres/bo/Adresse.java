@@ -1,7 +1,8 @@
 package fr.eni.ecole.encheres.bo;
 
-public class Adresse {
-	
+public class Adresse  {
+// TODO Tom Attributs private -> encapsulation
+	// Serializable (association / héritage )
 ///////////////////////////////////////////// Attributs
 
 	public Long id;
