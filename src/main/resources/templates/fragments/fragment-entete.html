@@ -18,7 +18,7 @@
 	<nav class="nav-box">
 		<ul class="nav-list">
 			<li>
-				<a href="/" data-th-text="#{frag-entete.a.inscription}"></a>
+				<a href="/register-form" data-th-text="#{frag-entete.a.inscription}"></a>
 			</li>
 			<li data-th-if="${!#authorization.expression('isAuthenticated()')}">
 				<a href="/login" data-th-text="#{frag-entete.a.connexion}"></a>
