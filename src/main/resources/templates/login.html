@@ -20,7 +20,6 @@
 		<form class="form-login" th:action="@{/login}" method="post">
 			<div class="errors" th:if="${param.error}" data-th-text="#{login.error}"></div>
 			<div th:if="${param.logout}" data-th-text="#{login.logout}"></div>
-			<div th:if="${param.logout}" data-th-text="#{login.logout}"></div>
 			<div class="form-inputs">
 				<label for="inputUsername" data-th-text="#{login.username}"></label>
 				<input id="inputUsername" type="text" name="username" autofocus />
@@ -29,7 +28,7 @@
 				<input id="inputPwd" type="password" name="password" />
 			<div class="btn-box">
 				<button type="submit" data-th-text="#{login.button}"></button>
-				<a href="/" data-th-text="#{login.register.button}"></a>
+				<a href="/register-form" data-th-text="#{login.register.button}"></a>
 			</div>
 			</div>
 		</form>
