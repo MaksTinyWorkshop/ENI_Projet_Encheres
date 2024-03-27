@@ -17,7 +17,9 @@
 </head>
 <body>
     <h1>Mon profil</h1>
-    <form action="@{/register-form}" method="post" class="form-poly">
+
+    <form data-th-object="${formObject}" action="@{/register-form}" method="post" class="form-poly">
+
         <!-- Première colonne -->
         <label for="pseudo">Pseudo :</label>
         <input type="text" id="pseudo" name="pseudo" required autofocus>
