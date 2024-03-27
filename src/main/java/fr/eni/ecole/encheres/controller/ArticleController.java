@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import fr.eni.ecole.encheres.bll.ArticleService;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
+import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 @Controller
 public class ArticleController {
@@ -25,11 +26,15 @@ public class ArticleController {
 
 	@GetMapping("/")
 	public String accueil(Model model) {
-		//appel du service pour charger la liste
-		List<ArticleAVendre> articles = articleService.charger();
-		//intégration des articles au modèle pour thymleaf
-		model.addAttribute("articles", articles);
-		//retour à l'index
-		return "index";
+		try {
+			List<ArticleAVendre> articles = articleService.charger();//appel du service pour charger la liste
+			model.addAttribute("articles", articles);//intégration des articles au modèle pour thymleaf
+			return "index";//retour à l'index
+			
+		}catch (BusinessException e){//ici récupération de la Business Exception chargée dans le service
+			//model.addAttribute("empty", e);//TODO ne marche pas, voir plus tard...
+			return "index";
+		}
+		//TODO gestion de l'exception en cas d'abscence d'enchère
 	}
 }
