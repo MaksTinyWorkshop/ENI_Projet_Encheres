@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<!-- Mise en place du layout -->
+<html xmlns:th="http://www.thymeleaf.org"
+	data-th-replace="~{layouts/layout :: layout-projet(
+					titrePage=~{:: title},
+					contenuPage=~{:: main},
+					ressourcesSupp=~{:: #ressources-css})}">
+
+
+<head>
+
+	<!-- Accueil comme titre de page -->
+	<title data-th-text="#{index.title}"></title>
+	
+	<th:block id="ressources-css">
+		<link rel="stylesheet" data-th-href="@{/css/cards.css}" />
+		<link rel="stylesheet" data-th-href="@{/css/form.css}" />
+	</th:block>
+
+</head>
+<body>
+	<main>
+	<!-- Injecter ici le register-form transformé en fragment, si jamais ça veut bien marcher -->
+        <div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form}">
+        </div>
+    </main>
+</body>
+</html>

@@ -1,16 +1,16 @@
 /*Formulaire d'inscription*/
-.form-creation {
+.form-poly {
 	margin: 3rem 6rem 3rem 0;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	gap: 3rem;
 }
 
-.form-creation label {
+.form-poly label {
 	margin-left: 6rem;
 }
 
-.form-creation .btn-box {
+.form-poly .btn-box {
 	margin-left: 6rem;
 	display: flex;
 	align-items: center;
@@ -18,7 +18,7 @@
 	grid-column: 1/-1;
 }
 
-.form-creation .btn-box button {
+.form-poly .btn-box button {
 	width: 200px;
 	height: 80px;
 	font-size: 2rem;
@@ -51,7 +51,7 @@
 }
 
 .form-inputs input {
-	font-size : 1rem;
+	font-size: 1rem;
 	background-color: #282c34;
 	border: 1px solid #ABB2BF;
 	border-radius: 10px;
@@ -59,7 +59,7 @@
 }
 
 .form-inputs .btn-box {
-	display:flex;
+	display: flex;
 	flex-direction: column;
 	font-size: 2rem;
 	grid-column: 1/-1;
@@ -81,6 +81,6 @@
 }
 
 .form-inputs .btn-box a:hover {
-  transform: translateY(-2px);
-  background-color: rgba(#ABB2BF, 0.3);
+	transform: translateY(-2px);
+	background-color: rgba(#ABB2BF, 0.3);
 }

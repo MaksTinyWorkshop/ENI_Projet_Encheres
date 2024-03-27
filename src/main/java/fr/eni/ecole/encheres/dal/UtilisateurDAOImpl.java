@@ -39,8 +39,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			u.setPrenom(rs.getString("prenom"));
 			u.setEmail(rs.getString("email"));
 			u.setCredit(rs.getInt("credit"));
-			u.setAdmin(rs.getBoolean("admin"));
+			u.setAdmin(rs.getBoolean("administrateur"));
 			u.setPseudo(rs.getString("pseudo"));
+			u.setAdresse(u.getAdresse());
 			return u;
 		}
 		

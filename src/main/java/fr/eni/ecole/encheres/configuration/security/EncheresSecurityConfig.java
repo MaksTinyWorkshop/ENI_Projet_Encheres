@@ -49,7 +49,7 @@ public class EncheresSecurityConfig  {
 			auth.requestMatchers("/*").permitAll();//l'url racine pour tout le monde
 			auth.requestMatchers("/css/*").permitAll();//CSS pour tout le monde
 			auth.requestMatchers("/images/*").permitAll();//images pour tout le monde
-			
+			auth.requestMatchers("/profil/*").authenticated();
 			auth.anyRequest().denyAll();//accès refusé pour toutes les autres URL.
 		});
 		
