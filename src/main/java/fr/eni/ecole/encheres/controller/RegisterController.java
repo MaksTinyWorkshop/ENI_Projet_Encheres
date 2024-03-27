@@ -13,7 +13,7 @@ public class RegisterController {
         return "register-form";
     }
     
-    @PostMapping("/register")
+    @PostMapping("/register-form")
     public String registerUser(
     		@RequestParam("pseudo") String pseudo,
             @RequestParam("nom") String nom,

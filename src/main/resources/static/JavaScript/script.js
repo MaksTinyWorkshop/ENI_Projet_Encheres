@@ -45,7 +45,8 @@ function registerUser() {
         return;
     }
 
-    
+    // Rediriger vers la page racine
+    window.location.href = '/';
     alert("Formulaire validé avec succès !");
 
     
