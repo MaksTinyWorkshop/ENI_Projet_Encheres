@@ -4,10 +4,10 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -15,7 +15,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class EncheresSecurityConfig {
+public class EncheresSecurityConfig  {
+	
+	@Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // 
+    }
 	
 	@Bean
 	UserDetailsManager userManager(DataSource dataSource) {
@@ -44,7 +49,7 @@ public class EncheresSecurityConfig {
 			auth.requestMatchers("/*").permitAll();//l'url racine pour tout le monde
 			auth.requestMatchers("/css/*").permitAll();//CSS pour tout le monde
 			auth.requestMatchers("/images/*").permitAll();//images pour tout le monde
-			
+			auth.requestMatchers("/profil/*").authenticated();
 			auth.anyRequest().denyAll();//accès refusé pour toutes les autres URL.
 		});
 		
@@ -70,4 +75,5 @@ public class EncheresSecurityConfig {
 		
 		return http.build();
 	}
+	
 }
