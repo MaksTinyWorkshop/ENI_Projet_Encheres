@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
+import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 @Repository
@@ -36,18 +37,19 @@ public class ArticleDAOImpl implements ArticleDAO {
 										+ " VALUES (:id, :nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait";
 
 	
-	/*
 	@Override
 	public List<ArticleAVendre> getArticlesByName(String boutNom) {
-		return null;
+	    String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom";
+	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("boutNom", "%" + boutNom + "%");
+	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
+
 	@Override
 	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
-		return null;
+	    String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE no_categorie = :idCategorie";
+	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("idCategorie", categorie.getId());
+	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
-	*/
-	
-	////////////////////////////////////////////////
 	
 	@Override
 	public List<ArticleAVendre> getActiveArticles() {
