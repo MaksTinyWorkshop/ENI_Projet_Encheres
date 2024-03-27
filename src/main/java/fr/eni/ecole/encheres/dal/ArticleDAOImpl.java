@@ -51,7 +51,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 			a.setPrixVente(rs.getInt("prix_vente"));
 			
 			//date finale
-			//récupératio nde la date provenant de la BDD
+			//récupération de la date provenant de la BDD
 	        String dateFromBDD = rs.getString("date_fin_encheres");
 	        // Définition du format de date de la BDD
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

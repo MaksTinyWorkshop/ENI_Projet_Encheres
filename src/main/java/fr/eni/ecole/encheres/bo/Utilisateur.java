@@ -55,6 +55,8 @@ public class Utilisateur implements Serializable{
 		this.adresse = adresse;
 	}
 	
+	
+	
 	public Utilisateur(String pseudo2, String email2, String motDePasseHash) {
 		this.getPseudo();
 		this.getEmail();
@@ -75,6 +77,7 @@ public class Utilisateur implements Serializable{
 	public String getPseudo() {
 		return pseudo;
 	}
+
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
 	}
@@ -172,5 +175,17 @@ public class Utilisateur implements Serializable{
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	public String getRue() {
+	return adresse != null ? adresse.getRue() : null;
+	    }
+
+	public String getCodePostal() {
+	return adresse != null ? adresse.getCodePostal() : null;
+	    }
+
+	public String getVille() {
+	return adresse != null ? adresse.getVille() : null;
+	   }
 		
 }
