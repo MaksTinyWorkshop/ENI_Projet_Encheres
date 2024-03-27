@@ -29,8 +29,9 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<ArticleAVendre> charger(){//appel la méthode de chargement de la liste des articles actifs via la DAO
 		//BusinessException be = new BusinessException();//implémentation d'une instance de la classe exception
 		List<ArticleAVendre> ListeArticles = articleDAO.getActiveArticles();
+		BusinessException be = new BusinessException();//création d'une instance de la classe d'exception
 		if (ListeArticles.isEmpty()) {
-			BusinessException be = new BusinessException();//création d'une instance de la classe d'exception
+			
 			be.add(BusinessCode.ENCHERE_AUCUNE);// ajout de la clé erreur
 			throw be;//propage l'exception 
 		}
