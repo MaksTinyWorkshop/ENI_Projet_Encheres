@@ -7,4 +7,6 @@ import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 public interface ArticleService {
 	List<ArticleAVendre> charger();
+	
+	void creerArticle(ArticleAVendre newArticle);
 }

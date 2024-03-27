@@ -27,7 +27,6 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Override
 	public List<ArticleAVendre> charger(){//appel la méthode de chargement de la liste des articles actifs via la DAO
-		//BusinessException be = new BusinessException();//implémentation d'une instance de la classe exception
 		List<ArticleAVendre> ListeArticles = articleDAO.getActiveArticles();
 		if (ListeArticles.isEmpty()) {
 			BusinessException be = new BusinessException();//création d'une instance de la classe d'exception
@@ -35,5 +34,9 @@ public class ArticleServiceImpl implements ArticleService {
 			throw be;//propage l'exception 
 		}
 		return ListeArticles;
+	}
+	
+	public void creerArticle(ArticleAVendre newArticle) {
+		articleDAO.creerArticle(newArticle);
 	}
 }

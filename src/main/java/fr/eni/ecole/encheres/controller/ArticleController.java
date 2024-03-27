@@ -27,16 +27,12 @@ public class ArticleController {
 	@GetMapping("/")
 	public String accueil(Model model) {
 		try {
-			//appel du service pour charger la liste
-			List<ArticleAVendre> articles = articleService.charger();
-			//intégration des articles au modèle pour thymleaf
-			System.out.println("ma liste d'article n'est pas nulle, elle contient :");
-			System.out.println(articles);
-			model.addAttribute("articles", articles);
-			//retour à l'index
-			return "index";
-		}catch (BusinessException e){//ici le catch de la Business Exception
-			model.addAttribute("empty", e.getClefsExternalisations());
+			List<ArticleAVendre> articles = articleService.charger();//appel du service pour charger la liste
+			model.addAttribute("articles", articles);//intégration des articles au modèle pour thymleaf
+			return "index";//retour à l'index
+			
+		}catch (BusinessException e){//ici récupération de la Business Exception chargée dans le service
+			//model.addAttribute("empty", e);//TODO ne marche pas, voir plus tard...
 			return "index";
 		}
 		//TODO gestion de l'exception en cas d'abscence d'enchère
