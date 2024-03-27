@@ -17,11 +17,13 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 @Repository
 public class ArticleDAOImpl implements ArticleDAO {
 	
+	/////////////////////////////////////// les attributs
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemp;
 	
-	
-	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere >= 1";
+	//!!!! NB !!!!! notice des statu :  0 : PAS COMMENCEE, 1 : EN COURS, 2 : CLOTUREE, 100 : ANNULEE
+	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere = 20";
 	//private final String FIND_BY_NAME = " ";	
 	//private final String FIND_BY_CATEGORIE = " ";
 	
@@ -36,6 +38,8 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 	*/
 	
+	////////////////////////////////////////////////
+	
 	@Override
 	public List<ArticleAVendre> getActiveArticles() {
 		return jdbcTemp.query(FIND_ACTIVE, new ArticleRowMapper());
@@ -49,15 +53,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 			ArticleAVendre a = new ArticleAVendre();
 			a.setNom(rs.getString("nom_article"));
 			a.setPrixVente(rs.getInt("prix_vente"));
-			
-			//date finale
-			//récupératio nde la date provenant de la BDD
-	        String dateFromBDD = rs.getString("date_fin_encheres");
-	        // Définition du format de date de la BDD
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	        // Conversion 
-	        LocalDate date = LocalDate.parse(dateFromBDD, formatter);
-			a.setDateFinEncheres(date);
+			a.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());//dte finale convertie en LocalDate
 			
 			// Association pour le vendeur
 			Utilisateur vendeur = new Utilisateur();
@@ -66,5 +62,11 @@ public class ArticleDAOImpl implements ArticleDAO {
 			
 			return a;
 		}
+	}
+
+	@Override
+	public void creerArticle(ArticleAVendre newArticle) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,14 +1,14 @@
 <div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-list-articles" class="items-cards">
-	<div data-th-each="article : ${articles}" class="card">
+	<div data-th-if="${article != null}" data-th-each="article : ${articles}" class="card">
 	   <div class="img-box"></div>
-	   <div class="details">
+	   <div class="details" >
 	       <h2 data-th-text="${article.nom}"></h2>
-	       <br>
 	       <p data-th-text="'Prix : ' + ${article.prixVente}"></p>
-	       <br>
 	       <p data-th-text="'Date de fin : ' + ${article.dateFinEncheres}"></p>
-	       <br>
 	       <p data-th-text="'Vendeur : ' + ${article.vendeur.pseudo}"></p>
 	   </div>
+	</div>
+	<div data-th-if="${article == null}">
+	       <h2 data-th-text="${empty}"></h2>
 	</div>
 </div>
