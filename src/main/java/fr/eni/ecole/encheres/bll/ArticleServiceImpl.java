@@ -3,11 +3,12 @@ package fr.eni.ecole.encheres.bll;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.dal.ArticleDAOImpl;
-import fr.eni.ecole.encheres.exceptions.BusinessException;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
+import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 
 @Service
@@ -36,7 +37,10 @@ public class ArticleServiceImpl implements ArticleService {
 		return ListeArticles;
 	}
 	
+	@Override
+	@Transactional
 	public void creerArticle(ArticleAVendre newArticle) {
 		articleDAO.creerArticle(newArticle);
+		//TODO voir les exceptions et gérer toutes les validations
 	}
 }
