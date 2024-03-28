@@ -11,7 +11,7 @@
 <head>
 
 	<!-- Accueil comme titre de page -->
-	<title data-th-text="#{index.title}"></title>
+	<title data-th-text="#{monprofil.title}"></title>
 	
 	<th:block id="ressources-css">
 		<link rel="stylesheet" data-th-href="@{/css/cards.css}" />
@@ -22,7 +22,7 @@
 <body>
 	<main>
 	<!-- Injecter ici le register-form transformé en fragment, si jamais ça veut bien marcher -->
-        <div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form}">
+        <div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form(#{view-mon-profil.h1}, '/profil')}">
         </div>
     </main>
 </body>

@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,7 +46,8 @@ public class EncheresSecurityConfig  {
 //				.requestMatchers(HttpMethod.GET, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
 //				.requestMatchers(HttpMethod.POST, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
 //				.requestMatchers(" ").hasRole("ADMINISTRATEUR");
-//						
+			auth.requestMatchers(HttpMethod.GET, "/register").permitAll()
+				.requestMatchers(HttpMethod.POST, "/register").permitAll();
 			auth.requestMatchers("/*").permitAll();//l'url racine pour tout le monde
 			auth.requestMatchers("/css/*").permitAll();//CSS pour tout le monde
 			auth.requestMatchers("/images/*").permitAll();//images pour tout le monde
