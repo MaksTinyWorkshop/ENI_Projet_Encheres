@@ -8,23 +8,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import fr.eni.ecole.encheres.bo.Utilisateur;
+import fr.eni.ecole.encheres.exceptions.BusinessCode;
+import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
 
     private final List<Utilisateur> utilisateurs = new ArrayList<>();
     private final PasswordEncoder passwordEncoder;
-    private final MessageSource messageSource; // Ajout de MessageSource
 
     // Injection de MessageSource via le constructeur
     public UtilisateurServiceImpl(PasswordEncoder passwordEncoder, MessageSource messageSource) {
         this.passwordEncoder = passwordEncoder;
-        this.messageSource = messageSource;
     }
 
     @Override
     public void enregistrerUtilisateur(String pseudo, String nom, String prenom, String telephone, String email, String rue, String codePostal, String ville, String motDePasse) {
-        validerDonneesInscription(pseudo, email, motDePasse); // Assuming validation for other fields are done elsewhere
+        BusinessException be = new BusinessException();
+    	validerDonneesInscription(pseudo, email, motDePasse, be); // Assuming validation for other fields are done elsewhere
         verifierUnicitePseudo(pseudo);
         verifierUniciteEmail(email);
         String motDePasseHash = encoderMotDePasse(motDePasse);
@@ -51,28 +52,33 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateurs.add(utilisateur);
     }
 
-    private void validerDonneesInscription(String pseudo, String email, String motDePasse) {
+    private void validerDonneesInscription(String pseudo, String email, String motDePasse, BusinessException be) {
         if (pseudo == null || pseudo.isBlank()) {
-            throw new IllegalArgumentException(messageSource.getMessage("validation.user.loginBlank", null, null));
+        	be.add(BusinessCode.BLL_USER_LOGIN_BLANK);
         }
         if (!pseudo.matches("[a-zA-Z0-9_]+")) {
-            throw new IllegalArgumentException(messageSource.getMessage("validation.user.userForm", null, null));
+            be.add(BusinessCode.BLL_USER_LOGIN_FORM);
         }
         if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException(messageSource.getMessage("validation.user.emailBlank", null, null));
+        	be.add(BusinessCode.BLL_USER_EMAIL_BLANK);
         }
         if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            throw new IllegalArgumentException(messageSource.getMessage("validation.user.emailForm", null, null));
+        	be.add(BusinessCode.BLL_USER_EMAIL_FORM);
         }
         if (motDePasse == null || motDePasse.isBlank()) {
-            throw new IllegalArgumentException(messageSource.getMessage("validation.user.passwordBlank", null, null));
+        	be.add(BusinessCode.BLL_USER_PASSWORD_BLANK);;
         }
         if (motDePasse.length() < 8 || motDePasse.length() > 20) {
-            throw new IllegalArgumentException(messageSource.getMessage("validation.user.passwordLength", null, null));
+        	be.add(BusinessCode.BLL_USER_PASSWORD_LENGTH);
         }
         if (!motDePasse.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
-            throw new IllegalArgumentException(messageSource.getMessage("validation.user.passwordForm", null, null));
+        	be.add(BusinessCode.BLL_USER_PASSWORD_FORM);
         }
+        
+        if (!be.isValid()) {
+        	throw be;
+        }
+        
     }
     private void verifierUnicitePseudo(String pseudo) {
         if (existsByPseudo(pseudo)) {
