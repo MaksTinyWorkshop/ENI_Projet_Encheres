@@ -2,6 +2,7 @@ package fr.eni.ecole.encheres.bll;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
@@ -44,24 +45,28 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
+	@Transactional
 	public void update(Utilisateur utilisateur) {
 		// TODO Auto-generated method stub
 		BusinessException be = new BusinessException();
 		boolean isValid = true;
 		isValid &= validerUtilisateur(utilisateur, be);
 		isValid &= validerEmail(utilisateur.getEmail(), be);
-		isValid &= validerUniqueMail(utilisateur.getEmail(), be);
-		isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
 		isValid &= validerPseudo(utilisateur.getPseudo(), be);
 		isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
 
 		if (isValid) {
 			try {
 				utilisateurDAO.update(utilisateur);
+				System.out.println("Success");
 			} catch (DataAccessException e) {
+
 				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
 				throw be;
 			}
+		} else {
+			throw be;
+
 		}
 
 	}

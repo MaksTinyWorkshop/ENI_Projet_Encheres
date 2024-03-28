@@ -29,7 +29,7 @@ public class UserController {
 
 	@GetMapping("/register")
 	public String showRegisterForm(Model model) {
-		model.addAttribute("formObject", new Utilisateur());
+		model.addAttribute("user", new Utilisateur());
 		return "view-register-form";
 	}
 
@@ -59,7 +59,7 @@ public class UserController {
 		return "redirect:/profil";
 	}
 
-	// TODO faire cette méthode pour mettre à jour le profil du user connecté
+	
 	@PostMapping("/profil")
 	public String mettreAJourMonProfil(@ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
