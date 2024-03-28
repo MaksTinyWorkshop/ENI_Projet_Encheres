@@ -1,11 +1,14 @@
 package fr.eni.ecole.encheres.bll;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.dal.AdresseDAO;
 import fr.eni.ecole.encheres.dal.UtilisateurDAO;
+import fr.eni.ecole.encheres.exceptions.BusinessCode;
+import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 // PasswordEncoder (en 1)
 // PasswordEncoderFactories
@@ -62,6 +65,19 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	private void chargerAdresse(Utilisateur u) {
 		Adresse adresse = adresseDAO.read(u.getPseudo());
 		u.setAdresse(adresse);
+	}
+
+
+	@Override
+	public void update(Utilisateur utilisateur) {
+		// TODO Auto-generated method stub
+		BusinessException be = new BusinessException();
+		try {
+			
+		}catch (DataAccessException e) {
+			be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
+		}
+		
 	}
 
 	

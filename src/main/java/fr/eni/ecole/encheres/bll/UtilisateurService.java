@@ -8,4 +8,6 @@ public interface UtilisateurService {
     boolean existsByEmail(String email);
     
     Utilisateur consulterProfil(String pseudo);
+    
+    void update(Utilisateur utilisateur);
 }

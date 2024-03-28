@@ -1,79 +1,79 @@
-	<!-- NE PAS UTILISER CELUI_CI -->
+
+<!-- NE PAS UTILISER CELUI_CI -->
 
 
-<form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-prof-form(titreForm, action)" 
-		class="form-poly"
-		method="post"
-		data-th-object="${formObject}"
-		data-th-action="@{${action}}" >
-		
-		<h1 data-th-text="${titreForm}"></h1>
-        <!-- Première colonne -->
-        <label for="pseudo">Pseudo :</label>
-        <input type="text" id="pseudo" required data-th-field="*{pseudo}" autofocus>
+<form xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-prof-form(titreForm, action)" class="form-poly"
+	method="post" data-th-object="${formObject}" data-th-action="@{${action}}">
 
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom"  data-th-field="*{nom}" required>
+	<h1 data-th-text="${titreForm}"></h1>
+	<!-- Première colonne -->
+	<label for="pseudo" data-th-text=#{form.pseudo}></label>
+	<input type="text" id="pseudo" required data-th-field="*{pseudo}" autofocus>
 
-        <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom"  data-th-field="*{prenom}" required>
+	<label for="nom" data-th-text=#{form.nom}></label>
+	<input type="text" id="nom" data-th-field="*{nom}" required>
 
-        <label for="telephone">Téléphone :</label>
-        <input type="number" id="telephone"  data-th-field="*{telephone}" required>
+	<label for="prenom" data-th-text=#{form.prenom}></label>
+	<input type="text" id="prenom" data-th-field="*{prenom}" required>
 
-        <label for="email">Email :</label>
-        <input type="text" id="email"  data-th-field="*{email}" required>
+	<label for="telephone" data-th-text=#{form.telephone}></label>
+	<input type="number" id="telephone" data-th-field="*{telephone}">
+
+	<label for="email" data-th-text=#{form.email}>:</label>
+	<input type="text" id="email" data-th-field="*{email}" required>
 
 
-        <!-- Deuxième colonne -->
-        <label for="codePostal">Code postal :</label>
-        <input type="text" id="codePostal"  data-th-field="*{adresse.codePostal}" required>
+	<!-- Deuxième colonne -->
+	<label for="codePostal" data-th-text=#{form.codePostal}></label>
+	<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" required>
 
-        <label for="rue">Rue :</label>
-        <input type="text" id="rue"  data-th-field="*{adresse.rue}" required>
+	<label for="rue" data-th-text=#{form.rue}></label>
+	<input type="text" id="rue" data-th-field="*{adresse.rue}" required>
 
-		<label for="complement">Complément :</label>
-        <input type="text" id="complement" name="complement" data-th-field="*{adresse.complement}" required>
+	<label for="complement" data-th-text=#{form.complement}></label>
+	<input type="text" id="complement" name="complement" data-th-field="*{adresse.complement}" required>
 
-        
-        <label for="ville">Ville :</label>
-        <input type="text" id="ville" data-th-field="*{adresse.ville}" required>
-        
-        
-        <!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
-        <th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-        <label for="motDePasse">Mot de passe actuel:</label>
-        <input type="password" id="motDePasse" required>
-        </th:block>
+	<label for="ville" data-th-text=#{form.ville}></label>
+	<input type="text" id="ville" data-th-field="*{adresse.ville}" required>
 
-		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-        <label for="motDePasseNew">Nouveau Mot de passe :</label>
-        <input type="password" id="motDePasseNew" >
-        </th:block>
 
-        <label for="confirmation">Confirmation :</label>
-        <input type="password" id="confirmation"  required>
-		
+	<div class="password-box">
+		<!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
 		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-		<label for="motDePasse">Mot de passe actuel:</label>
-        <input type="password" id="motDePasse" required>
+			<label for="motDePasse" data-th-text=#{form.mdpNewUser}></label>
+			<input type="password" id="motDePasse" required>
 		</th:block>
 
+		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<label for="motDePasse" data-th-text=#{form.mdpCurrent}></label>
+			<input type="password" id="motDePasse" required>
+		</th:block>
 
-        <div class="btn-box">
-            <!-- Construire fonction JS pour le ONCLICK  -->
-            <th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-            <button type="submit" id="submitButton" >Enregistrer</button>
-            </th:block>
-            <th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-            <button type="submit" id="submitButton" >Créer</button>
-            </th:block>
-            
-            <button type="button">Annuler</button>
-        </div>
+		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<label for="motDePasseNew" data-th-text=#{form.newMdp}></label>
+			<input type="password" id="motDePasseNew">
+		</th:block>
+
+		<label for="confirmation" data-th-text=#{form.mdpConfirm}></label>
+		<input type="password" id="confirmation" required>
 
 
-	
+	</div>
+
+
+	<div class="btn-box">
+		<!-- Construire fonction JS pour le ONCLICK  -->
+		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<button type="submit" id="submitButton">Enregistrer</button>
+		</th:block>
+		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
+			<button type="submit" id="submitButton">Créer</button>
+		</th:block>
+
+		<button type="button">Annuler</button>
+	</div>
+
+
+
 
 </form>

@@ -57,8 +57,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParam.addValue("email",utilisateur.getEmail());
 		namedParam.addValue("telephone", utilisateur.getTelephone());
 		namedParam.addValue("motDePasse", utilisateur.getMotDePasse());
-		// Adresse en cours
-		// Mapper ?
 		jdbcTemplate.update(UPDATE, namedParam);
 	}
 	
