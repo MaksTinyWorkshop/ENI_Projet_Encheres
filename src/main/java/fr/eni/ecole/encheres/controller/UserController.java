@@ -33,7 +33,7 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("registerFormObject") Utilisateur formObject, BindingResult bindingResult) {
+    public String registerUser(@Valid @ModelAttribute("formObject") Utilisateur formObject, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "view-register-form";
         }
