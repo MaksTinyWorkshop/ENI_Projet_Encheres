@@ -25,7 +25,7 @@ public class LoginController {
 	}
 	
 	
-	///////////// METHODE DE LOGIN
+
 	@GetMapping("/login")
 	public String login() {
 		//retourne la vue de la page de connexion
@@ -42,27 +42,6 @@ public class LoginController {
 		return "redirect:/";
 	}
 
-	///////////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL
-	@GetMapping("/profil")
-	public String afficherMonProfil(Model model, Principal ppal) {
-		String pseudo = ppal.getName();
-		Utilisateur user = service.charger(pseudo);
-		if(user != null) {
-			model.addAttribute("user" ,user);
-			return "view-mon-profil";
-		} else {
-			System.out.println("User inconnu");
-		}
-		return "redirect:/profil";
-	}
-	
-	
-	//TODO faire cette méthode pour mettre à jour le profil du user connecté
-	@PostMapping("/profil")
-	public String mettreAJourMonProfil(
-			@ModelAttribute("user") Utilisateur u) {
-		
-		return "view-mon-profil";
-	}
+
 	
 }

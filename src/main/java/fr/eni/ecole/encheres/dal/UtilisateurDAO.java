@@ -7,4 +7,7 @@ public interface UtilisateurDAO {
 
 	void save(Utilisateur utilisateur);
 	
+	void update(Utilisateur utilisateur);
+		
+	
 }
