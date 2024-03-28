@@ -17,6 +17,10 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, email, credit, administrateur from UTILISATEURS where pseudo = :pseudo";
 	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe) "
 													+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
+	private static final String UPDATE= "UPDATE UTILISATEURS SET nom= :nom, prenom= :prenom, pseudo= :pseudo, email= :email, "
+													+ "telephone= :telephone, mot_de_passe= :motDePasse "
+													+ "WHERE pseudo= :pseudo";
+	
 	
 	@Autowired NamedParameterJdbcTemplate jdbcTemplate;
 	
@@ -27,6 +31,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, namedParam, new UtilisateurRowMapper());
 	}
 
+	
 	
 	
 	/**

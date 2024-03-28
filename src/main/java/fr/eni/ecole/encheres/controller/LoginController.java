@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import fr.eni.ecole.encheres.bll.contexte.ContexteService;
 import fr.eni.ecole.encheres.bo.Utilisateur;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller

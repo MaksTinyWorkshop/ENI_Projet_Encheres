@@ -5,6 +5,9 @@
 	grid-template-columns: repeat(4, 1fr);
 	gap: 3rem;
 }
+.form-poly h1 {
+	grid-column: 1/-1;
+}
 
 .form-poly label {
 	margin-left: 6rem;
