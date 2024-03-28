@@ -20,12 +20,10 @@ import jakarta.validation.Valid;
 public class UserController {
 
 	private final UtilisateurService utilisateurService;
-	private ContexteService contexteService;
 
-	public UserController(UtilisateurService utilisateurService, ContexteService contexteService) {
+
+	public UserController(UtilisateurService utilisateurService) {
 		this.utilisateurService = utilisateurService;
-		this.contexteService = contexteService;
-
 	}
 
 	@GetMapping("/register")
@@ -51,9 +49,9 @@ public class UserController {
 	@GetMapping("/profil")
 	public String afficherMonProfil(Model model, Principal ppal) {
 		String pseudo = ppal.getName();
-		Utilisateur user = contexteService.charger(pseudo);
+		Utilisateur user = utilisateurService.consulterProfil(pseudo);
 		if (user != null) {
-			model.addAttribute("user", user);
+			model.addAttribute("formObject", user);
 			return "view-mon-profil";
 		} else {
 			System.out.println("User inconnu");

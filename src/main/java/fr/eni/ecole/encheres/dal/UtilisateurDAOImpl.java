@@ -15,7 +15,7 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
-	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, email, credit, administrateur from UTILISATEURS where pseudo = :pseudo";
+	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, email, credit, administrateur, no_adresse from UTILISATEURS where pseudo = :pseudo";
 	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe) "
 													+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
 	private static final String UPDATE= "UPDATE UTILISATEURS SET nom= :nom, prenom= :prenom, pseudo= :pseudo, email= :email, "
@@ -23,7 +23,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 													+ "WHERE pseudo= :pseudo";
 	
 	
-	@Autowired NamedParameterJdbcTemplate jdbcTemplate;
+	@Autowired 
+	NamedParameterJdbcTemplate jdbcTemplate;
 	
 	@Override
 	public Utilisateur read(String pseudo) {
@@ -78,12 +79,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			u.setAdmin(rs.getBoolean("administrateur"));
 			u.setPseudo(rs.getString("pseudo"));
 
-//			//Association pour l'adresse 
-//			Adresse adresse = new Adresse();
-//			adresse.setRue(rs.getString(""));
-//			adresse.setCodePostal(rs.getString(""));
-//			adresse.setVille(rs.getString(""));
-//			u.setAdresse(adresse);
+			//Association pour l'adresse 
+			Adresse adresse = new Adresse();
+			adresse.setId(rs.getLong("no_adresse"));
+			u.setAdresse(adresse);
+		
 			return u;
 		}
 		

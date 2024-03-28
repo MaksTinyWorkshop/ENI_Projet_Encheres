@@ -1,27 +1,29 @@
 package fr.eni.ecole.encheres.bll;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.context.MessageSource;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
+import fr.eni.ecole.encheres.dal.AdresseDAO;
+import fr.eni.ecole.encheres.dal.UtilisateurDAO;
 
 // PasswordEncoder (en 1)
 // PasswordEncoderFactories
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
+	//Injection des repository
+	private UtilisateurDAO utilisateurDAO;
+	private AdresseDAO adresseDAO;
 
 
 
+	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
+		this.utilisateurDAO = utilisateurDAO;
+		this.adresseDAO = adresseDAO;
+	}
 
-    // Injection de MessageSource via le constructeur
-    public UtilisateurServiceImpl() {
-    }
-
+	
 	@Override
 	public void enregistrerUtilisateur(String pseudo, String nom, String prenom, String telephone, String email,
 			String rue, String codePostal, String ville, String motDePasse) {
@@ -41,6 +43,29 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return false;
 	}
 
+	@Override
+	public Utilisateur consulterProfil(String pseudo) {
+		// Récup du user par son pseudo
+		Utilisateur u = utilisateurDAO.read(pseudo);
+		if (u != null) {
+			// Chargement de son adresse
+			chargerAdresse(u);
+		}
+		return u;
+	}
+
+	/**
+	 * Méthode privée pour centraliser l'association entre 
+	 * un user et son adresse  
+	 * @param user
+	 */
+	private void chargerAdresse(Utilisateur u) {
+		Adresse adresse = adresseDAO.read(u.getPseudo());
+		u.setAdresse(adresse);
+	}
+
+	
+	
 //    @Override
 //    public void enregistrerUtilisateur(String pseudo, String nom, String prenom, String telephone, String email, String rue, String codePostal, String ville, String motDePasse) {
 //        validerDonneesInscription(pseudo, email, motDePasse); // Assuming validation for other fields are done elsewhere
