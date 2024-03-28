@@ -21,6 +21,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String UPDATE= "UPDATE UTILISATEURS SET nom= :nom, prenom= :prenom, pseudo= :pseudo, email= :email, "
 													+ "telephone= :telephone, mot_de_passe= :motDePasse "
 													+ "WHERE pseudo= :pseudo";
+	private static final String COUNT_EMAIL= "SELECT count(email) FROM UTILISATEURS WHERE email = :email";
+	private static final String COUNT_PSEUDO= "SELECT count(pseudo) FROM UTILISATEURS WHERE pseudo = :pseudo";
 	
 	
 	@Autowired 
@@ -57,6 +59,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParam.addValue("email",utilisateur.getEmail());
 		namedParam.addValue("telephone", utilisateur.getTelephone());
 		namedParam.addValue("motDePasse", utilisateur.getMotDePasse());
+		
 		jdbcTemplate.update(UPDATE, namedParam);
 	}
 	
@@ -85,6 +88,23 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			return u;
 		}
 		
+	}
+
+
+
+	@Override
+	public int uniqueEmail(String email) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("email", email);
+		return jdbcTemplate.queryForObject(COUNT_EMAIL, namedParam, Integer.class);
+	}
+
+
+	@Override
+	public int uniquePseudo(String pseudo) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("pseudo", pseudo);
+		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParam, Integer.class);
 	}
 	
 

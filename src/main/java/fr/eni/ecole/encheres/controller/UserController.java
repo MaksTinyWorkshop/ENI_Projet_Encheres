@@ -5,6 +5,7 @@ import java.security.Principal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import fr.eni.ecole.encheres.bll.UtilisateurService;
 import fr.eni.ecole.encheres.bll.contexte.ContexteService;
 import fr.eni.ecole.encheres.bo.Utilisateur;
+import fr.eni.ecole.encheres.exceptions.BusinessException;
 import jakarta.validation.Valid;
 
 @Controller
@@ -20,7 +22,6 @@ import jakarta.validation.Valid;
 public class UserController {
 
 	private final UtilisateurService utilisateurService;
-
 
 	public UserController(UtilisateurService utilisateurService) {
 		this.utilisateurService = utilisateurService;
@@ -33,16 +34,16 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("formObject") Utilisateur formObject, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "view-register-form";
-        }
-        
-        // Transmettre l'objet utilisateur à la couche de service pour enregistrement
-        utilisateurService.enregistrerUtilisateur(formObject);
-        
-        return "redirect:/"; // Redirigez l'utilisateur vers la page d'accueil
-    }
+	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "view-register-form";
+		}
+
+		// Transmettre l'objet utilisateur à la couche de service pour enregistrement
+		utilisateurService.enregistrerUtilisateur(user);
+
+		return "redirect:/"; // Redirigez l'utilisateur vers la page d'accueil
+	}
 
 	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL
 	@GetMapping("/profil")
@@ -50,7 +51,7 @@ public class UserController {
 		String pseudo = ppal.getName();
 		Utilisateur user = utilisateurService.consulterProfil(pseudo);
 		if (user != null) {
-			model.addAttribute("formObject", user);
+			model.addAttribute("user", user);
 			return "view-mon-profil";
 		} else {
 			System.out.println("User inconnu");
@@ -58,10 +59,30 @@ public class UserController {
 		return "redirect:/profil";
 	}
 
-	//TODO faire cette méthode pour mettre à jour le profil du user connecté
+	// TODO faire cette méthode pour mettre à jour le profil du user connecté
 	@PostMapping("/profil")
-	public String mettreAJourMonProfil(@ModelAttribute("user") Utilisateur u) {
-
-		return "view-mon-profil";
+	public String mettreAJourMonProfil(@ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "view-mon-profil";
+		} else {
+			try {
+				System.out.println("User récpuéré depuis le formulaire :");
+				System.out.println(user);
+				
+				utilisateurService.update(user);
+				
+				return "redirect:/";
+				
+			} catch (BusinessException e) {
+				// Afficher les messages d’erreur - il faut les injecter dans le contexte de
+				// BindingResult
+				e.getClefsExternalisations().forEach(key -> {
+					ObjectError error = new ObjectError("globalError", key);
+					bindingResult.addError(error);
+				});
+				
+				return "view-mon-profil";
+			}
+		}
 	}
 }
