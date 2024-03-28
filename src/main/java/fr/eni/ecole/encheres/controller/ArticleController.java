@@ -29,19 +29,26 @@ public class ArticleController {
 	public String accueil(Model model) {
 		try {
 			List<ArticleAVendre> articles = articleService.charger();//appel du service pour charger la liste
-			model.addAttribute("articles", articles);//intégration des articles au modèle pour thymleaf
+			model.addAttribute("articlesList", articles);//intégration des articles au modèle pour thymleaf
 			return "index";//retour à l'index
 			
 		}catch (BusinessException e){//ici récupération de la Business Exception chargée dans le service
-			//model.addAttribute("empty", e);//TODO ne marche pas, voir plus tard...
+			model.addAttribute("listArticleError", e.getClefsExternalisations());
 			return "index";
 		}
 	}
 	
-	@PostMapping("/Creer-Article")
+	
+	@GetMapping("/Creer-Article")
 	public String creerArticle() {
 		
-		return "creation-success";
+		return "view-article-creation";
+	}
+	
+	@PostMapping("/Creer-Article/creer")
+	public String newArticle() {
+		
+		return "view-article-creation";
 		
 	}
 	//TODO 1. ajouter un lien "Vendre un Objet" dans la navBar.

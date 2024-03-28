@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<!-- Mise en place du layout -->
+<html xmlns:th="http://www.thymeleaf.org"
+    data-th-replace="~{layouts/layout :: layout-projet(titrePage=~{:: title},
+                    contenuPage=~{:: main},
+                    ressourcesSupp=~{:: #ressources-css})}">
+
+<head>
+<meta charset="UTF-8">
+<script src="script.js"></script>
+<title>Vendre un Article</title>
+<th:block id="ressources-css">
+    <link rel="stylesheet" data-th-href="@{/css/form.css}" />
+</th:block>
+</head>
+<body>
+   <main>
+	<!-- fragment 1 pour la création d'objet -->
+        <div data-th-replace="~{fragments/fragment-article-form :: frag-article-form(#{view-creer-article.h1}, '/Creer-Article/creer')}">
+        </div>
+    <!-- fragment 2 pour la réussite de création, avec redirection vers l'accueil -->
+    </main>
+</body>
+</html>

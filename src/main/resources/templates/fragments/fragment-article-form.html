@@ -1,0 +1,62 @@
+	<!-- NE PAS UTILISER CELUI_CI -->
+
+
+<form xmlns:th="http://www.thymeleaf.org" 
+		data-th-fragment="frag-article-form(titreForm, action)" 
+		class="form-poly"
+		method="post"
+		data-th-object="${newArticle}"
+		action="@{/creer}" >
+		
+		<h1 data-th-text="${titreForm}"></h1>
+		
+        <!-- Partie détails de l'article -->
+        <label for="nom">Nom : </label>
+        <input type="text" id="nom" name="nom" required autofocus>
+		
+        <label for="description">Description : </label>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+        
+		<!-- ici besoin d'une liste déroulante -->
+        <label for="categorie">Catégorie : </label>
+        <select id="categorie" name="categorie" required>
+	        <option value="ameublement">Ameublement</option>
+	        <option value="informatique">Informatique</option>
+	        <option value="sportLoisir">Sport et Loisir</option>
+	        <option value="vetements">Vêtement</option>
+    	</select>
+        
+        <label for="photo">Photo de l'article : </label>
+        <input type="file" id="photo" name="photo">
+
+        <label for="prixInit">Mise à prix : </label>
+        <input type="number" id="prixInit" name="prixInit" value="0" min="0" required>
+        
+        <label for="enchereStart">Début de l'enchère : </label>
+        <input type="date" id="enchereStart" name="enchereStart" required>
+        
+        <label for="enchereEnd">Fin de l'enchère : </label>
+        <input type="date" id="enchereEnd" name="enchereEnd" required>
+        
+        <!-- Partie retrait -->
+		<fieldset>
+		
+		    <legend>Retrait</legend>
+		    
+			<label for="rue">Rue : </label>
+        	<input type="text" id="rue" name="rue" required>
+        	
+        	<label for="codePostal">Code postal : </label>
+        	<input type="text" id="codePostal" name="codePostal" required>
+        	
+        	<label for="ville">Ville : </label>
+        	<input type="text" id="ville" name="ville" required>
+        	
+		</fieldset>
+		<!-- Partie BOUTONS -->
+        <div class="btn-box">
+            <!-- Construire fonction JS pour le ONCLICK  -->
+            <button type="submit" id="submitButton" >Enregistrer</button>
+            <button type="button">Annuler</button>
+        </div>
+</form>
