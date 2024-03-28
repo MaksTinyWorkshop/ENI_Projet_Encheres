@@ -33,17 +33,16 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public String registerUser(@Valid Utilisateur formObject, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "view-register-form";
-		}
-		// Enregistrer l'utilisateur
-		utilisateurService.enregistrerUtilisateur(formObject.getPseudo(), formObject.getNom(), formObject.getPrenom(),
-				formObject.getTelephone(), formObject.getEmail(), formObject.getRue(), formObject.getCodePostal(),
-				formObject.getVille(), formObject.getMotDePasse());
-
-		return "redirect:/"; // Redirigez l'utilisateur vers la page d'accueil
-	}
+    public String registerUser(@Valid @ModelAttribute("registerFormObject") Utilisateur formObject, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "view-register-form";
+        }
+        
+        // Transmettre l'objet utilisateur à la couche de service pour enregistrement
+        utilisateurService.enregistrerUtilisateur(formObject);
+        
+        return "redirect:/"; // Redirigez l'utilisateur vers la page d'accueil
+    }
 
 	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL
 	@GetMapping("/profil")
