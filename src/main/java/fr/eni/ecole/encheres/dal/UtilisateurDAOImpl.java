@@ -14,7 +14,9 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
-	private final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, email, credit, administrateur from UTILISATEURS where pseudo = :pseudo";
+	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, email, credit, administrateur from UTILISATEURS where pseudo = :pseudo";
+	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe) "
+													+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
 	
 	@Autowired NamedParameterJdbcTemplate jdbcTemplate;
 	
@@ -46,6 +48,19 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		}
 		
 	}
+	
+	 @Override
+	    public void save(Utilisateur utilisateur) {
+	        MapSqlParameterSource params = new MapSqlParameterSource();
+	        params.addValue("pseudo", utilisateur.getPseudo());
+	        params.addValue("nom", utilisateur.getNom());
+	        params.addValue("prenom", utilisateur.getPrenom());
+	        params.addValue("email", utilisateur.getEmail());
+	        params.addValue("telephone", utilisateur.getTelephone());
+	        params.addValue("motDePasse", utilisateur.getMotDePasse());
+	        
+	        jdbcTemplate.update(INSERT_USER_QUERY, params);
+	    }
 	
 	
 }

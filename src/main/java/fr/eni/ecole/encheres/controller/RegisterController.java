@@ -15,7 +15,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/register-form")
 public class RegisterController {
 
-    private final UtilisateurService utilisateurService; 
+    private final UtilisateurService utilisateurService;
 
     public RegisterController(UtilisateurService utilisateurService) {
         this.utilisateurService = utilisateurService;
@@ -32,8 +32,9 @@ public class RegisterController {
         if (bindingResult.hasErrors()) {
             return "register-form";
         }
-        // Enregistrer l'utilisateur en utilisant le Service
+        // Enregistrer l'utilisateur
         utilisateurService.enregistrerUtilisateur(formObject.getPseudo(), formObject.getNom(), formObject.getPrenom(), formObject.getTelephone(), formObject.getEmail(), formObject.getRue(), formObject.getCodePostal(), formObject.getVille(), formObject.getMotDePasse());
+       
         return "redirect:/"; // Redirigez l'utilisateur vers la page d'accueil
     }
 }
