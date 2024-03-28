@@ -1,5 +1,6 @@
 package fr.eni.ecole.encheres.bll;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import fr.eni.ecole.encheres.bo.Adresse;
@@ -10,81 +11,18 @@ import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
 import jakarta.validation.Valid;
 
-
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
-	//Injection des repository
+	// Injection des repository
 	private UtilisateurDAO utilisateurDAO;
 	private AdresseDAO adresseDAO;
 
-   
-
-
-    private void validerDonneesInscription(String pseudo, String email, String motDePasse) {
-        BusinessException be = new BusinessException();
-        if (pseudo == null || pseudo.isBlank()) {
-            be.add(BusinessCode.BLL_USER_LOGIN_BLANK);
-        }
-        if (!pseudo.matches("[a-zA-Z0-9_]+")) {
-            be.add(BusinessCode.BLL_USER_LOGIN_FORM);
-        }
-        if (email == null || email.isBlank()) {
-            be.add(BusinessCode.BLL_USER_EMAIL_BLANK);
-        }
-        if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            be.add(BusinessCode.BLL_USER_EMAIL_FORM);
-        }
-        if (motDePasse == null || motDePasse.isBlank()) {
-            be.add(BusinessCode.BLL_USER_PASSWORD_BLANK);
-        }
-        if (motDePasse.length() < 8 || motDePasse.length() > 20) {
-            be.add(BusinessCode.BLL_USER_PASSWORD_LENGTH);
-        }
-        if (!motDePasse.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
-            be.add(BusinessCode.BLL_USER_PASSWORD_FORM);
-        }
-
-        if (!be.isValid()) {
-            throw be;
-        }
-    }
-
-    private void verifierUnicitePseudo(String pseudo) {
-        if (existsByPseudo(pseudo)) {
-            throw new BusinessException(BusinessCode.BLL_USER_USER_EXISTS);
-        }
-    }
-
-    private void verifierUniciteEmail(String email) {
-        if (existsByEmail(email)) {
-            throw new BusinessException(BusinessCode.BLL_USER_EMAIL_EXISTS);
-        }
-    }
 	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
 		this.utilisateurDAO = utilisateurDAO;
 		this.adresseDAO = adresseDAO;
 	}
 
-	
-	
 	@Override
-	public boolean existsByPseudo(String pseudo) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean existsByEmail(String email) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void enregistrerUtilisateur(@Valid Utilisateur formObject) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public Utilisateur consulterProfil(String pseudo) {
 		// Récup du user par son pseudo
 		Utilisateur u = utilisateurDAO.read(pseudo);
@@ -96,13 +34,114 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	/**
-	 * Méthode privée pour centraliser l'association entre 
-	 * un user et son adresse  
+	 * Méthode privée pour centraliser l'association entre un user et son adresse
+	 * 
 	 * @param user
 	 */
 	private void chargerAdresse(Utilisateur u) {
 		Adresse adresse = adresseDAO.read(u.getPseudo());
 		u.setAdresse(adresse);
+	}
+
+	@Override
+	public void update(Utilisateur utilisateur) {
+		// TODO Auto-generated method stub
+		BusinessException be = new BusinessException();
+		boolean isValid = true;
+		isValid &= validerUtilisateur(utilisateur, be);
+		isValid &= validerEmail(utilisateur.getEmail(), be);
+		isValid &= validerUniqueMail(utilisateur.getEmail(), be);
+		isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
+		isValid &= validerPseudo(utilisateur.getPseudo(), be);
+		isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
+
+		if (isValid) {
+			try {
+				utilisateurDAO.update(utilisateur);
+			} catch (DataAccessException e) {
+				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
+				throw be;
+			}
+		}
+
+	}
+
+	@Override
+	public void enregistrerUtilisateur(@Valid Utilisateur user) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Méthodes de validation des BO
+	 */
+
+	private boolean validerUtilisateur(Utilisateur u, BusinessException be) {
+		if (u == null) {
+			be.add(BusinessCode.VALIDATION_USER_NULL);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validerUniquePseudo(String pseudo, BusinessException be) {
+		int count = utilisateurDAO.uniquePseudo(pseudo);
+		if (count == 1) {
+			be.add(BusinessCode.VALIDATION_USER_USER_EXISTS);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validerUniqueMail(String email, BusinessException be) {
+		int count = utilisateurDAO.uniqueEmail(email);
+		if (count == 1) {
+			be.add(BusinessCode.VALIDATION_USER_EMAIL_EXISTS);
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean validerPseudo(String pseudo, BusinessException be) {
+		if (pseudo == null || pseudo.isBlank()) {
+			be.add(BusinessCode.VALIDATION_USER_LOGIN_BLANK);
+			return false;
+		}
+		if (!pseudo.matches("[a-zA-Z0-9_]+")) {
+			be.add(BusinessCode.VALIDATION_USER_LOGIN_FORM);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validerEmail(String email, BusinessException be) {
+		if (email == null || email.isBlank()) {
+			be.add(BusinessCode.VALIDATION_USER_EMAIL_BLANK);
+			return false;
+		}
+		if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+			be.add(BusinessCode.VALIDATION_USER_EMAIL_FORM);
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validerMotDePasse(String motDePasse, BusinessException be) {
+		if (motDePasse == null || motDePasse.isBlank()) {
+			be.add(BusinessCode.VALIDATION_USER_PASSWORD_BLANK);
+			return false;
+		}
+		if (motDePasse.length() < 8 || motDePasse.length() > 20) {
+			be.add(BusinessCode.VALIDATION_USER_PASSWORD_LENGTH);
+			return false;
+		}
+		if (!motDePasse.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
+			be.add(BusinessCode.VALIDATION_USER_PASSWORD_FORM);
+			return false;
+		}
+		return true;
 	}
 
 }

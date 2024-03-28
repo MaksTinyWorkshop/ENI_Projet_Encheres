@@ -6,20 +6,20 @@
                     contenuPage=~{:: main},
                     ressourcesSupp=~{:: #ressources-css})}">
 
-
 <head>
 <meta charset="UTF-8">
 <script src="script.js"></script>
-<title data-th-text="#{enregistrer.title}"></title>
+<title>Vendre un Article</title>
 <th:block id="ressources-css">
     <link rel="stylesheet" data-th-href="@{/css/form.css}" />
 </th:block>
 </head>
 <body>
    <main>
-	<!-- Injecter ici le register-form transformé en fragment, si jamais ça veut bien marcher -->
-        <div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form(#{view-register-form.h1}, '/user/register')}">
+	<!-- fragment 1 pour la création d'objet -->
+        <div data-th-replace="~{fragments/fragment-article-form :: frag-article-form(#{view-creer-article.h1}, '/Creer-Article/creer')}">
         </div>
+    <!-- fragment 2 pour la réussite de création, avec redirection vers l'accueil -->
     </main>
 </body>
 </html>

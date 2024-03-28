@@ -1,5 +1,5 @@
 <div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-list-articles" class="items-cards">
-	<div data-th-if="${article != null}" data-th-each="article : ${articles}" class="card">
+	<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
 	   <div class="img-box"></div>
 	   <div class="details" >
 	       <h2 data-th-text="${article.nom}"></h2>
@@ -8,7 +8,7 @@
 	       <p data-th-text="'Vendeur : ' + ${article.vendeur.pseudo}"></p>
 	   </div>
 	</div>
-	<div data-th-if="${article == null}">
-	       <h2 data-th-text="#{aucune.enchere}"></h2>
+	<div data-th-if="${listArticleError != null}">
+	       <h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
 	</div>
 </div>
