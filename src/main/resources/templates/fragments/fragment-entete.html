@@ -21,13 +21,13 @@
 				<a href="/Creer-Article" data-th-text="#{frag-entete.a.creerArticle}"></a>
 			</li>
 			<li data-th-if="${!#authorization.expression('isAuthenticated()')}">
-				<a href="/register" data-th-text="#{frag-entete.a.inscription}"></a>
+				<a href="/user/register" data-th-text="#{frag-entete.a.inscription}"></a>
 			</li>
 			<li data-th-if="${!#authorization.expression('isAuthenticated()')}">
 				<a href="/login" data-th-text="#{frag-entete.a.connexion}"></a>
 			</li>
 			<li data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<a href="/profil" data-th-text="#{frag-entete.a.profil}"></a>
+				<a href="/user/profil" data-th-text="#{frag-entete.a.profil}"></a>
 			</li>
 			<li data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<a href="/logout" data-th-text="#{frag-entete.a.deconnexion}"></a>

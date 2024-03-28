@@ -13,6 +13,21 @@
 	margin-left: 6rem;
 }
 
+.form-poly label[for="ville"]{
+	margin-bottom: 2rem;
+}
+
+.form-poly label[for="motDePasse"]{
+	grid-column: 1/-4;
+}
+.form-poly label[for="motDePasseNew"]{
+	grid-column: 1/-4;
+}
+
+.form-poly input {
+	height : 2rem;
+}
+
 .form-poly .btn-box {
 	margin-left: 6rem;
 	display: flex;

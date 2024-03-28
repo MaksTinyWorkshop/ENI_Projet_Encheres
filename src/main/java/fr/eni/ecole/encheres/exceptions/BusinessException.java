@@ -8,12 +8,16 @@ public class BusinessException extends RuntimeException {
 	// Liste des clefs d'externalisation
 		private List<String> clefsExternalisations;
 
-		public BusinessException() {
+		public BusinessException(String string) {
 			super();
 		}
 
 		public BusinessException(Throwable cause) {
 			super(cause);
+		}
+
+		public BusinessException() {
+			// TODO Auto-generated constructor stub
 		}
 
 		public List<String> getClefsExternalisations() {

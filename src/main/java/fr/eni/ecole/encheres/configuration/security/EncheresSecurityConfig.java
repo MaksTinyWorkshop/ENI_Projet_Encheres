@@ -18,10 +18,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class EncheresSecurityConfig  {
 	
-	@Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // 
-    }
 	
 	@Bean
 	UserDetailsManager userManager(DataSource dataSource) {
@@ -30,7 +26,7 @@ public class EncheresSecurityConfig  {
 		
 		//requêtes SQL
 		// 1. Requête recherchant les utilisateurs par leur identifiant, en utilisant un paramètre positionnel (?)
-		jdbcUserManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 1 FROM UTILISATEURS WHERE pseudo = ?");
+		jdbcUserManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 1 FROM UTILISATEURS WHERE pseudo =?");
 		// 2. Requête recherchant les utilisateurs par leurs rôles, en utilisant un paramètre positionnel (?)
 		jdbcUserManager.setAuthoritiesByUsernameQuery("SELECT u.pseudo, r.role FROM UTILISATEURS u INNER JOIN ROLES r ON u.administrateur = r.is_admin WHERE pseudo = ?");
 		return jdbcUserManager;
@@ -46,13 +42,15 @@ public class EncheresSecurityConfig  {
 //				.requestMatchers(HttpMethod.GET, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
 //				.requestMatchers(HttpMethod.POST, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
 //				.requestMatchers(" ").hasRole("ADMINISTRATEUR");
-			auth.requestMatchers(HttpMethod.GET, "/register").permitAll()
-				.requestMatchers(HttpMethod.POST, "/register").permitAll();
+			auth.requestMatchers(HttpMethod.GET, "/user/register").permitAll()
+				.requestMatchers(HttpMethod.POST, "/user/register").permitAll();
+			auth.requestMatchers(HttpMethod.GET, "/user/profil").authenticated()
+				.requestMatchers(HttpMethod.POST, "/user/profil").authenticated();
 			auth.requestMatchers("/*").permitAll();//l'url racine pour tout le monde
 			auth.requestMatchers("/css/*").permitAll();//CSS pour tout le monde
 			auth.requestMatchers("/images/*").permitAll();//images pour tout le monde
-			auth.requestMatchers("/profil/*").authenticated();
-			auth.anyRequest().denyAll();//accès refusé pour toutes les autres URL.
+			
+//			auth.anyRequest().denyAll();//accès refusé pour toutes les autres URL.
 		});
 		
 		//on demande à spring security de charger son formulaire de connexion à défaut d'en avoir créé un nous-même
