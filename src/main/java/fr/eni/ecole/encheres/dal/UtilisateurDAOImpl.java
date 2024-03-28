@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 @Repository
@@ -32,6 +33,34 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	
+	 @Override
+	    public void save(Utilisateur utilisateur) {
+	        MapSqlParameterSource params = new MapSqlParameterSource();
+	        params.addValue("pseudo", utilisateur.getPseudo());
+	        params.addValue("nom", utilisateur.getNom());
+	        params.addValue("prenom", utilisateur.getPrenom());
+	        params.addValue("email", utilisateur.getEmail());
+	        params.addValue("telephone", utilisateur.getTelephone());
+	        params.addValue("motDePasse", utilisateur.getMotDePasse());
+	        
+	        jdbcTemplate.update(INSERT_USER_QUERY, params);
+	    }
+	
+	
+	@Override
+	public void update(Utilisateur utilisateur) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("pseudo", utilisateur.getPseudo());
+		namedParam.addValue("nom", utilisateur.getNom());
+		namedParam.addValue("prenom", utilisateur.getPrenom());
+		namedParam.addValue("email",utilisateur.getEmail());
+		namedParam.addValue("telephone", utilisateur.getTelephone());
+		namedParam.addValue("motDePasse", utilisateur.getMotDePasse());
+		// Adresse en cours
+		// Mapper ?
+		jdbcTemplate.update(UPDATE, namedParam);
+	}
+	
 	
 	
 	/**
@@ -48,24 +77,21 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			u.setCredit(rs.getInt("credit"));
 			u.setAdmin(rs.getBoolean("administrateur"));
 			u.setPseudo(rs.getString("pseudo"));
-			u.setAdresse(u.getAdresse());
+
+//			//Association pour l'adresse 
+//			Adresse adresse = new Adresse();
+//			adresse.setRue(rs.getString(""));
+//			adresse.setCodePostal(rs.getString(""));
+//			adresse.setVille(rs.getString(""));
+//			u.setAdresse(adresse);
 			return u;
 		}
 		
 	}
 	
-	 @Override
-	    public void save(Utilisateur utilisateur) {
-	        MapSqlParameterSource params = new MapSqlParameterSource();
-	        params.addValue("pseudo", utilisateur.getPseudo());
-	        params.addValue("nom", utilisateur.getNom());
-	        params.addValue("prenom", utilisateur.getPrenom());
-	        params.addValue("email", utilisateur.getEmail());
-	        params.addValue("telephone", utilisateur.getTelephone());
-	        params.addValue("motDePasse", utilisateur.getMotDePasse());
-	        
-	        jdbcTemplate.update(INSERT_USER_QUERY, params);
-	    }
+
+
+
 	
 	
 }

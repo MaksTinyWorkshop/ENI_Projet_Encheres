@@ -17,5 +17,7 @@ public class BusinessCode {
 	public static final String BLL_USER_PASSWORD_BLANK = "validation.user.passwordBlank";
 	public static final String BLL_USER_PASSWORD_LENGTH = "validation.user.passwordLength";
 	public static final String BLL_USER_PASSWORD_FORM = "validation.user.passwordForm";
+	public static final String BLL_USER_USER_EXISTS = "validation.user.usernameUnicity";
+	public static final String BLL_USER_EMAIL_EXISTS = "validation.user.emailUnicity";
 }
 	
