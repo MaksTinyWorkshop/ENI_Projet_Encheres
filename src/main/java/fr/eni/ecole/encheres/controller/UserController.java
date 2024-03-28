@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import fr.eni.ecole.encheres.bll.UtilisateurService;
-import fr.eni.ecole.encheres.bll.contexte.ContexteService;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import jakarta.validation.Valid;
 
@@ -33,7 +32,7 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("registerFormObject") Utilisateur formObject, BindingResult bindingResult) {
+    public String registerUser(@Valid @ModelAttribute("formObject") Utilisateur formObject, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "view-register-form";
         }
