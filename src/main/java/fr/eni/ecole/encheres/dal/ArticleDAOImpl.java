@@ -27,7 +27,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private NamedParameterJdbcTemplate jdbcTemp;
 	
 	//!!!! NB !!!!! notice des statu :  0 : PAS COMMENCEE, 1 : EN COURS, 2 : CLOTUREE, 100 : ANNULEE
-	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere = 20";
+	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere = 1";
 	//private final String FIND_BY_NAME = " ";	
 	//private final String FIND_BY_CATEGORIE = " ";
 	

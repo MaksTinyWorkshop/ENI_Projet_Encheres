@@ -1,7 +1,3 @@
-
-<!-- NE PAS UTILISER CELUI_CI -->
-
-
 <form xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-prof-form(titreForm, action)" class="form-poly"
 	method="post" data-th-object="${user}" data-th-action="@{${action}}">
 
@@ -36,7 +32,11 @@
 	<label for="ville" data-th-text=#{form.ville}></label>
 	<input type="text" id="ville" data-th-field="*{adresse.ville}" required>
 
-
+	<!-- Si je suis sur mon profil, affichage de mon credit -->
+	<div class="credit-box" data-th-if="${#authorization.expression('isAuthenticated()')}">
+	<p data-th-text="#{form.credit} + ' ' + *{credit}"></p>	
+	</div>
+	
 	<div class="password-box">
 		<!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
 		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
@@ -51,29 +51,24 @@
 
 		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
 			<label for="motDePasseNew" data-th-text=#{form.newMdp}></label>
-			<input type="password" id="motDePasseNew">
+			<input type="password" id="motDePasseNew" name="motDePasseNew">
 		</th:block>
 
 		<label for="confirmation" data-th-text=#{form.mdpConfirm}></label>
-		<input type="password" id="confirmation" required>
-
-
+		<input type="password" id="confirmation" name="confirmation" required>
 	</div>
 
 
 	<div class="btn-box">
 		<!-- Construire fonction JS pour le ONCLICK  -->
 		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-			<button type="submit" id="submitButton">Enregistrer</button>
+			<button type="submit" id="submitButton" data-th-text=#{form.enregistrer}></button>
 		</th:block>
 		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-			<button type="submit" id="submitButton">Créer</button>
+			<button type="submit" id="submitButton" data-th-text=#{form.creer}></button>
 		</th:block>
 
 		<button type="button">Annuler</button>
 	</div>
-
-
-
 
 </form>

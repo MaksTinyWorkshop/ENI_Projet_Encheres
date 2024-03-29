@@ -1,6 +1,7 @@
 package fr.eni.ecole.encheres.bll;
 
 import org.springframework.dao.DataAccessException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +15,11 @@ import jakarta.validation.Valid;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
+
 	// Injection des repository
 	private UtilisateurDAO utilisateurDAO;
 	private AdresseDAO adresseDAO;
+
 
 	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
 		this.utilisateurDAO = utilisateurDAO;
@@ -66,7 +69,24 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			}
 		} else {
 			throw be;
+		}
 
+	}
+
+	@Override
+	@Transactional
+	public void updatePassword(String pseudo, String nouveauMdp) {
+		// Récup du user par son pseudo
+		BusinessException be = new BusinessException();
+		Utilisateur u = utilisateurDAO.read(pseudo);
+		String mdpCrypt = passwordEncoder.encode(nouveauMdp);
+		u.setMotDePasse(mdpCrypt);
+		try {
+			utilisateurDAO.updateMdp(pseudo, mdpCrypt);
+			
+		} catch (DataAccessException e){
+			be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_MDP_ERREUR);
+			throw be;
 		}
 
 	}

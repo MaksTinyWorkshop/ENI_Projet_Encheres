@@ -19,8 +19,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe) "
 													+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
 	private static final String UPDATE_USER= "UPDATE UTILISATEURS SET nom= :nom, prenom= :prenom, email= :email, telephone= :telephone WHERE pseudo= :pseudo";
-	private static final String UPDATE_ADRESSE = "UPDATE ADRESSES SET complement= :complement, rue= :rue, code_postal= :codePostal, ville= :ville WHERE no_adresse= :noAdresse";
-
+	private static final String UPDATE_MOT_DE_PASSE= "UPDATE utilisateurs SET mot_de_passe = :nouveauMdp WHERE pseudo = :pseudo";
+	
 	private static final String COUNT_EMAIL= "SELECT count(email) FROM UTILISATEURS WHERE email = :email";
 	private static final String COUNT_PSEUDO= "SELECT count(pseudo) FROM UTILISATEURS WHERE pseudo = :pseudo";
 	
@@ -61,22 +61,16 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParamU.addValue("telephone", utilisateur.getTelephone());
 				
 		jdbcTemplate.update(UPDATE_USER, namedParamU);
-		
-		//Update des infos de son adresse
-		MapSqlParameterSource namedParamA = new MapSqlParameterSource();
-		Adresse adresse = utilisateur.getAdresse();
-		
-		namedParamA.addValue("complement", adresse.getComplement());
-		namedParamA.addValue("rue", adresse.getRue());
-		namedParamA.addValue("codePostal", adresse.getCodePostal());
-		namedParamA.addValue("ville", adresse.getVille());
-		namedParamA.addValue("noAdresse", utilisateur.getAdresse().getId());
-		
-		jdbcTemplate.update(UPDATE_ADRESSE, namedParamA);
-		
+			
 	}
 	
-	
+	@Override
+	public void updateMdp(String pseudo, String nouveauMdp) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("nouveauMdp", nouveauMdp);
+		
+		jdbcTemplate.update(UPDATE_MOT_DE_PASSE, namedParam);
+	}
 	
 	/**
 	* Classe de mapping pour gérer les noms des colonnes
@@ -119,6 +113,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParam.addValue("pseudo", pseudo);
 		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParam, Integer.class);
 	}
+
+
+
 	
 
 

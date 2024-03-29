@@ -8,6 +8,8 @@ public interface UtilisateurDAO {
 	void save(Utilisateur utilisateur);
 	
 	void update(Utilisateur utilisateur);
+	
+	void updateMdp(String pseudo, String nouveauMdp);
 		
 	int uniqueEmail(String email);
 	

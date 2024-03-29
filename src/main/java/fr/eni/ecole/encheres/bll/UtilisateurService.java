@@ -10,6 +10,8 @@ public interface UtilisateurService {
     void update(Utilisateur utilisateur);
 
 	void enregistrerUtilisateur(@Valid Utilisateur formObject);
+	
+	void updatePassword(String pseudo, String nouveauMdp);
 
 
 }
