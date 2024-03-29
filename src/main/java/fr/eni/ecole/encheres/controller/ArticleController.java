@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import fr.eni.ecole.encheres.bll.ArticleService;
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
+import fr.eni.ecole.encheres.bo.Categorie;
+import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
-import jakarta.validation.Valid;
 
 @Controller
 public class ArticleController {
@@ -43,12 +43,21 @@ public class ArticleController {
 	}
 	
 	
-	@GetMapping("/Creer-Article")										//Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
+	@GetMapping("/Creer-Article")												//Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
 	public String creerArticle(Model model, Principal user) {
-		if (user != null) {												//vérifie le USer
-			model.addAttribute("Article", new ArticleAVendre());		//Ajoute une coquille d'article dans le model, à remplir par le formulaire
-			Adresse adresse = articleService.getAdress(user.getName());	//Ajour d'une instance adresse qui va récupérer en base l'adresse du Principal
-			model.addAttribute("Adresse", adresse);						//Ajout de l'adresse chargée dans le model
+		if (user != null) {														//vérifie le USer
+			ArticleAVendre newArticle = new ArticleAVendre(); 
+			Utilisateur vendeur  = new Utilisateur();
+			Categorie categorie  = new Categorie();
+			Adresse adresse = articleService.getAdress(user.getName());			//Ajout d'une instance adresse qui va récupérer en base l'adresse du Principal
+			newArticle.setVendeur(vendeur);
+			newArticle.getVendeur().setPseudo(user.getName());
+			newArticle.setCategorie(categorie);
+			newArticle.setRetrait(adresse);
+			model.addAttribute("article", newArticle);
+			System.out.println("Le pseudo du mec au chargement de la page c'est : " + newArticle.getVendeur().getPseudo());
+			System.out.println("Le formulaire reçoit :");
+			System.out.println(newArticle);
 			return "view-article-creation";
 		}else {
 			return "redirect:/";
@@ -56,11 +65,14 @@ public class ArticleController {
 	}
 	
 	@PostMapping("/Creer-Article")
-	public String newArticle(@Valid @ModelAttribute("newArticle") ArticleAVendre newArticle, BindingResult br, Principal p) {
-		
-		return "view-article-creation";
+	public String newArticle(@ModelAttribute("Article") ArticleAVendre newArticle) { //(@Valid @ModelAttribute("Article") ArticleAVendre newArticle, BindingResult br) {
+		System.out.println("Le formulaire retourne :");
+		System.out.println(newArticle);
+		articleService.creerArticle(newArticle);
+		return "redirect:/";
 		
 	}
+	
 	//TODO 1. ajouter un lien "Vendre un Objet" dans la navBar.
 	//TODO 2. Ajouter accès roles dans le security controller.
 	//TODO 3. créer un fragment de succès de création d'objet, avec une redirection vers l'accueil.

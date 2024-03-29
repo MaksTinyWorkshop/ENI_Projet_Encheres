@@ -9,7 +9,7 @@ import fr.eni.ecole.encheres.bo.ArticleAVendre;
 public interface ArticleService {
 	List<ArticleAVendre> charger();
 	
-	void creerArticle(ArticleAVendre newArticle, Principal p);
+	void creerArticle(ArticleAVendre newArticle);
 
 	Adresse getAdress(String pseudo);
 }
