@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.bo.Utilisateur;
@@ -31,7 +32,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 	//private final String FIND_BY_NAME = " ";	
 	//private final String FIND_BY_CATEGORIE = " ";
 	
-	//requête de création d'article
+	//requêtes de création d'article
+	private final String FIND_ADRESS_ID_BY_PSEUDO = "SELECT no_adresse FROM UTILISATEURS WHERE id_utilisateur = :pseudo";
+	private final String FIND_ADRESS_BY_ID = "SELECT rue, code_postal, ville FROM ADRESSES WHERE no_adresse = :adresse";
 	private final String INSERT_ARTICLE = "INSERT INTO ARTICLES_A_VENDRE "
 										+ "(no_article, nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait"
 										+ " VALUES (:id, :nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait";
@@ -56,7 +59,48 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return jdbcTemp.query(FIND_ACTIVE, new ArticleRowMapper());
 	}
 	
-	///////////////////////////// ROWMAPPER CUSTOM
+	@Override //permet de récupéerer une adresse via son ID, fonctionne OBLIGATOIREMENT avec "getAdressByPseudo"
+	public Adresse getAdress(String pseudo) {
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("adresse", getAdressByPseudo(pseudo));
+		
+		return jdbcTemp.queryForObject(FIND_ADRESS_BY_ID,namedParameters, new ArticleAdressRowMapper());
+	}
+	
+	@Override //permet de récupéerer l'ID d'une adresse via un pseudo
+	public String getAdressByPseudo(String pseudo) {
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+		namedParameters.addValue("pseudo", pseudo);
+		
+		return jdbcTemp.queryForObject(FIND_ADRESS_ID_BY_PSEUDO,namedParameters, String.class);
+	}
+	
+	
+	@Override
+	public void creerArticle(ArticleAVendre newArticle) {
+		
+		KeyHolder keyHolder = new GeneratedKeyHolder();//keyholder à identification unique
+		
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();//mappeur SQL pour le remplissage des colonnes
+		
+		//remplissage de chaque catégorie (image abscente)
+		namedParameters.addValue("id", newArticle.getId());
+		namedParameters.addValue("nom", newArticle.getNom());
+		namedParameters.addValue("description", newArticle.getDescription());
+		namedParameters.addValue("dateDebutEncheres", newArticle.getDateDebutEncheres());
+		namedParameters.addValue("dateFinEncheres", newArticle.getDateFinEncheres());
+		namedParameters.addValue("statu", newArticle.getStatu());
+		namedParameters.addValue("prixInitial", newArticle.getPrixInitial());
+		namedParameters.addValue("prixVente", newArticle.getPrixVente());
+		namedParameters.addValue("vendeur", newArticle.getVendeur().getPseudo());
+		namedParameters.addValue("categorie", newArticle.getCategorie().getId());
+		namedParameters.addValue("retrait", newArticle.getRetrait().getId());
+		
+		jdbcTemp.update(INSERT_ARTICLE, namedParameters, keyHolder);//injection dans la BDD
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////// ROWMAPPERS CUSTOM
 	
 	class ArticleRowMapper implements RowMapper<ArticleAVendre> {
 		@Override
@@ -82,27 +126,16 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 	}
-
-	@Override
-	public void creerArticle(ArticleAVendre newArticle) {
-		
-		KeyHolder keyHolder = new GeneratedKeyHolder();//keyholder à identification unique
-		
-		MapSqlParameterSource namedParameters = new MapSqlParameterSource();//mappeur SQL pour le remplissage des colonnes
-		
-		//remplissage de chaque catégorie (image abscente)
-		namedParameters.addValue("id", newArticle.getId());
-		namedParameters.addValue("nom", newArticle.getNom());
-		namedParameters.addValue("description", newArticle.getDescription());
-		namedParameters.addValue("dateDebutEncheres", newArticle.getDateDebutEncheres());
-		namedParameters.addValue("dateFinEncheres", newArticle.getDateFinEncheres());
-		namedParameters.addValue("statu", newArticle.getStatu());
-		namedParameters.addValue("prixInitial", newArticle.getPrixInitial());
-		namedParameters.addValue("prixVente", newArticle.getPrixVente());
-		namedParameters.addValue("vendeur", newArticle.getVendeur().getPseudo());
-		namedParameters.addValue("categorie", newArticle.getCategorie().getId());
-		namedParameters.addValue("retrait", newArticle.getRetrait().getId());
-		
-		jdbcTemp.update(INSERT_ARTICLE, namedParameters, keyHolder);//injection dans la BDD
+	
+	class ArticleAdressRowMapper implements RowMapper<Adresse> {
+		@Override
+		public Adresse mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Adresse a = new Adresse();
+			a.setRue(rs.getString("nom_article"));
+			a.setCodePostal(rs.getString("prix_vente"));
+			a.setVille(rs.getString("date_fin_encheres"));
+			
+			return a;
+		}
 	}
 }

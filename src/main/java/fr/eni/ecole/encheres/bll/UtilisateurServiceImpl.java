@@ -4,6 +4,8 @@ import org.springframework.dao.DataAccessException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
@@ -11,7 +13,6 @@ import fr.eni.ecole.encheres.dal.AdresseDAO;
 import fr.eni.ecole.encheres.dal.UtilisateurDAO;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
-import jakarta.validation.Valid;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
@@ -19,7 +20,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	// Injection des repository
 	private UtilisateurDAO utilisateurDAO;
 	private AdresseDAO adresseDAO;
-
 
 	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
 		this.utilisateurDAO = utilisateurDAO;
@@ -45,32 +45,41 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	private void chargerAdresse(Utilisateur u) {
 		Adresse adresse = adresseDAO.read(u.getPseudo());
 		u.setAdresse(adresse);
+
 	}
 
 	@Override
 	@Transactional
-	public void update(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
+	public void update(Utilisateur user, Utilisateur userEnBase) {
 		BusinessException be = new BusinessException();
+		
+		// Récupération de l'idAdresse pour update redirigé vers adresseDAO
+		long idAdresse = userEnBase	.getAdresse()
+									.getId();
+		
+		// Méthodes de vérification
 		boolean isValid = true;
-		isValid &= validerUtilisateur(utilisateur, be);
-		isValid &= validerEmail(utilisateur.getEmail(), be);
-		isValid &= validerPseudo(utilisateur.getPseudo(), be);
-		isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
+		isValid &= validerUtilisateur(user, be);
+		isValid &= validerEmail(user.getEmail(), be);
 
 		if (isValid) {
 			try {
-				utilisateurDAO.update(utilisateur);
-				System.out.println("Success");
-			} catch (DataAccessException e) {
+				// Récupération des données formulaire et injection
+				userEnBase.setEmail(user.getEmail());
+				userEnBase.setNom(user.getNom());
+				userEnBase.setPrenom(user.getPrenom());
+				userEnBase.setTelephone(user.getTelephone());
 
+				utilisateurDAO.update(userEnBase);
+				adresseDAO.update(user, idAdresse);
+
+			} catch (DataAccessException e) {
 				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
 				throw be;
 			}
 		} else {
 			throw be;
 		}
-
 	}
 
 	@Override
@@ -79,12 +88,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		// Récup du user par son pseudo
 		BusinessException be = new BusinessException();
 		Utilisateur u = utilisateurDAO.read(pseudo);
-		String mdpCrypt = passwordEncoder.encode(nouveauMdp);
-		u.setMotDePasse(mdpCrypt);
+
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		u.setMotDePasse(passwordEncoder.encode(nouveauMdp));
+
 		try {
-			utilisateurDAO.updateMdp(pseudo, mdpCrypt);
-			
-		} catch (DataAccessException e){
+			utilisateurDAO.updateMdp(pseudo, u.getMotDePasse());
+			System.out.println("Success update mdp");
+		} catch (DataAccessException e) {
 			be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_MDP_ERREUR);
 			throw be;
 		}
@@ -92,8 +103,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	}
 
 	@Override
-	public void enregistrerUtilisateur(@Valid Utilisateur user) {
-		// TODO Auto-generated method stub
+	public void enregistrerUtilisateur(Utilisateur user) {
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
 
 	}
 

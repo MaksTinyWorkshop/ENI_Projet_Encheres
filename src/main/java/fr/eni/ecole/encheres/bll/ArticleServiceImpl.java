@@ -1,10 +1,12 @@
 package fr.eni.ecole.encheres.bll;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.dal.ArticleDAOImpl;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
@@ -27,19 +29,25 @@ public class ArticleServiceImpl implements ArticleService {
 //////////////////////////////////////////// Méthodes
 	
 	@Override
-	public List<ArticleAVendre> charger(){//appel la méthode de chargement de la liste des articles actifs via la DAO
+	public List<ArticleAVendre> charger(){										//appel la méthode de chargement de la liste des articles actifs via la DAO
 		List<ArticleAVendre> listeArticles = articleDAO.getActiveArticles();
-		BusinessException be = new BusinessException();//création d'une instance de la classe d'exception
+		BusinessException be = new BusinessException();							//création d'une instance de la classe d'exception
 		if (listeArticles == null || listeArticles.isEmpty()) {
-			be.add(BusinessCode.ENCHERE_AUCUNE);// ajout de la clé erreur
-			throw be;//propage l'exception 
+			be.add(BusinessCode.ENCHERE_AUCUNE);								// ajout de la clé erreur
+			throw be;															//propage l'exception 
 		}
 		return listeArticles;
 	}
 	
 	@Override
+	public Adresse getAdress(String pseudo) {
+		Adresse adress = articleDAO.getAdress(pseudo);
+		return adress;
+	}
+	
+	@Override
 	@Transactional
-	public void creerArticle(ArticleAVendre newArticle) {
+	public void creerArticle(ArticleAVendre newArticle, Principal p) {
 		articleDAO.creerArticle(newArticle);
 		//TODO voir les exceptions et gérer toutes les validations
 	}

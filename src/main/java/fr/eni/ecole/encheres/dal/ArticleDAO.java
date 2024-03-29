@@ -2,6 +2,7 @@ package fr.eni.ecole.encheres.dal;
 
 import java.util.List;
 
+import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
 
@@ -17,6 +18,10 @@ public interface ArticleDAO {
 	List<ArticleAVendre> getArticlesByName(String boutNom);
 
 	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
+
+	Adresse getAdress(String pseudo);
+
+	String getAdressByPseudo(String pseudo);
 
 	
 }

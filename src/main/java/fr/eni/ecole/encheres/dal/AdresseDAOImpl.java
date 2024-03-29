@@ -17,7 +17,7 @@ public class AdresseDAOImpl implements AdresseDAO {
 
 	private final String FIND_BY_PSEUDO = "SELECT U.pseudo, A.rue, A.complement, A.code_postal, A.ville, A.no_adresse "
 			+ "FROM UTILISATEURS U INNER JOIN ADRESSES A ON U.no_adresse = A.no_adresse WHERE U.pseudo = :pseudo";
-	private static final String UPDATE_ADRESSE = "UPDATE ADRESSES SET complement= :complement, rue= :rue, code_postal= :codePostal, ville= :ville WHERE no_adresse= :noAdresse";
+	private static final String UPDATE_ADRESSE = "UPDATE ADRESSES SET complement= :complement, rue= :rue, code_postal= :codePostal, ville= :ville WHERE no_adresse= :no_adresse";
 
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -30,19 +30,19 @@ public class AdresseDAOImpl implements AdresseDAO {
 	}
 
 	@Override
-	public void update(Utilisateur utilisateur) {
+	public void update(Utilisateur utilisateur, long idAdresse) {
 		// Update des infos de son adresse
 		MapSqlParameterSource namedParamA = new MapSqlParameterSource();
 		Adresse adresse = utilisateur.getAdresse();
+		
 
 		namedParamA.addValue("complement", adresse.getComplement());
 		namedParamA.addValue("rue", adresse.getRue());
 		namedParamA.addValue("codePostal", adresse.getCodePostal());
 		namedParamA.addValue("ville", adresse.getVille());
-		namedParamA.addValue("noAdresse", utilisateur	.getAdresse()
-														.getId());
-
+		namedParamA.addValue("no_adresse", idAdresse);
 		jdbcTemplate.update(UPDATE_ADRESSE, namedParamA);
+		
 	}
 
 	/**

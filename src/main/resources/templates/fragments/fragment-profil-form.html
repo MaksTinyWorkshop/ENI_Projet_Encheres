@@ -3,8 +3,15 @@
 
 	<h1 data-th-text="${titreForm}"></h1>
 	<!-- Première colonne -->
+	<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
 	<label for="pseudo" data-th-text=#{form.pseudo}></label>
-	<input type="text" id="pseudo" required data-th-field="*{pseudo}" autofocus>
+	<input type="text" id="pseudo" required data-th-field="*{pseudo}">
+	</th:block>
+	
+	<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+	<label for="pseudo" data-th-text=#{form.pseudo}></label>
+	<input type="text" id="pseudo" disabled data-th-field="*{pseudo}">
+	</th:block>
 
 	<label for="nom" data-th-text=#{form.nom}></label>
 	<input type="text" id="nom" data-th-field="*{nom}" required>
@@ -13,13 +20,14 @@
 	<input type="text" id="prenom" data-th-field="*{prenom}" required>
 
 	<label for="telephone" data-th-text=#{form.telephone}></label>
-	<input type="number" id="telephone" data-th-field="*{telephone}">
+	<input type="text" id="telephone" data-th-field="*{telephone}">
 
 	<label for="email" data-th-text=#{form.email}>:</label>
 	<input type="text" id="email" data-th-field="*{email}" required>
 
 
 	<!-- Deuxième colonne -->
+
 	<label for="codePostal" data-th-text=#{form.codePostal}></label>
 	<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" required>
 
@@ -32,11 +40,13 @@
 	<label for="ville" data-th-text=#{form.ville}></label>
 	<input type="text" id="ville" data-th-field="*{adresse.ville}" required>
 
+	<input type="hidden" th:field="*{adresse.id}" />
+
 	<!-- Si je suis sur mon profil, affichage de mon credit -->
 	<div class="credit-box" data-th-if="${#authorization.expression('isAuthenticated()')}">
-	<p data-th-text="#{form.credit} + ' ' + *{credit}"></p>	
+		<p data-th-text="#{form.credit} + ' ' + *{credit}"></p>
 	</div>
-	
+
 	<div class="password-box">
 		<!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
 		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">

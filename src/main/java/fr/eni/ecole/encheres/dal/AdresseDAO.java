@@ -7,5 +7,5 @@ public interface AdresseDAO {
 
 	Adresse read(String pseudo);
 	
-	void update(Utilisateur utilisateur);
+	void update(Utilisateur utilisateur, long idAdresse);
 }

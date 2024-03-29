@@ -15,7 +15,7 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
-	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, email, credit, administrateur, no_adresse from UTILISATEURS where pseudo = :pseudo";
+	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, telephone, email, credit, administrateur, no_adresse from UTILISATEURS where pseudo = :pseudo";
 	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe) "
 													+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
 	private static final String UPDATE_USER= "UPDATE UTILISATEURS SET nom= :nom, prenom= :prenom, email= :email, telephone= :telephone WHERE pseudo= :pseudo";
@@ -32,6 +32,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	public Utilisateur read(String pseudo) {
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("pseudo", pseudo);
+
 		return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, namedParam, new UtilisateurRowMapper());
 	}
 
@@ -47,26 +48,33 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	        params.addValue("motDePasse", utilisateur.getMotDePasse());
 	        
 	        jdbcTemplate.update(INSERT_USER_QUERY, params);
+	        
 	    }
 	
 
 	@Override
 	public void update(Utilisateur utilisateur) {
 		//Update des infos de l'utilisateur
-		MapSqlParameterSource namedParamU = new MapSqlParameterSource();
-		namedParamU.addValue("pseudo", utilisateur.getPseudo());
-		namedParamU.addValue("nom", utilisateur.getNom());
-		namedParamU.addValue("prenom", utilisateur.getPrenom());
-		namedParamU.addValue("email",utilisateur.getEmail());
-		namedParamU.addValue("telephone", utilisateur.getTelephone());
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("pseudo", utilisateur.getPseudo());
+		namedParam.addValue("nom", utilisateur.getNom());
+		namedParam.addValue("prenom", utilisateur.getPrenom());
+		namedParam.addValue("email",utilisateur.getEmail());
+		namedParam.addValue("telephone", utilisateur.getTelephone());
+		System.out.println(utilisateur.getEmail());
+		System.out.println(utilisateur.getTelephone());
+		System.out.println(utilisateur.getPrenom());
+		System.out.println(utilisateur.getNom());
+		System.out.println(utilisateur.getPseudo());
+		
 				
-		jdbcTemplate.update(UPDATE_USER, namedParamU);
-			
+		jdbcTemplate.update(UPDATE_USER, namedParam);
 	}
 	
 	@Override
 	public void updateMdp(String pseudo, String nouveauMdp) {
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("pseudo", pseudo);
 		namedParam.addValue("nouveauMdp", nouveauMdp);
 		
 		jdbcTemplate.update(UPDATE_MOT_DE_PASSE, namedParam);
@@ -86,6 +94,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			u.setCredit(rs.getInt("credit"));
 			u.setAdmin(rs.getBoolean("administrateur"));
 			u.setPseudo(rs.getString("pseudo"));
+			u.setTelephone(rs.getString("telephone"));
 
 			//Association pour l'adresse 
 			Adresse adresse = new Adresse();
