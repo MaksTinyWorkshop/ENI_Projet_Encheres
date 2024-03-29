@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,7 +63,7 @@ public class UserController {
 	
 	}
 
-	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL
+	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL PERSO
 	@GetMapping("/profil")
 	public String afficherMonProfil(Model model, Principal ppal) {
 		String pseudo = ppal.getName();
@@ -125,6 +126,19 @@ public class UserController {
 
 				return "view-mon-profil";
 			}
+		}
+	}
+	
+	/////// METHODE D'AFFICHAGE DU PROFIL D'UN AUTRE UTILISATEUR
+	@GetMapping("/profil/{pseudo}")
+	public String afficherUnAutreProfil(
+			@PathVariable(name="pseudo", required = false)String pseudo, Model model, Principal ppal) {
+		Utilisateur userEnBase = utilisateurService.consulterProfil(pseudo);
+		if (userEnBase.getPseudo().equals(ppal.getName())) {
+			return "redirect:/user/profil";
+		} else {
+		model.addAttribute("user", userEnBase);
+		return "view-profil-utilisateur";
 		}
 	}
 }

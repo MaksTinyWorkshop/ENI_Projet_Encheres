@@ -61,12 +61,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParam.addValue("prenom", utilisateur.getPrenom());
 		namedParam.addValue("email",utilisateur.getEmail());
 		namedParam.addValue("telephone", utilisateur.getTelephone());
-		System.out.println(utilisateur.getEmail());
-		System.out.println(utilisateur.getTelephone());
-		System.out.println(utilisateur.getPrenom());
-		System.out.println(utilisateur.getNom());
-		System.out.println(utilisateur.getPseudo());
-		
 				
 		jdbcTemplate.update(UPDATE_USER, namedParam);
 	}
