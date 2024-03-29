@@ -30,7 +30,10 @@ public class UserController {
 
 	@GetMapping("/register")
 	public String showRegisterForm(Model model) {
-		model.addAttribute("user", new Utilisateur());
+		Utilisateur user = new Utilisateur();
+		
+		model.addAttribute("user", user);
+		
 		return "view-register-form";
 	}
 
@@ -38,12 +41,25 @@ public class UserController {
 	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
 	    if (bindingResult.hasErrors()) {
 	        return "view-register-form";
+	    } else {
+	    	try {
+    		
+	    		// Transmit the user object to the service layer for registration
+	    	    utilisateurService.save(user);
+
+	    	    return "redirect:/"; // Redirect the user to the home page
+	    	
+	    	} catch (BusinessException e) {
+	    		// Afficher les messages d’erreur - il faut les injecter dans le contexte de
+				// BindingResult
+				e.getClefsExternalisations().forEach(key -> {
+					ObjectError error = new ObjectError("globalError", key);
+					bindingResult.addError(error);
+				});
+				return "view-register-form";
+	    	}
 	    }
-
-	    // Transmit the user object to the service layer for registration
-	    utilisateurService.save(user);
-
-	    return "redirect:/"; // Redirect the user to the home page
+	
 	}
 
 	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL
