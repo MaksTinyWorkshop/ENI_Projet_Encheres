@@ -1,6 +1,7 @@
 package fr.eni.ecole.encheres.bll;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -48,7 +49,80 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	@Transactional
 	public void creerArticle(ArticleAVendre newArticle) {
-		articleDAO.creerArticle(newArticle);
-		//TODO voir les exceptions et gérer toutes les validations
+		BusinessException be = new BusinessException();
+		boolean isValid = true;
+		isValid &= validerArticle(newArticle, be);
+		isValid &= validerNom(newArticle.getNom(), be);
+		isValid &= validerDescription(newArticle.getDescription(), be);
+		isValid &= validerPrix(newArticle.getPrixInitial(), be);
+		isValid &= validerDateInit(newArticle.getDateDebutEncheres(), newArticle.getDateFinEncheres(), be);
+		isValid &= validerDateFin(newArticle.getDateDebutEncheres(), newArticle.getDateFinEncheres(), be);
+		
+		if (isValid) {
+			try {
+				articleDAO.creerArticle(newArticle);
+			}catch (BusinessException e) {
+				be.add(BusinessCode.BLL_CREER_ARTICLE_ERROR);
+				throw be;
+			}
+		}else {
+			throw be;
+		}
 	}
+	////////////////////////////////////////////// validations BLL
+	
+	private boolean validerDateFin(LocalDate dI, LocalDate dF, BusinessException be) {
+		if (dF == null) {
+			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_DATE_FIN_NULL);
+			return false;
+		}else if (dI.compareTo(dF) < 0) {
+			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_DATE_FIN_LOW);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean validerDateInit(LocalDate dI, LocalDate dF, BusinessException be) {
+		if (dI == null) {
+			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_DATE_INIT_NULL);
+			return false;
+		}else if (dI.compareTo(dF) > 0) {
+			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_DATE_INIT_HIGH);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean validerPrix(int p, BusinessException be) {
+		if (p <= 0) {
+			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_PRIX);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean validerDescription(String d, BusinessException be) {
+		if (d == null || d.isBlank()) {
+			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_DESCR_BLANK);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean validerNom(String n, BusinessException be) {
+		if (n == null || n.isBlank()) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_NOM_BLANK);
+			return false;
+		}
+		return true;
+	}
+	
+	private boolean validerArticle(ArticleAVendre a, BusinessException be) {
+		if (a == null) {
+			be.add(BusinessCode.VALIDATION_ARTICLE_NULL);
+			return false;
+		}
+		return true;
+	}
+	
 }
