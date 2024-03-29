@@ -57,7 +57,7 @@ public class UserController {
 		return "redirect:/profil";
 	}
 
-	// TODO faire cette méthode pour mettre à jour le profil du user connecté
+	
 	@PostMapping("/profil")
 	public String mettreAJourMonProfil(@ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
