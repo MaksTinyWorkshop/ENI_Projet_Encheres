@@ -28,7 +28,7 @@ public class UserController {
 
 	@GetMapping("/register")
 	public String showRegisterForm(Model model) {
-		model.addAttribute("formObject", new Utilisateur());
+		model.addAttribute("user", new Utilisateur());
 		return "view-register-form";
 	}
 
