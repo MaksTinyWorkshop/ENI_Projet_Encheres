@@ -9,5 +9,7 @@ public interface UtilisateurDAO {
 	
 	void update(Utilisateur utilisateur);
 		
+	int uniqueEmail(String email);
 	
+	int uniquePseudo(String pseudo);
 }

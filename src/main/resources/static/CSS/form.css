@@ -17,15 +17,16 @@
 	margin-bottom: 2rem;
 }
 
-.form-poly label[for="motDePasse"]{
-	grid-column: 1/-4;
-}
-.form-poly label[for="motDePasseNew"]{
-	grid-column: 1/-4;
+.form-poly .password-box {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	grid-column: 1/-1;
 }
 
 .form-poly input {
-	height : 2rem;
+	height : 1.5rem;
+	color: #282c34;
 }
 
 .form-poly .btn-box {
