@@ -48,6 +48,49 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	}
 
+
+	@Override
+	@Transactional
+	public void save(Utilisateur utilisateur) {
+	    BusinessException be = new BusinessException();
+	    boolean isValid = true;
+	    
+	    // Validation d'abord du mot de passe
+	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isEmpty()) {
+	        be.add(BusinessCode.VALIDATION_USER_PASSWORD_BLANK);
+	        throw be;
+	    }
+	    
+	    // Valitation des données ensuite
+	    isValid &= validerUtilisateur(utilisateur, be);
+	    isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
+	    isValid &= validerUniqueMail(utilisateur.getEmail(), be);
+	    isValid &= validerPseudo(utilisateur.getPseudo(), be);
+	    isValid &= validerEmail(utilisateur.getEmail(), be);
+	    isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
+
+
+	    if (isValid) {
+	        // Encodage du mot de passe
+	        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
+
+	        try {
+	            // Enregistrement de l'utilisateur
+	            utilisateurDAO.save(utilisateur);
+	            be.add(BusinessCode.SAVE_USER_VALID);
+	        } catch (DataAccessException e) {
+	            // Message d'erreur en cas d'échec
+	            be.add(BusinessCode.SAVE_USER_ERROR);
+	            throw be;
+	        }
+	    } else {
+	        throw be;
+	    }
+	}
+	
+	
+	
 	@Override
 	@Transactional
 	public void update(Utilisateur user, Utilisateur userEnBase) {
@@ -102,12 +145,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	}
 
-	@Override
-	public void enregistrerUtilisateur(Utilisateur user) {
-		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
 
-	}
 
 	/**
 	 * Méthodes de validation des BO
@@ -181,4 +219,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return true;
 	}
 
+		
+	
 }

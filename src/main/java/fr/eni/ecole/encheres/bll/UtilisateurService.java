@@ -8,9 +8,10 @@ public interface UtilisateurService {
     
     void update(Utilisateur user, Utilisateur userEnBase);
 
-	void enregistrerUtilisateur(Utilisateur formObject);
-	
 	void updatePassword(String pseudo, String nouveauMdp);
+
+	void save(Utilisateur utilisateur);
+
 
 
 }
