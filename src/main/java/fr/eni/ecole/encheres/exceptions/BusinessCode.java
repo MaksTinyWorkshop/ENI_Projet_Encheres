@@ -27,6 +27,9 @@ public class BusinessCode {
 	public static final String BLL_UTILISATEUR_UPDATE_ERREUR = "update.utilisateur.error";
 
 	public static final String BLL_UTILISATEUR_UPDATE_MDP_ERREUR= "update.utilisateur.mdp.error";
+	
 	public static final String SAVE_USER_ERROR = "save.user.error";
 	public static final String SAVE_USER_VALID = "save.user.valid";
+	
+}
 	

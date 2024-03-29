@@ -71,16 +71,20 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 	    if (isValid) {
+
 	        // Encodage du mot de passe
 	        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
 
+	        
 	        try {
 	            // Enregistrement de l'utilisateur
+
 	            utilisateurDAO.save(utilisateur);
-	            be.add(BusinessCode.SAVE_USER_VALID);
+
 	        } catch (DataAccessException e) {
 	            // Message d'erreur en cas d'échec
+	        	e.printStackTrace();
 	            be.add(BusinessCode.SAVE_USER_ERROR);
 	            throw be;
 	        }

@@ -2,6 +2,11 @@
 	method="post" data-th-object="${user}" data-th-action="@{${action}}">
 
 	<h1 data-th-text="${titreForm}"></h1>
+	
+	<th:block data-th-if="${!#strings.isEmpty(action)}">
+		<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
+	</th:block>
+	
 	<!-- Première colonne -->
 	<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
 	<label for="pseudo" data-th-text=#{form.pseudo}></label>
@@ -51,12 +56,12 @@
 		<!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
 		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
 			<label for="motDePasse" data-th-text=#{form.mdpNewUser}></label>
-			<input type="password" id="motDePasse" required>
+			<input type="password" id="motDePasse" data-th-field="*{motDePasse}" required>
 		</th:block>
 
 		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
 			<label for="motDePasse" data-th-text=#{form.mdpCurrent}></label>
-			<input type="password" id="motDePasse" required>
+			<input type="password" id="motDePasse" data-th-field="*{motDePasse}" required>
 		</th:block>
 
 		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
