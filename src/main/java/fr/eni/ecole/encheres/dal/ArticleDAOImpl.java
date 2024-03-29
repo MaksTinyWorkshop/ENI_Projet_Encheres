@@ -28,16 +28,16 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private NamedParameterJdbcTemplate jdbcTemp;
 	
 	//!!!! NB !!!!! notice des statu :  0 : PAS COMMENCEE, 1 : EN COURS, 2 : CLOTUREE, 100 : ANNULEE
-	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere = 20";
+	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere = 1";
 	//private final String FIND_BY_NAME = " ";	
 	//private final String FIND_BY_CATEGORIE = " ";
 	
 	//requêtes de création d'article
-	private final String FIND_ADRESS_ID_BY_PSEUDO = "SELECT no_adresse FROM UTILISATEURS WHERE id_utilisateur = :pseudo";
-	private final String FIND_ADRESS_BY_ID = "SELECT rue, code_postal, ville FROM ADRESSES WHERE no_adresse = :adresse";
+	private final String FIND_ADRESS_ID_BY_PSEUDO = "SELECT no_adresse FROM UTILISATEURS WHERE pseudo = :pseudo";
+	private final String FIND_ADRESS_BY_ID = "SELECT no_adresse, rue, code_postal, ville FROM ADRESSES WHERE no_adresse = :adresse";
 	private final String INSERT_ARTICLE = "INSERT INTO ARTICLES_A_VENDRE "
-										+ "(no_article, nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait"
-										+ " VALUES (:id, :nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait";
+										+ "(nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait)"
+										+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait)";
 
 	
 	@Override
@@ -84,19 +84,23 @@ public class ArticleDAOImpl implements ArticleDAO {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();//mappeur SQL pour le remplissage des colonnes
 		
 		//remplissage de chaque catégorie (image abscente)
-		namedParameters.addValue("id", newArticle.getId());
 		namedParameters.addValue("nom", newArticle.getNom());
 		namedParameters.addValue("description", newArticle.getDescription());
 		namedParameters.addValue("dateDebutEncheres", newArticle.getDateDebutEncheres());
 		namedParameters.addValue("dateFinEncheres", newArticle.getDateFinEncheres());
-		namedParameters.addValue("statu", newArticle.getStatu());
+		namedParameters.addValue("statu", "1");
 		namedParameters.addValue("prixInitial", newArticle.getPrixInitial());
-		namedParameters.addValue("prixVente", newArticle.getPrixVente());
+		namedParameters.addValue("prixVente", null);
 		namedParameters.addValue("vendeur", newArticle.getVendeur().getPseudo());
 		namedParameters.addValue("categorie", newArticle.getCategorie().getId());
 		namedParameters.addValue("retrait", newArticle.getRetrait().getId());
 		
 		jdbcTemp.update(INSERT_ARTICLE, namedParameters, keyHolder);//injection dans la BDD
+		
+		if (keyHolder != null && keyHolder.getKey() != null) {
+			// Mise à jour de l'identifiant du film auto-généré par la base
+			newArticle.setId(keyHolder.getKey().longValue());
+		}
 	}
 	
 	
@@ -131,9 +135,10 @@ public class ArticleDAOImpl implements ArticleDAO {
 		@Override
 		public Adresse mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Adresse a = new Adresse();
-			a.setRue(rs.getString("nom_article"));
-			a.setCodePostal(rs.getString("prix_vente"));
-			a.setVille(rs.getString("date_fin_encheres"));
+			a.setId(rs.getLong("no_adresse"));
+			a.setRue(rs.getString("rue"));
+			a.setCodePostal(rs.getString("code_postal"));
+			a.setVille(rs.getString("ville"));
 			
 			return a;
 		}

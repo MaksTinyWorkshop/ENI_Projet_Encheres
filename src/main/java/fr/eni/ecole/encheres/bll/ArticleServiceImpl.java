@@ -33,21 +33,21 @@ public class ArticleServiceImpl implements ArticleService {
 		List<ArticleAVendre> listeArticles = articleDAO.getActiveArticles();
 		BusinessException be = new BusinessException();							//création d'une instance de la classe d'exception
 		if (listeArticles == null || listeArticles.isEmpty()) {
-			be.add(BusinessCode.ENCHERE_AUCUNE);								// ajout de la clé erreur
+			be.add(BusinessCode.ENCHERE_AUCUNE);								//ajout de la clé erreur
 			throw be;															//propage l'exception 
 		}
 		return listeArticles;
 	}
 	
 	@Override
-	public Adresse getAdress(String pseudo) {
-		Adresse adress = articleDAO.getAdress(pseudo);
+	public Adresse getAdress(String pseudo) {				//récupère l'adresse du Principal pour le formulaire de créa d'article
+		Adresse adress = articleDAO.getAdress(pseudo);		//tranfère la demande à la DAL
 		return adress;
 	}
 	
 	@Override
 	@Transactional
-	public void creerArticle(ArticleAVendre newArticle, Principal p) {
+	public void creerArticle(ArticleAVendre newArticle) {
 		articleDAO.creerArticle(newArticle);
 		//TODO voir les exceptions et gérer toutes les validations
 	}
