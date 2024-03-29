@@ -1,7 +1,6 @@
 package fr.eni.ecole.encheres.bll;
 
 import fr.eni.ecole.encheres.bo.Utilisateur;
-import jakarta.validation.Valid;
 
 public interface UtilisateurService {
 
@@ -9,7 +8,7 @@ public interface UtilisateurService {
     
     void update(Utilisateur utilisateur);
 
-	void enregistrerUtilisateur(@Valid Utilisateur formObject);
+	void save(Utilisateur utilisateur);
 
 
 }

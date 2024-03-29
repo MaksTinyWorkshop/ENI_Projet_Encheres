@@ -32,15 +32,16 @@ public class UserController {
 		return "view-register-form";
 	}
 
+	@PostMapping("/register") // Add this annotation to specify that this method handles POST requests to "/user/register"
 	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "view-register-form";
-		}
+	    if (bindingResult.hasErrors()) {
+	        return "view-register-form";
+	    }
 
-		// Transmettre l'objet utilisateur à la couche de service pour enregistrement
-		utilisateurService.enregistrerUtilisateur(user);
+	    // Transmit the user object to the service layer for registration
+	    utilisateurService.save(user);
 
-		return "redirect:/"; // Redirigez l'utilisateur vers la page d'accueil
+	    return "redirect:/"; // Redirect the user to the home page
 	}
 
 	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL
