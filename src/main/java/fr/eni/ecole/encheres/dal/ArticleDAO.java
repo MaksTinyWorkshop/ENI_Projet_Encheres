@@ -21,7 +21,4 @@ public interface ArticleDAO {
 
 	Adresse getAdress(String pseudo);
 
-	String getAdressByPseudo(String pseudo);
-
-	
 }

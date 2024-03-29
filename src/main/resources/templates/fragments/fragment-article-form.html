@@ -12,11 +12,12 @@
         <input type="hidden" id="pseudo" data-th-field="*{vendeur.pseudo}" required>
         <label for="nom" data-th-text="#{form.nom}"></label>
         <input type="text" id="nom" data-th-field="*{nom}" required autofocus>
+        
+        <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('genre')}"></div>
 		
         <label for="description" data-th-text="#{form.article.descrittion}"></label>
         <textarea id="description" rows="4" cols="50" data-th-field="*{description}" required></textarea>
         
-		<!-- ici besoin d'une liste déroulante -->
         <label for="categorie" data-th-text="#{form.article.categorie}"></label>
         <select id="categorie" name="categorie" data-th-field="*{categorie.id}" required>
 	        <option value="1" data-th-text="#{categorie.ameublement}"></option>
