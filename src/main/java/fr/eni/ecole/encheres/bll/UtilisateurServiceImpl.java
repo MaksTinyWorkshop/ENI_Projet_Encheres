@@ -1,8 +1,11 @@
 package fr.eni.ecole.encheres.bll;
 
 import org.springframework.dao.DataAccessException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
@@ -10,10 +13,10 @@ import fr.eni.ecole.encheres.dal.AdresseDAO;
 import fr.eni.ecole.encheres.dal.UtilisateurDAO;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
-import jakarta.validation.Valid;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
+
 	// Injection des repository
 	private UtilisateurDAO utilisateurDAO;
 	private AdresseDAO adresseDAO;
@@ -42,40 +45,107 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	private void chargerAdresse(Utilisateur u) {
 		Adresse adresse = adresseDAO.read(u.getPseudo());
 		u.setAdresse(adresse);
+
 	}
+
 
 	@Override
 	@Transactional
-	public void update(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
+	public void save(Utilisateur utilisateur) {
+	    BusinessException be = new BusinessException();
+	    boolean isValid = true;
+	    
+	    // Validation d'abord du mot de passe
+	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isEmpty()) {
+	        be.add(BusinessCode.VALIDATION_USER_PASSWORD_BLANK);
+	        throw be;
+	    }
+	    
+	    // Valitation des données ensuite
+	    isValid &= validerUtilisateur(utilisateur, be);
+	    isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
+	    isValid &= validerUniqueMail(utilisateur.getEmail(), be);
+	    isValid &= validerPseudo(utilisateur.getPseudo(), be);
+	    isValid &= validerEmail(utilisateur.getEmail(), be);
+	    isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
+
+
+	    if (isValid) {
+	        // Encodage du mot de passe
+	        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
+
+	        try {
+	            // Enregistrement de l'utilisateur
+	            utilisateurDAO.save(utilisateur);
+	            be.add(BusinessCode.SAVE_USER_VALID);
+	        } catch (DataAccessException e) {
+	            // Message d'erreur en cas d'échec
+	            be.add(BusinessCode.SAVE_USER_ERROR);
+	            throw be;
+	        }
+	    } else {
+	        throw be;
+	    }
+	}
+	
+	
+	
+	@Override
+	@Transactional
+	public void update(Utilisateur user, Utilisateur userEnBase) {
 		BusinessException be = new BusinessException();
+		
+		// Récupération de l'idAdresse pour update redirigé vers adresseDAO
+		long idAdresse = userEnBase	.getAdresse()
+									.getId();
+		
+		// Méthodes de vérification
 		boolean isValid = true;
-		isValid &= validerUtilisateur(utilisateur, be);
-		isValid &= validerEmail(utilisateur.getEmail(), be);
-		isValid &= validerPseudo(utilisateur.getPseudo(), be);
-		isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
+		isValid &= validerUtilisateur(user, be);
+		isValid &= validerEmail(user.getEmail(), be);
 
 		if (isValid) {
 			try {
-				utilisateurDAO.update(utilisateur);
-				System.out.println("Success");
-			} catch (DataAccessException e) {
+				// Récupération des données formulaire et injection
+				userEnBase.setEmail(user.getEmail());
+				userEnBase.setNom(user.getNom());
+				userEnBase.setPrenom(user.getPrenom());
+				userEnBase.setTelephone(user.getTelephone());
 
+				utilisateurDAO.update(userEnBase);
+				adresseDAO.update(user, idAdresse);
+
+			} catch (DataAccessException e) {
 				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
 				throw be;
 			}
 		} else {
 			throw be;
+		}
+	}
 
+	@Override
+	@Transactional
+	public void updatePassword(String pseudo, String nouveauMdp) {
+		// Récup du user par son pseudo
+		BusinessException be = new BusinessException();
+		Utilisateur u = utilisateurDAO.read(pseudo);
+
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		u.setMotDePasse(passwordEncoder.encode(nouveauMdp));
+
+		try {
+			utilisateurDAO.updateMdp(pseudo, u.getMotDePasse());
+			System.out.println("Success update mdp");
+		} catch (DataAccessException e) {
+			be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_MDP_ERREUR);
+			throw be;
 		}
 
 	}
 
-	@Override
-	public void enregistrerUtilisateur(@Valid Utilisateur user) {
-		// TODO Auto-generated method stub
 
-	}
 
 	/**
 	 * Méthodes de validation des BO
@@ -149,4 +219,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return true;
 	}
 
+		
+	
 }
