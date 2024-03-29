@@ -43,7 +43,7 @@ public class UserController {
 	    // Transmit the user object to the service layer for registration
 	    utilisateurService.save(user);
 
-	    return "redirect:/"; // Redirect the user to the home page
+	    return "redirect:/"; // Redirige vers la racine
 	}
 
 	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL

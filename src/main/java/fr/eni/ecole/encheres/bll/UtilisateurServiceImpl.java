@@ -55,13 +55,19 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    BusinessException be = new BusinessException();
 	    boolean isValid = true;
 	    
-	    // Validation d'abord du mot de passe
+	    // Check if user is not null
+	    if (utilisateur == null) {
+	        be.add(BusinessCode.VALIDATION_USER_NULL);
+	        throw be;
+	    }
+
+	    // Validation of the password
 	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isEmpty()) {
 	        be.add(BusinessCode.VALIDATION_USER_PASSWORD_BLANK);
 	        throw be;
 	    }
 	    
-	    // Valitation des données ensuite
+	    // Validation of the data
 	    isValid &= validerUtilisateur(utilisateur, be);
 	    isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
 	    isValid &= validerUniqueMail(utilisateur.getEmail(), be);
@@ -71,16 +77,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 	    if (isValid) {
-	        // Encodage du mot de passe
+	        // Encoding the password
 	        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
 
 	        try {
-	            // Enregistrement de l'utilisateur
+	            // Saving the user
 	            utilisateurDAO.save(utilisateur);
-	            be.add(BusinessCode.SAVE_USER_VALID);
+	            System.out.println("MOT DE PASSE ENCODER C'EST NUL");
+	            
 	        } catch (DataAccessException e) {
-	            // Message d'erreur en cas d'échec
+	            // Error message in case of failure
 	            be.add(BusinessCode.SAVE_USER_ERROR);
 	            throw be;
 	        }

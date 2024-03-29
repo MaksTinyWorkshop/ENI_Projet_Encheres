@@ -30,3 +30,6 @@ public class BusinessCode {
 	public static final String SAVE_USER_ERROR = "save.user.error";
 	public static final String SAVE_USER_VALID = "save.user.valid";
 	
+	
+}
+	
