@@ -3,6 +3,8 @@ package fr.eni.ecole.encheres.bll;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
@@ -10,7 +12,8 @@ import fr.eni.ecole.encheres.dal.AdresseDAO;
 import fr.eni.ecole.encheres.dal.UtilisateurDAO;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
-import jakarta.validation.Valid;
+	
+
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
@@ -33,6 +36,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 		return u;
 	}
+	
+	
 
 	/**
 	 * Méthode privée pour centraliser l'association entre un user et son adresse
@@ -44,36 +49,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		u.setAdresse(adresse);
 	}
 
-	@Override
-	@Transactional
-	public void update(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
-		BusinessException be = new BusinessException();
-		boolean isValid = true;
-		isValid &= validerUtilisateur(utilisateur, be);
-		isValid &= validerEmail(utilisateur.getEmail(), be);
-		isValid &= validerPseudo(utilisateur.getPseudo(), be);
-		isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
+	
 
-		if (isValid) {
-			try {
-				utilisateurDAO.update(utilisateur);
-				System.out.println("Success");
-			} catch (DataAccessException e) {
-
-				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
-				throw be;
-			}
-		} else {
-			throw be;
-
-		}
-
-	}
+	
 
 	@Override
-	public void enregistrerUtilisateur(@Valid Utilisateur user) {
-		// TODO Auto-generated method stub
+	public void enregistrerUtilisateur(Utilisateur user) {
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
 
 	}
 
@@ -148,5 +131,32 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 		return true;
 	}
+	
+	@Override
+	@Transactional
+	public void update(Utilisateur utilisateur) {
+	    BusinessException be = new BusinessException();
+	    boolean isValid = true;
+	    isValid &= validerUtilisateur(utilisateur, be);
+	    isValid &= validerEmail(utilisateur.getEmail(), be);
+	    isValid &= validerPseudo(utilisateur.getPseudo(), be);
+	    isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
+
+	    if (isValid) {
+	        // Encode le mot de passe avant de l'enregistrer
+	        utilisateur.setMotDePasse(utilisateur.getMotDePasse());
+	        try {
+	            utilisateurDAO.update(utilisateur);
+	            System.out.println("Success");
+	        } catch (DataAccessException e) {
+	            be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
+	            throw be;
+	        }
+	    } else {
+	        throw be;
+	    }
+	}
+
+	
 
 }
