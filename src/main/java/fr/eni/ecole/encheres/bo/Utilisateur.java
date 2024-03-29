@@ -3,6 +3,8 @@ package fr.eni.ecole.encheres.bo;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.validation.constraints.*;
+
 public class Utilisateur implements Serializable{
 	
 ///////////////////////////////////////////// num Série
@@ -11,15 +13,24 @@ public class Utilisateur implements Serializable{
 	
 ///////////////////////////////////////////// Attributs
 	//Locaux
+	@NotBlank
 	private String pseudo;
+	
 	private String nom;
+	
 	private String prenom;
+	
 	private String email;
+	
 	private String telephone;
+	
 	private String motDePasse;
+	
 	private int credit;
+	
 	private boolean admin;
 	//Liens
+	
 	private Adresse adresse;
 	
 /////////////////////////////////////////////Constructeurs
@@ -186,6 +197,8 @@ public class Utilisateur implements Serializable{
 
 	public String getVille() {
 	return adresse != null ? adresse.getVille() : null;
+	
+	
 	   }
 		
 }
