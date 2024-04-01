@@ -33,8 +33,11 @@ public class ArticleDAOImpl implements ArticleDAO {
 	//private final String FIND_BY_CATEGORIE = " ";
 	
 	//requêtes de création d'article
-	private final String FIND_ADRESS_ID_BY_PSEUDO = "SELECT no_adresse FROM UTILISATEURS WHERE pseudo = :pseudo";
-	private final String FIND_ADRESS_BY_ID = "SELECT no_adresse, rue, code_postal, ville FROM ADRESSES WHERE no_adresse = :adresse";
+	private final String FIND_ADRESS_PSEUDO = "SELECT a.no_adresse, a.rue, a.code_postal, a.ville" 
+													+ " FROM ADRESSES a "
+													+ "INNER JOIN UTILISATEURS u ON a.no_adresse = u.no_adresse "
+													+ "WHERE u.pseudo = :pseudo";
+	
 	private final String INSERT_ARTICLE = "INSERT INTO ARTICLES_A_VENDRE "
 										+ "(nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait)"
 										+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait)";
@@ -59,22 +62,14 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return jdbcTemp.query(FIND_ACTIVE, new ArticleRowMapper());
 	}
 	
-	@Override //permet de récupéerer une adresse via son ID, fonctionne OBLIGATOIREMENT avec "getAdressByPseudo"
+	@Override //permet de récupéerer une adresse via le pseudo User
 	public Adresse getAdress(String pseudo) {
-		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-		namedParameters.addValue("adresse", getAdressByPseudo(pseudo));
-		
-		return jdbcTemp.queryForObject(FIND_ADRESS_BY_ID,namedParameters, new ArticleAdressRowMapper());
-	}
-	
-	@Override //permet de récupéerer l'ID d'une adresse via un pseudo
-	public String getAdressByPseudo(String pseudo) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", pseudo);
 		
-		return jdbcTemp.queryForObject(FIND_ADRESS_ID_BY_PSEUDO,namedParameters, String.class);
+		return jdbcTemp.queryForObject(FIND_ADRESS_PSEUDO,namedParameters, new ArticleAdressRowMapper());
 	}
-	
+
 	
 	@Override
 	public void creerArticle(ArticleAVendre newArticle) {

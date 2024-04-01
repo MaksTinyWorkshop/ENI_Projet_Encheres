@@ -45,7 +45,7 @@
 	<label for="ville" data-th-text=#{form.ville}></label>
 	<input type="text" id="ville" data-th-field="*{adresse.ville}" required>
 
-	<input type="hidden" th:field="*{adresse.id}" />
+<!-- 	<input type="hidden" th:field="*{adresse.id}" /> -->
 
 	<!-- Si je suis sur mon profil, affichage de mon credit -->
 	<div class="credit-box" data-th-if="${#authorization.expression('isAuthenticated()')}">
