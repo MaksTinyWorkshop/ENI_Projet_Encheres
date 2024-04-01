@@ -17,20 +17,21 @@
 	</div>
 	<nav class="nav-box">
 		<ul class="nav-list">
+
 			<li  data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<a href="/Creer-Article" data-th-text="#{frag-entete.a.creerArticle}"></a>
 			</li>
 			<li data-th-if="${!#authorization.expression('isAuthenticated()')}">
-				<a href="/user/register" data-th-text="#{frag-entete.a.inscription}"></a>
+				<a data-th-href="@{/user/register}" data-th-text="#{frag-entete.a.inscription}"></a>
 			</li>
 			<li data-th-if="${!#authorization.expression('isAuthenticated()')}">
-				<a href="/login" data-th-text="#{frag-entete.a.connexion}"></a>
+				<a data-th-href="@{/login}" data-th-text="#{frag-entete.a.connexion}"></a>
 			</li>
 			<li data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<a href="/user/profil" data-th-text="#{frag-entete.a.profil}"></a>
+				<a data-th-href="@{/user/profil}" data-th-text="#{frag-entete.a.profil}"></a>
 			</li>
 			<li data-th-if="${#authorization.expression('isAuthenticated()')}">
-				<a href="/logout" data-th-text="#{frag-entete.a.deconnexion}"></a>
+				<a data-th-href="@{/logout}" data-th-text="#{frag-entete.a.deconnexion}"></a>
 			</li>
 		</ul>
 	</nav>

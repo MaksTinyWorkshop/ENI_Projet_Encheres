@@ -1,0 +1,23 @@
+.userProfil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.profilGrid {
+  margin: 0 auto;
+  width: 35rem;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+
+.profilGrid input, textarea {
+  background-color: #282c34;
+  color: #ABB2BF;
+  font-family: roboto;
+  font-size: 1.2rem;
+  text-align: left;
+}

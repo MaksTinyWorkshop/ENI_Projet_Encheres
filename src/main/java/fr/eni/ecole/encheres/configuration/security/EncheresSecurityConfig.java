@@ -42,7 +42,7 @@ public class EncheresSecurityConfig  {
 //				.requestMatchers(" ").hasRole("ADMINISTRATEUR");
 			auth.requestMatchers(HttpMethod.GET, "/user/register").permitAll()
 				.requestMatchers(HttpMethod.POST, "/user/register").permitAll();
-			auth.requestMatchers(HttpMethod.GET, "/user/profil").authenticated()
+			auth.requestMatchers(HttpMethod.GET, "/user/**").authenticated()
 				.requestMatchers(HttpMethod.POST, "/user/profil").authenticated();
 			auth.requestMatchers(HttpMethod.GET, "/Creer-Article").authenticated()
 				.requestMatchers(HttpMethod.POST, "/Creer-Article").authenticated();
