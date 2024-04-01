@@ -68,6 +68,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return jdbcTemp.query(FIND_ACTIVE, new ArticleRowMapper());
 	}
 	
+	@Override
 	public ArticleAVendre getArticleById(Long articleId) {							//récupère un objet Article par son ID
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		np.addValue("articleId", articleId);

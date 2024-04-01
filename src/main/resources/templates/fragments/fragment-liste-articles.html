@@ -6,12 +6,11 @@
 				<a data-th-href="@{|/articles/articleDetail/${article.id}|}" data-th-text="${article.nom}"></a>
 			</h2>
 			
-			<p data-th-text="'Prix : ' + ${article.prixVente}"></p>
-			<p data-th-text="'Date de fin : ' + ${article.dateFinEncheres}"></p>
+			<p data-th-text="#{form.article.prixInit} + ' '  + ${article.prixVente}"></p>
+			<p data-th-text="#{form.article.enchere.fin} + ' '  + ${article.dateFinEncheres}"></p>
 
 			<p>
-				Vendeur :
-				<a data-th-href="@{|/user/profil/${article.vendeur.pseudo}|}" data-th-text="${article.vendeur.pseudo}"></a>
+				<a data-th-href="@{|/user/profil/${article.vendeur.pseudo}|}" data-th-text="#{form.article.vendeur} + ' '  + ${article.vendeur.pseudo}"></a>
 			</p>
 		</div>
 	</div>

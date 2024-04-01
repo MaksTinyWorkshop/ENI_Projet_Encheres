@@ -16,6 +16,8 @@ public interface ArticleDAO {
 	void creerArticle(ArticleAVendre newArticle);
 
 	List<ArticleAVendre> getArticlesByName(String boutNom);
+	
+	ArticleAVendre getArticleById(Long articleId);
 
 	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
 
