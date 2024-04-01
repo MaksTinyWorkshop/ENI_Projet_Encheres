@@ -18,6 +18,8 @@ public interface ArticleDAO {
 	List<ArticleAVendre> getArticlesByName(String boutNom);
 	
 	ArticleAVendre getArticleById(Long articleId);
+	
+	void supprArticleById(Long articleId);
 
 	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
 

@@ -2,8 +2,6 @@ package fr.eni.ecole.encheres.dal;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private final String FIND_ARTICLE_BY_ID = "SELECT a.*, d.* FROM ARTICLES_A_VENDRE a"
 												+ " INNER JOIN ADRESSES d ON a.no_adresse_retrait = d.no_adresse"
 												+ " WHERE a.no_article = :articleId";
-
+	//requête de suppression d'un article
+	private final String SUPPR_ARTICLE_BY_ID = "DELETE FROM ARTICLES_A_VENDRE "
+													+ " WHERE no_article = :articleId";
 	
 	//requêtes de création d'article
 	private final String FIND_ADRESS_PSEUDO = "SELECT a.no_adresse, a.rue, a.code_postal, a.ville" 
@@ -74,7 +74,15 @@ public class ArticleDAOImpl implements ArticleDAO {
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		np.addValue("articleId", articleId);
 		
-		return jdbcTemp.queryForObject(FIND_ARTICLE_BY_ID,np , new FullArticleRowMapper());
+		return jdbcTemp.queryForObject(FIND_ARTICLE_BY_ID, np, new FullArticleRowMapper());
+	}
+	
+	@Override
+	public void supprArticleById(Long articleId) {
+		MapSqlParameterSource np = new MapSqlParameterSource();
+		np.addValue("articleId", articleId);
+		
+		jdbcTemp.update(SUPPR_ARTICLE_BY_ID, np);
 	}
 	
 	@Override 																			//récupère une adresse par le pseudo User

@@ -91,4 +91,9 @@ public class ArticleController {
 		model.addAttribute("articleSelect", articleAVoir);									// ajoute l'objet chargé pour l'exploitation avec thymleaf
 		return "view-article-detail";														// nous envoie sur la page de détail de l'article
 	}
+	@GetMapping("/articles/supprimer/{id}")
+	public String supprimerArticle(@PathVariable(name="id", required = false)Long articleId) {
+		articleService.supprArticleById(articleId);
+		return "redirect:/";
+	}
 }

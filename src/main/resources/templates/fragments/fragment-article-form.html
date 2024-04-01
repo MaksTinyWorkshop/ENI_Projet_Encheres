@@ -62,6 +62,8 @@
         <div class="btn-box">
             <!-- Construire fonction JS pour le ONCLICK  -->
             <button type="submit" id="submitButton" data-th-text="#{button.save}"></button>
-            <button type="button" data-th-text="#{button.cancel}"></button>
+            <a data-th-href="@{/}" >
+            	<button type="button" data-th-text="#{button.cancel}" ></button>
+            </a>
         </div>
 </form>

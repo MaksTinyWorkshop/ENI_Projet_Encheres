@@ -1,8 +1,9 @@
 package fr.eni.ecole.encheres.controller;
 
-import java.security.Principal;
 
+import java.security.Principal;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
+
 
 @Controller
 @RequestMapping("/articles")
@@ -25,8 +27,6 @@ public class EncheresController {
 		this.utilisateurService = utilisateurService;
 		this.enchereService = enchereService;
 	}
-
-
 
 	@PostMapping("/articleDetail/{id}")
 	public String faireUneEnchere(
@@ -50,5 +50,6 @@ public class EncheresController {
 		
 		return "redirect:/view-article-detail";
 	}
+
 	
 }

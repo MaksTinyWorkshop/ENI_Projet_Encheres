@@ -55,8 +55,24 @@
 					<input type="text" id="ville" data-th-field="*{retrait.ville}" disabled>
 				</fieldset>
 			</div>
-
 		</form>
+		<span data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
+				<a data-th-href="@{|/TonJoliLien/*{}|}">
+		           	<button type="button" data-th-text="#{article.button.enchere}" ></button>
+		       	</a>
+		    </span>
+	       	<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
+		       	<a data-th-href="@{|/articles/modifier/*{}|}" >
+		           	<button type="button" data-th-text="#{article.button.modif}" ></button>
+		       	</a>
+		       	
+		       	<a data-th-href="@{|/articles/supprimer/*{id}|}" >
+		           	<button type="button" data-th-text="#{article.button.suppr}" ></button>
+		       	</a>
+		    </span>
+       	</span>
+       	
 	</main>
 </body>
 </html>
