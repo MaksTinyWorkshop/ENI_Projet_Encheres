@@ -54,20 +54,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public void save(Utilisateur utilisateur) {
 	    BusinessException be = new BusinessException();
 	    boolean isValid = true;
-	    
-	    // Check if user is not null
+
 	    if (utilisateur == null) {
 	        be.add(BusinessCode.VALIDATION_USER_NULL);
 	        throw be;
 	    }
 
-	    // Validation of the password
 	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isEmpty()) {
 	        be.add(BusinessCode.VALIDATION_USER_PASSWORD_BLANK);
 	        throw be;
 	    }
-	    
-	    // Validation of the data
+
 	    isValid &= validerUtilisateur(utilisateur, be);
 	    isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
 	    isValid &= validerUniqueMail(utilisateur.getEmail(), be);
@@ -75,25 +72,20 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    isValid &= validerEmail(utilisateur.getEmail(), be);
 	    isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
 
-
 	    if (isValid) {
-	        // Encoding the password
-
-	        // Encodage du mot de passe
+	        // Encode le mot de passe
 	        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
-	        
+	        String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
+	        utilisateur.setMotDePasse(encodedPassword);
+
 	        try {
-	            // Saving the user
+	            // Enregistre l'utilisateur
 	            utilisateurDAO.save(utilisateur);
 	            System.out.println("PROFIL ENREGISTRE");
-	            
 	        } catch (DataAccessException e) {
-	            // Error message in case of failure
+	            // Message en cas d'erreur
 	            // Enregistrement de l'utilisateur
-
 	            utilisateurDAO.save(utilisateur);
-
 	        }
 	    } else {
 	        throw be;

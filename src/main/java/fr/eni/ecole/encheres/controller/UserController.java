@@ -38,7 +38,7 @@ public class UserController {
 		return "view-register-form";
 	}
 
-	@PostMapping("/register") // Add this annotation to specify that this method handles POST requests to "/user/register"
+	@PostMapping("/register") 
 	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
 	    if (bindingResult.hasErrors()) {
 	        return "view-register-form";
@@ -46,7 +46,7 @@ public class UserController {
 	    	try {
 	            utilisateurService.save(user);
 
-	            return "redirect:/"; // Redirect the user to the home page
+	            return "redirect:/"; // Redirige l'utilisateur vers la page racine
 	    	
 	    	} catch (BusinessException e) {
 	    		// Afficher les messages d’erreur - il faut les injecter dans le contexte de

@@ -18,6 +18,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe) "
 													+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
 	private static final String INSERT_ADRESSE_QUERY = "INSERT INTO ADRESSES (rue, ville, code_postal) VALUES (:rue, :ville, :codePostal)";
+
 	private static final String UPDATE_USER= "UPDATE UTILISATEURS SET nom= :nom, prenom= :prenom, email= :email, telephone= :telephone WHERE pseudo= :pseudo";
 	private static final String UPDATE_MOT_DE_PASSE= "UPDATE utilisateurs SET mot_de_passe = :nouveauMdp WHERE pseudo = :pseudo";
 	
@@ -47,23 +48,23 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         params.addValue("telephone", utilisateur.getTelephone());
         params.addValue("motDePasse", utilisateur.getMotDePasse());
 
-        // Insert the address first and get its generated key
+        // Insert l'adresse, puis créer une clé auto-générée
         Long addressId = saveAddress(utilisateur.getAdresse());
 
-        // Associate the address with the user
+        // Associe l'adresse et l'Id utilisateur
         params.addValue("noAdresse", addressId);
 
         jdbcTemplate.update(INSERT_USER_QUERY, params);
     }
 
-    // Method to save address information and return its generated key
+    // Méthode pour enregistrer l'adresse et crééer une clé générée
     private Long saveAddress(Adresse adresse) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("rue", adresse.getRue());
         params.addValue("ville", adresse.getVille());
         params.addValue("codePostal", adresse.getCodePostal());
 
-        // Execute the insert query and return the generated key
+        // execute la requete Query d'insert de rue, ville et code postal dans Adresse
         return jdbcTemplate.queryForObject(INSERT_ADRESSE_QUERY + " OUTPUT INSERTED.no_adresse", params, Long.class);
     }
   

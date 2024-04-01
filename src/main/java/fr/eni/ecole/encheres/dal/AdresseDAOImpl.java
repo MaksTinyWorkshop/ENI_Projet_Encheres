@@ -18,7 +18,8 @@ public class AdresseDAOImpl implements AdresseDAO {
 	private final String FIND_BY_PSEUDO = "SELECT U.pseudo, A.rue, A.complement, A.code_postal, A.ville, A.no_adresse "
 			+ "FROM UTILISATEURS U INNER JOIN ADRESSES A ON U.no_adresse = A.no_adresse WHERE U.pseudo = :pseudo";
 	private static final String UPDATE_ADRESSE = "UPDATE ADRESSES SET complement= :complement, rue= :rue, code_postal= :codePostal, ville= :ville WHERE no_adresse= :no_adresse";
-
+	
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
