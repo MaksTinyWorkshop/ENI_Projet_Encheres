@@ -16,9 +16,15 @@ public interface ArticleDAO {
 	void creerArticle(ArticleAVendre newArticle);
 
 	List<ArticleAVendre> getArticlesByName(String boutNom);
+	
+	ArticleAVendre getArticleById(Long articleId);
+	
+	void supprArticleById(Long articleId);
 
 	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
 
 	Adresse getAdress(String pseudo);
+	
+	void updatePrix(long idArticle, int montantEnchere);
 
 }

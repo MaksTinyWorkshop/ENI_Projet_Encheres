@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,7 +39,7 @@ public class ArticleController {
 	public String accueil(Model model) {											//Gère l'affichage des articles en cours de vente sur l'accueil.
 		try {
 			List<ArticleAVendre> articles = articleService.charger();				//appel du service pour charger la liste
-			model.addAttribute("articlesList", articles);							//intégration des articles au model
+			model.addAttribute("articlesList", articles);
 			return "index";															//retour à l'index
 		}catch (BusinessException e){												//ici récupération de la BusinessException chargée dans le service
 			model.addAttribute("listArticleError", e.getClefsExternalisations());	//transfer au model de la liste codes erreurs retournée
@@ -65,8 +66,9 @@ public class ArticleController {
 		}
 	}
 	
-	@PostMapping("/Creer-Article")
-	public String newArticle(@Valid @ModelAttribute("article") ArticleAVendre newArticle, BindingResult br) {
+	@PostMapping("/Creer-Article")																// Permet d'enregistrer un nouvel article
+	public String newArticle(
+			@Valid @ModelAttribute("article") ArticleAVendre newArticle, BindingResult br) {
 		if (!br.hasErrors()) {
 			try {
 				articleService.creerArticle(newArticle);
@@ -82,6 +84,7 @@ public class ArticleController {
 		return "view-article-creation";
 	}
 	
+
 	/////// GET MAPPING DES FILTRES DU FOMRULAIRE HTML 
 	@GetMapping("/filtrer-par-nom-article")
 	public String filtrerParNomArticle(Model model, @RequestParam("nomArticle") String nomArticle) {
@@ -106,6 +109,23 @@ public class ArticleController {
 	        model.addAttribute("listArticleError", e.getClefsExternalisations());
 	        return "/"; // Retourne la vue de la page d'accueil en cas d'erreur
 	    }
+	}
+
+
+	
+	@GetMapping("/articles/articleDetail/{id}")														//Permet d'atteindre la page d'affichage de détail de l'article sélectionné
+	public String articleDetail(
+			@PathVariable(name="id", required = false)Long articleId, Model model) {
+		ArticleAVendre articleAVoir = articleService.consulterArticleById(articleId);		//création d'un coquille que la requête va compléter avec le paramètre passé
+		model.addAttribute("articleSelect", articleAVoir);									// ajoute l'objet chargé pour l'exploitation avec thymleaf
+		return "view-article-detail";														// nous envoie sur la page de détail de l'article
+	}
+	
+	
+	@GetMapping("/articles/supprimer/{id}")
+	public String supprimerArticle(@PathVariable(name="id", required = false)Long articleId) {
+		articleService.supprArticleById(articleId);
+		return "redirect:/";
 	}
 
 }

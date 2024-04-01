@@ -1,6 +1,7 @@
 package fr.eni.ecole.encheres.bll;
 
 
+
 import java.util.List;
 
 import fr.eni.ecole.encheres.bo.Adresse;
@@ -19,4 +20,6 @@ public interface ArticleService {
 	List<ArticleAVendre> getArticlesByCategorie(Categorie categorieObj);
 
 	Categorie getCategorieByName(String categorie);
+	ArticleAVendre consulterArticleById(Long articleId);
+	void supprArticleById(Long id);
 }

@@ -85,9 +85,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	            utilisateur.getAdresse().setId(addressId);
 
 	            // Enregistre l'utilisateur
+
+	            // Enregistrement de l'utilisateur
 	            utilisateurDAO.save(utilisateur);
 	            System.out.println("PROFIL ENREGISTRE");
 	        } catch (DataAccessException e) {
+
+	            // Message d'erreur en cas d'échec
 	            be.add(BusinessCode.SAVE_USER_ERROR);
 	            throw be;
 	        }
@@ -100,12 +104,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 	@Override
 	@Transactional
-	public void update(Utilisateur user, Utilisateur userEnBase) {
+	public void update(Utilisateur user) {
 		BusinessException be = new BusinessException();
 		
-		// Récupération de l'idAdresse pour update redirigé vers adresseDAO
-		long idAdresse = userEnBase	.getAdresse()
-									.getId();
 		
 		// Méthodes de vérification
 		boolean isValid = true;
@@ -114,13 +115,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 		if (isValid) {
 			try {
-				// Récupération des données formulaire et injection
-				userEnBase.setEmail(user.getEmail());
-				userEnBase.setNom(user.getNom());
-				userEnBase.setPrenom(user.getPrenom());
-				userEnBase.setTelephone(user.getTelephone());
+				// Récupération de l'idAdresse pour update redirigé vers adresseDAO
+				long idAdresse = user	.getAdresse()
+											.getId();
 
-				utilisateurDAO.update(userEnBase);
+				utilisateurDAO.update(user);
 				adresseDAO.update(user, idAdresse);
 
 			} catch (DataAccessException e) {
@@ -174,14 +173,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 		try {
 			utilisateurDAO.updateMdp(pseudo, u.getMotDePasse());
-			System.out.println("Success update mdp");
 		} catch (DataAccessException e) {
 			be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_MDP_ERREUR);
 			throw be;
 		}
 
 	}
-
 
 
 	/**
@@ -256,8 +253,5 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return true;
 	}
 
-	
 
-		
-	
 }

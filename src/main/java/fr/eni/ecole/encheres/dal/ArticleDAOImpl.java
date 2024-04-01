@@ -2,8 +2,6 @@ package fr.eni.ecole.encheres.dal;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,17 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private NamedParameterJdbcTemplate jdbcTemp;
 	
 	//!!!! NB !!!!! notice des statu :  0 : PAS COMMENCEE, 1 : EN COURS, 2 : CLOTUREE, 100 : ANNULEE
-	private final String FIND_ACTIVE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere = 1";
+	private final String FIND_ACTIVE = "SELECT no_article, nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere = 1";
 	//private final String FIND_BY_NAME = " ";	
 	//private final String FIND_BY_CATEGORIE = " ";
+	
+	//requête de récupération de tout l'article
+	private final String FIND_ARTICLE_BY_ID = "SELECT a.*, d.* FROM ARTICLES_A_VENDRE a"
+												+ " INNER JOIN ADRESSES d ON a.no_adresse_retrait = d.no_adresse"
+												+ " WHERE a.no_article = :articleId";
+	//requête de suppression d'un article
+	private final String SUPPR_ARTICLE_BY_ID = "DELETE FROM ARTICLES_A_VENDRE "
+													+ " WHERE no_article = :articleId";
 	
 	//requêtes de création d'article
 	private final String FIND_ADRESS_PSEUDO = "SELECT a.no_adresse, a.rue, a.code_postal, a.ville" 
@@ -42,6 +48,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 										+ "(nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait)"
 										+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait)";
 
+	private static final String UPDATE_PRIX = "UPDATE ARTICLES_A_VENDRE SET prix_vente= :prix_vente where no_article= :no_article";
 	
 	///////// METHODES DE FILTRES PAR NOM ET PAS CATEGORIE
 	@Override
@@ -59,11 +66,27 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 	
 	@Override
-	public List<ArticleAVendre> getActiveArticles() {
+	public List<ArticleAVendre> getActiveArticles() {									//rempli la liste des Articles actif
 		return jdbcTemp.query(FIND_ACTIVE, new ArticleRowMapper());
 	}
 	
-	@Override //permet de récupéerer une adresse via le pseudo User
+	@Override
+	public ArticleAVendre getArticleById(Long articleId) {							//récupère un objet Article par son ID
+		MapSqlParameterSource np = new MapSqlParameterSource();
+		np.addValue("articleId", articleId);
+		
+		return jdbcTemp.queryForObject(FIND_ARTICLE_BY_ID, np, new FullArticleRowMapper());
+	}
+	
+	@Override
+	public void supprArticleById(Long articleId) {
+		MapSqlParameterSource np = new MapSqlParameterSource();
+		np.addValue("articleId", articleId);
+		
+		jdbcTemp.update(SUPPR_ARTICLE_BY_ID, np);
+	}
+	
+	@Override 																			//récupère une adresse par le pseudo User
 	public Adresse getAdress(String pseudo) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", pseudo);
@@ -73,7 +96,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 	
 	@Override
-	public void creerArticle(ArticleAVendre newArticle) {
+	public void creerArticle(ArticleAVendre newArticle) {								//crée un nouvel article à vendre
 		
 		KeyHolder keyHolder = new GeneratedKeyHolder();//keyholder à identification unique
 		
@@ -99,6 +122,17 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 	
+	@Override
+	public void updatePrix(long idArticle, int montantEnchere) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		
+		namedParam.addValue("prix_vente", montantEnchere);
+		namedParam.addValue("no_article", idArticle);
+		
+		jdbcTemp.update(UPDATE_PRIX, namedParam);
+		
+	}
+	
 	
 	///////////////////////////////////////////////////////////////////////// ROWMAPPERS CUSTOM
 	
@@ -106,16 +140,10 @@ public class ArticleDAOImpl implements ArticleDAO {
 		@Override
 		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ArticleAVendre a = new ArticleAVendre();
+			a.setId(rs.getLong("no_article"));
 			a.setNom(rs.getString("nom_article"));
 			a.setPrixVente(rs.getInt("prix_vente"));
 			//date finale
-			//récupération de la date provenant de la BDD
-	        String dateFromBDD = rs.getString("date_fin_encheres");
-	        // Définition du format de date de la BDD
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	        // Conversion 
-	        LocalDate date = LocalDate.parse(dateFromBDD, formatter);
-			a.setDateFinEncheres(date);
 			a.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());//dte finale convertie en LocalDate
 			
 			// Association pour le vendeur
@@ -139,4 +167,38 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 	}
+	
+	class FullArticleRowMapper implements RowMapper<ArticleAVendre> {
+		@Override
+		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ArticleAVendre a = new ArticleAVendre();
+			a.setId(rs.getLong("no_article"));
+			a.setNom(rs.getString("nom_article"));
+			a.setDescription(rs.getString("description"));
+			a.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());//dte début convertie en LocalDate
+			a.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());//dte finale convertie en LocalDate
+			a.setStatu(rs.getInt("statu_enchere"));
+			a.setPrixInitial(rs.getInt("prix_initial"));
+			a.setPrixVente(rs.getInt("prix_vente"));
+			
+			Utilisateur user = new Utilisateur();
+			user.setPseudo(rs.getString("id_utilisateur"));
+			a.setVendeur(user);
+			
+			Categorie cat = new Categorie();
+			cat.setId(rs.getLong("no_categorie"));
+			a.setCategorie(cat);
+			
+			Adresse adr = new Adresse();
+			adr.setId(rs.getLong("no_adresse"));
+			adr.setRue(rs.getString("rue"));
+			adr.setCodePostal(rs.getString("code_postal"));
+			adr.setVille(rs.getString("ville"));
+			a.setRetrait(adr);
+			
+			return a;
+		}
+	}
+
+
 }
