@@ -40,9 +40,10 @@ public class BusinessCode {
 	public static final String VALIDATION_ARTICLE_NOM_BLANK = "bll.validation.article.nom.blank";
 	public static final String VALIDATION_ARTICLE_NULL = "bll.validation.null";
 	
-		// 4. ...
+		// 4. Placement d'enchère
+	public static final String BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR = "bll.placement.enchere.error";
 	
 }
 	
-}
+
 	

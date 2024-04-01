@@ -8,8 +8,10 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fr.eni.ecole.encheres.bo.Adresse;
+import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.dal.AdresseDAO;
+import fr.eni.ecole.encheres.dal.EnchereDAO;
 import fr.eni.ecole.encheres.dal.UtilisateurDAO;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
@@ -20,10 +22,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	// Injection des repository
 	private UtilisateurDAO utilisateurDAO;
 	private AdresseDAO adresseDAO;
+	private EnchereDAO enchereDAO;
 
-	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
+	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO, EnchereDAO enchereDAO) {
 		this.utilisateurDAO = utilisateurDAO;
 		this.adresseDAO = adresseDAO;
+		this.enchereDAO = enchereDAO;
 	}
 
 	@Override
@@ -97,12 +101,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 	@Override
 	@Transactional
-	public void update(Utilisateur user, Utilisateur userEnBase) {
+	public void update(Utilisateur user) {
 		BusinessException be = new BusinessException();
 		
-		// Récupération de l'idAdresse pour update redirigé vers adresseDAO
-		long idAdresse = userEnBase	.getAdresse()
-									.getId();
 		
 		// Méthodes de vérification
 		boolean isValid = true;
@@ -111,13 +112,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 		if (isValid) {
 			try {
-				// Récupération des données formulaire et injection
-				userEnBase.setEmail(user.getEmail());
-				userEnBase.setNom(user.getNom());
-				userEnBase.setPrenom(user.getPrenom());
-				userEnBase.setTelephone(user.getTelephone());
+				// Récupération de l'idAdresse pour update redirigé vers adresseDAO
+				long idAdresse = user	.getAdresse()
+											.getId();
 
-				utilisateurDAO.update(userEnBase);
+				utilisateurDAO.update(user);
 				adresseDAO.update(user, idAdresse);
 
 			} catch (DataAccessException e) {
@@ -141,7 +140,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 		try {
 			utilisateurDAO.updateMdp(pseudo, u.getMotDePasse());
-			System.out.println("Success update mdp");
 		} catch (DataAccessException e) {
 			be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_MDP_ERREUR);
 			throw be;
@@ -149,6 +147,20 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	}
 
+	@Override
+	@Transactional
+	public void placerUneEnchere(Utilisateur user, ArticleAVendre article) {
+		BusinessException be = new BusinessException();
+		
+		try {
+			enchereDAO.placerUneEnchere(user, article);
+		} catch (DataAccessException e) {
+			be.add(BusinessCode.BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR);
+			throw be;
+		}
+		
+	}
+	
 
 
 	/**
@@ -223,6 +235,5 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return true;
 	}
 
-		
-	
+
 }

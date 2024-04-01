@@ -14,18 +14,25 @@ public class Utilisateur implements Serializable{
 ///////////////////////////////////////////// Attributs
 	//Locaux
 	@NotBlank
+	@Pattern(regexp = "^[a-zA-Z0-9_]+$")
 	private String pseudo;
 	
+	@NotBlank	
 	private String nom;
 	
+	@NotBlank
 	private String prenom;
 	
+	@Email
 	private String email;
 	
 	private String telephone;
 	
+	@NotBlank
+	@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$")
 	private String motDePasse;
 	
+	@PositiveOrZero
 	private int credit;
 	
 	private boolean admin;

@@ -78,21 +78,18 @@ public class UserController {
 	}
 
 	@PostMapping("/profil")
-	public String mettreAJourMonProfil(@ModelAttribute("user") Utilisateur user, BindingResult bindingResult, Principal ppal,
+	public String mettreAJourMonProfil(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult, 
+			//Principal ppal,
 			@RequestParam(name = "motDePasseNew") Optional<String> nouveauMdp,
 			@RequestParam(name = "confirmation") Optional<String> confirmNouveauMdp) {
-
+		
 		if (bindingResult.hasErrors()) {
 			return "view-mon-profil";
 		} else {
-			
-			//Recupération du User en Base car le champ pseudo est désactivé
-			String pseudo =  ppal.getName();
-			Utilisateur userEnBase = utilisateurService.consulterProfil(pseudo);
-			
+				
 			try {
 				// Méthode update qui prend en paramètre les données du formulaire et le user en base pour son pseudo et idAdresse
-				utilisateurService.update(user, userEnBase );
+				utilisateurService.update(user);
 				
 				// Gestion en cas de changement de mot de passe
 				if (bindingResult.hasErrors()) {

@@ -1,17 +1,19 @@
 package fr.eni.ecole.encheres.bll;
 
+import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 public interface UtilisateurService {
 
     Utilisateur consulterProfil(String pseudo);
     
-    void update(Utilisateur user, Utilisateur userEnBase);
+    void update(Utilisateur user);
 
 	void updatePassword(String pseudo, String nouveauMdp);
 
-	void save(Utilisateur utilisateur);
+	void save(Utilisateur user);
 
+	void placerUneEnchere(Utilisateur user, ArticleAVendre article);
 
 
 }
