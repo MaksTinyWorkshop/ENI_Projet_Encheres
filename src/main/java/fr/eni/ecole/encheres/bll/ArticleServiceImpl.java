@@ -44,6 +44,10 @@ public class ArticleServiceImpl implements ArticleService {
 		
 		return articleDAO.getArticleById(articleId);
 	}
+	@Override
+	public void supprArticleById(Long id) {
+		articleDAO.supprArticleById(id);
+	}
 	
 	@Override
 	public Adresse getAdress(String pseudo) {				//récupère l'adresse du Principal pour le formulaire de créa d'article
@@ -133,6 +137,5 @@ public class ArticleServiceImpl implements ArticleService {
 			return false;
 		}
 		return true;
-	}
-	
+	}	
 }

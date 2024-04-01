@@ -13,4 +13,5 @@ public interface ArticleService {
 	Adresse getAdress(String pseudo);
 
 	ArticleAVendre consulterArticleById(Long articleId);
+	void supprArticleById(Long id);
 }

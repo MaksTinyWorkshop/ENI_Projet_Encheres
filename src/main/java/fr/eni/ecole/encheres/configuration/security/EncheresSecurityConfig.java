@@ -47,6 +47,7 @@ public class EncheresSecurityConfig  {
 			auth.requestMatchers(HttpMethod.GET, "/Creer-Article").authenticated()
 				.requestMatchers(HttpMethod.POST, "/Creer-Article").authenticated();
 			auth.requestMatchers(HttpMethod.GET, "/articles/articleDetail/**").permitAll(); //autorisation pour la page de détail des articles
+			auth.requestMatchers(HttpMethod.GET, "/articles/supprimer/**").authenticated();
 			auth.requestMatchers("/*").permitAll();//l'url racine pour tout le monde
 			auth.requestMatchers("/css/*").permitAll();//CSS pour tout le monde
 			auth.requestMatchers("/images/*").permitAll();//images pour tout le monde
