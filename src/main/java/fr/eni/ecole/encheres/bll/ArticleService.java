@@ -1,6 +1,5 @@
 package fr.eni.ecole.encheres.bll;
 
-import java.security.Principal;
 import java.util.List;
 
 import fr.eni.ecole.encheres.bo.Adresse;
@@ -12,4 +11,6 @@ public interface ArticleService {
 	void creerArticle(ArticleAVendre newArticle);
 
 	Adresse getAdress(String pseudo);
+
+	ArticleAVendre consulterArticleById(Long articleId);
 }

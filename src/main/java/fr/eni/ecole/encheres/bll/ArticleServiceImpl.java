@@ -1,6 +1,5 @@
 package fr.eni.ecole.encheres.bll;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -41,10 +40,17 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	
 	@Override
+	public ArticleAVendre consulterArticleById(Long articleId) {
+		
+		return articleDAO.getArticleById(articleId);
+	}
+	
+	@Override
 	public Adresse getAdress(String pseudo) {				//récupère l'adresse du Principal pour le formulaire de créa d'article
 		Adresse adress = articleDAO.getAdress(pseudo);		//tranfère la demande à la DAL
 		return adress;
 	}
+	
 	
 	@Override
 	@Transactional
@@ -66,10 +72,14 @@ public class ArticleServiceImpl implements ArticleService {
 				throw be;
 			}
 		}else {
+			be.printStackTrace();
 			throw be;
 		}
 	}
-	////////////////////////////////////////////// validations BLL
+	
+	//////////////////////////////// VALIDATIONS BLL /////////////////////////////////////////////
+	
+	////// 1 // Création d'article ///////////
 	
 	private boolean validerDateFin(LocalDate dI, LocalDate dF, BusinessException be) {
 		if (dF == null) {
@@ -111,7 +121,7 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	private boolean validerNom(String n, BusinessException be) {
 		if (n == null || n.isBlank()) {
-			be.add(BusinessCode.VALIDATION_ARTICLE_NOM_BLANK);
+			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_NOM_BLANK);
 			return false;
 		}
 		return true;
@@ -119,7 +129,7 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	private boolean validerArticle(ArticleAVendre a, BusinessException be) {
 		if (a == null) {
-			be.add(BusinessCode.VALIDATION_ARTICLE_NULL);
+			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_NULL);
 			return false;
 		}
 		return true;

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class ArticleAVendre implements Serializable{
 	
 ///////////////////////////////////////////// num Série
@@ -12,18 +15,25 @@ private static final long serialVersionUID = 1L;
 
 ///////////////////////////////////////////// Attributs
 	//Locaux
+
 	private Long id;
+	@NotBlank
 	private String nom;
+	@NotBlank
 	private String description;
 	private String photo;
+	@NotNull
 	private LocalDate dateDebutEncheres;
+	@NotNull
 	private LocalDate dateFinEncheres;
 	private int statu;
+	@NotNull
 	private int prixInitial;
 	private int prixVente;
 	//Liens
 	private Adresse retrait;
 	private Utilisateur vendeur;
+	@NotNull
 	private Categorie categorie;
 	
 /////////////////////////////////////////////Constructeurs

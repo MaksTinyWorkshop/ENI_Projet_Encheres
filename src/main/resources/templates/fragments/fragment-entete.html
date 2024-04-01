@@ -17,8 +17,9 @@
 	</div>
 	<nav class="nav-box">
 		<ul class="nav-list">
-			<li><!--  <li data-th-if="${!#authorization.expression('isAuthenticated()')}"> -->
-				<a data-th-href="@{/Creer-Article}" data-th-text="#{frag-entete.a.creerArticle}"></a>
+
+			<li  data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<a href="/Creer-Article" data-th-text="#{frag-entete.a.creerArticle}"></a>
 			</li>
 			<li data-th-if="${!#authorization.expression('isAuthenticated()')}">
 				<a data-th-href="@{/user/register}" data-th-text="#{frag-entete.a.inscription}"></a>

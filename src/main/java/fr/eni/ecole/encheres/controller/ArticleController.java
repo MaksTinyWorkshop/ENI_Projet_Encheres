@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import fr.eni.ecole.encheres.bll.ArticleService;
@@ -15,6 +18,7 @@ import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
+import jakarta.validation.Valid;
 
 @Controller
 public class ArticleController {
@@ -34,7 +38,7 @@ public class ArticleController {
 	public String accueil(Model model) {											//Gère l'affichage des articles en cours de vente sur l'accueil.
 		try {
 			List<ArticleAVendre> articles = articleService.charger();				//appel du service pour charger la liste
-			model.addAttribute("articlesList", articles);							//intégration des articles au model
+			model.addAttribute("articlesList", articles);
 			return "index";															//retour à l'index
 		}catch (BusinessException e){												//ici récupération de la BusinessException chargée dans le service
 			model.addAttribute("listArticleError", e.getClefsExternalisations());	//transfer au model de la liste codes erreurs retournée
@@ -55,25 +59,36 @@ public class ArticleController {
 			newArticle.setCategorie(categorie);
 			newArticle.setRetrait(adresse);
 			model.addAttribute("article", newArticle);
-			System.out.println("Le pseudo du mec au chargement de la page c'est : " + newArticle.getVendeur().getPseudo());
-			System.out.println("Le formulaire reçoit :");
-			System.out.println(newArticle);
 			return "view-article-creation";
 		}else {
 			return "redirect:/";
 		}
 	}
 	
-	@PostMapping("/Creer-Article")
-	public String newArticle(@ModelAttribute("Article") ArticleAVendre newArticle) { //(@Valid @ModelAttribute("Article") ArticleAVendre newArticle, BindingResult br) {
-		System.out.println("Le formulaire retourne :");
-		System.out.println(newArticle);
-		articleService.creerArticle(newArticle);
-		return "redirect:/";
-		
+	@PostMapping("/Creer-Article")																// Permet d'enregistrer un nouvel article
+	public String newArticle(
+			@Valid @ModelAttribute("article") ArticleAVendre newArticle, BindingResult br) {
+		if (!br.hasErrors()) {
+			try {
+				articleService.creerArticle(newArticle);
+				return "redirect:/";
+			} catch (BusinessException e) {
+				e.getClefsExternalisations().forEach(key -> {
+					ObjectError error = new ObjectError ("globalError", key);
+					br.addError(error);
+				});
+				return "view-article-creation";
+			}
+		}
+		return "view-article-creation";
 	}
 	
-	//TODO 1. ajouter un lien "Vendre un Objet" dans la navBar.
-	//TODO 2. Ajouter accès roles dans le security controller.
-	//TODO 3. créer un fragment de succès de création d'objet, avec une redirection vers l'accueil.
+	
+	@GetMapping("/articles/articleDetail/{id}")														//Permet d'atteindre la page d'affichage de détail de l'article sélectionné
+	public String articleDetail(
+			@PathVariable(name="id", required = false)Long articleId, Model model) {
+		ArticleAVendre articleAVoir = articleService.consulterArticleById(articleId);		//création d'un coquille que la requête va compléter avec le paramètre passé
+		model.addAttribute("articleSelect", articleAVoir);									// ajoute l'objet chargé pour l'exploitation avec thymleaf
+		return "view-article-detail";														// nous envoie sur la page de détail de l'article
+	}
 }
