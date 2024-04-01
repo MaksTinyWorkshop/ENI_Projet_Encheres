@@ -25,6 +25,6 @@ public interface ArticleDAO {
 
 	Adresse getAdress(String pseudo);
 	
-	void updatePrix(ArticleAVendre article);
+	void updatePrix(long idArticle, int montantEnchere);
 
 }

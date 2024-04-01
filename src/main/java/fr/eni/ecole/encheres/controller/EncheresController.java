@@ -1,55 +1,54 @@
 package fr.eni.ecole.encheres.controller;
 
-
 import java.security.Principal;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import fr.eni.ecole.encheres.bll.ArticleService;
 import fr.eni.ecole.encheres.bll.EnchereService;
 import fr.eni.ecole.encheres.bll.UtilisateurService;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Utilisateur;
-import fr.eni.ecole.encheres.exceptions.BusinessCode;
-import fr.eni.ecole.encheres.exceptions.BusinessException;
-
 
 @Controller
-@RequestMapping("/articles")
 public class EncheresController {
 
 	private final UtilisateurService utilisateurService;
 	private final EnchereService enchereService;
+	private final ArticleService articleService;
 
-	public EncheresController(UtilisateurService utilisateurService, EnchereService enchereService) {
+	public EncheresController(UtilisateurService utilisateurService, EnchereService enchereService,
+			ArticleService articleService) {
 		this.utilisateurService = utilisateurService;
 		this.enchereService = enchereService;
+		this.articleService = articleService;
 	}
 
-	@PostMapping("/articleDetail/{id}")
+	@PostMapping("/articles/articleDetail/{id}")
 	public String faireUneEnchere(
 			@ModelAttribute("articleSelect") ArticleAVendre article, 
-			Utilisateur user,
+			@RequestParam(name="enchere") int montantEnchere,
 			Principal ppal) {
+
+		// Récup du pseudo user et idArticle
+		String pseudoUser = ppal.getName();
+		long idArticle = article.getId();
 		
-		// Récup des infos du user
-		String pseudo = ppal.getName();
-		user = utilisateurService.consulterProfil(pseudo);
-				
-		if (user.getCredit() > article.getPrixVente()) {
-			try {
-				enchereService.placerUneEnchere(user, article);
-				
-			} catch (BusinessException be) {
-				be.add(BusinessCode.UTILISATEUR_MONTANT_INSUFFISANT);
-				throw be;
-			}
+		// Récup des infos en base pour savoir si l'utilisateur a les moyens d'enchérir
+		Utilisateur user = utilisateurService.consulterProfil(pseudoUser);
+		ArticleAVendre articleAUpdate = articleService.consulterArticleById(idArticle);
+
+		if (user.getCredit() > articleAUpdate.getPrixVente()) {
+			enchereService.placerUneEnchere(pseudoUser, idArticle, montantEnchere);
+			return "redirect:/";
+
+		} else {
+			return "redirect:/";
 		}
-		
-		return "redirect:/view-article-detail";
+
 	}
 
-	
 }

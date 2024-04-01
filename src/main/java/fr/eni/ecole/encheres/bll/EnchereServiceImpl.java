@@ -25,17 +25,17 @@ public class EnchereServiceImpl implements EnchereService {
 
 	@Override
 	@Transactional
-	public void placerUneEnchere(Utilisateur user, ArticleAVendre article) {
+	public void placerUneEnchere(String pseudoUser, long idArticle, int montantEnchere) {
 		BusinessException be = new BusinessException();
 
-		try {
-			enchereDAO.placerUneEnchere(user, article);
-			articleDAO.updatePrix(article);
+//		try {
+			enchereDAO.placerUneEnchere(pseudoUser, idArticle, montantEnchere);
+			articleDAO.updatePrix(idArticle, montantEnchere);
 			
-		} catch (DataAccessException e) {
-			be.add(BusinessCode.BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR);
-			throw be;
-		}
+//		} catch (DataAccessException e) {
+//			be.add(BusinessCode.BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR);
+//			throw be;
+//		}
 		
 	}
 

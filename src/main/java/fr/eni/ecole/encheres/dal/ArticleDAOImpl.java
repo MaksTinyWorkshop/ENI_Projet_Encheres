@@ -122,11 +122,11 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 	
 	@Override
-	public void updatePrix(ArticleAVendre article) {
+	public void updatePrix(long idArticle, int montantEnchere) {
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		
-		namedParam.addValue("prix_vente", article.getPrixVente());
-		namedParam.addValue("no_article", article.getId());
+		namedParam.addValue("prix_vente", montantEnchere);
+		namedParam.addValue("no_article", idArticle);
 		
 		jdbcTemp.update(UPDATE_PRIX, namedParam);
 		
