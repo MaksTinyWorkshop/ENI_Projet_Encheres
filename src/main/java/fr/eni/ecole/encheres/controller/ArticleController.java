@@ -10,6 +10,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.eni.ecole.encheres.bll.ArticleService;
 import fr.eni.ecole.encheres.bo.Adresse;
@@ -80,4 +81,31 @@ public class ArticleController {
 		}
 		return "view-article-creation";
 	}
+	
+	/////// GET MAPPING DES FILTRES DU FOMRULAIRE HTML 
+	@GetMapping("/filtrer-par-nom-article")
+	public String filtrerParNomArticle(Model model, @RequestParam("nomArticle") String nomArticle) {
+	    try {
+	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByName(nomArticle);
+	        model.addAttribute("articlesList", articlesFiltres);
+	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par nom
+	    } catch (BusinessException e) {
+	        model.addAttribute("listArticleError", e.getClefsExternalisations());
+	        return "/"; // Retourne la vue de la page d'accueil en cas d'erreur
+	    }
+	}
+
+	@GetMapping("/filtrer-par-categorie")
+	public String filtrerParCategorie(Model model, @RequestParam("categorie") String categorie) {
+	    try {
+	        Categorie categorieObj = articleService.getCategorieByName(categorie);
+	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByCategorie(categorieObj);
+	        model.addAttribute("articlesList", articlesFiltres);
+	        return "/"; // Retourne la vue de la page d'accueil avec les articles filtrés par catégorie
+	    } catch (BusinessException e) {
+	        model.addAttribute("listArticleError", e.getClefsExternalisations());
+	        return "/"; // Retourne la vue de la page d'accueil en cas d'erreur
+	    }
+	}
+
 }

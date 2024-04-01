@@ -16,6 +16,8 @@ public class BusinessCode {
 	public static final String VALIDATION_USER_PASSWORD_FORM = "validation.user.passwordForm";
 	public static final String VALIDATION_USER_USER_EXISTS = "validation.user.usernameUnicity";
 	public static final String VALIDATION_USER_EMAIL_EXISTS = "validation.user.emailUnicity";
+	public static final String VALIDATION_ADDRESS_INVALID = "validation.adress.invalid";
+	
 	
 	// clefs de validation BLL //////////////////////////////////
 	
@@ -25,6 +27,8 @@ public class BusinessCode {
 	
 	public static final String SAVE_USER_ERROR = "save.user.error";
 	public static final String SAVE_USER_VALID = "save.user.valid";
+	public static final String ERROR_SAVING_ADDRESS = "error.saving.adress";
+	public static final String VALIDATION_USER_NOT_FOUND = "user.not.found";
 
 		// 2. Affichage des articles en cours de vente
 	public static final String ENCHERE_AUCUNE = "aucune.enchere";
@@ -43,10 +47,5 @@ public class BusinessCode {
 		// 4. ...
 	
 }
-<<<<<<< HEAD
-	
-
-=======
->>>>>>> f055caa95ef6a1bcad3adcce0f20480fd3bc3870
 
 	

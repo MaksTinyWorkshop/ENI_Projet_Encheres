@@ -29,6 +29,7 @@ public class UserController {
 		this.utilisateurService = utilisateurService;
 	}
 
+	/////// Mapping du formulaire User
 	@GetMapping("/register")
 	public String showRegisterForm(Model model) {
 		Utilisateur user = new Utilisateur();
@@ -38,25 +39,31 @@ public class UserController {
 		return "view-register-form";
 	}
 
+	/////// Méthode pour enregistrer l'utilisateur et son adresse
 	@PostMapping("/register") 
 	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
 	    if (bindingResult.hasErrors()) {
 	        return "view-register-form";
 	    } else {
-	    	try {
+	        try {
+	            // Enregistre l'utilisateur
 	            utilisateurService.save(user);
+	            
+	            // Enregistre l'adresse utilisateur
+	            if (user.getAdresse() != null) {
+	                utilisateurService.saveAddress(user.getPseudo(), user.getAdresse());
+	            }
 
-	            return "redirect:/"; // Redirige l'utilisateur vers la page racine
-	    	
-	    	} catch (BusinessException e) {
-	    		// Afficher les messages d’erreur - il faut les injecter dans le contexte de
-				// BindingResult
-				e.getClefsExternalisations().forEach(key -> {
-					ObjectError error = new ObjectError("globalError", key);
-					bindingResult.addError(error);
-				});
-				return "view-register-form";
-	    	}
+	            return "redirect:/"; // Redirige vers al page d'accueil
+	        
+	        } catch (BusinessException e) {
+	            // Affiche message d'erreur
+	            e.getClefsExternalisations().forEach(key -> {
+	                ObjectError error = new ObjectError("globalError", key);
+	                bindingResult.addError(error);
+	            });
+	            return "view-register-form";
+	        }
 	    }
 	}
 
@@ -71,7 +78,7 @@ public class UserController {
 		} else {
 			System.out.println("User inconnu");
 		}
-		return "redirect:/profil";
+		return "redirect:/";
 	}
 
 	@PostMapping("/profil")

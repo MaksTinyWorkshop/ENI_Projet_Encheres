@@ -65,4 +65,16 @@ public class AdresseDAOImpl implements AdresseDAO {
 
 	}
 
+	@Override
+	public void save(Adresse adresse) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Long saveAddress(Adresse adresse) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

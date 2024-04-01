@@ -43,6 +43,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 										+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait)";
 
 	
+	///////// METHODES DE FILTRES PAR NOM ET PAS CATEGORIE
 	@Override
 	public List<ArticleAVendre> getArticlesByName(String boutNom) {
 	    String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom";
