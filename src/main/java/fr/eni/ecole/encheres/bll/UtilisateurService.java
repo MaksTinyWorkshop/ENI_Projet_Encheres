@@ -13,7 +13,5 @@ public interface UtilisateurService {
 
 	void save(Utilisateur user);
 
-	void placerUneEnchere(Utilisateur user, ArticleAVendre article);
-
-
+	
 }

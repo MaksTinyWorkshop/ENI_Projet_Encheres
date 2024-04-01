@@ -1,32 +1,54 @@
 package fr.eni.ecole.encheres.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import java.security.Principal;
 
-import fr.eni.ecole.encheres.bll.ArticleService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import fr.eni.ecole.encheres.bll.EnchereService;
 import fr.eni.ecole.encheres.bll.UtilisateurService;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
+import fr.eni.ecole.encheres.bo.Utilisateur;
+import fr.eni.ecole.encheres.exceptions.BusinessCode;
+import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 @Controller
+@RequestMapping("/articles")
 public class EncheresController {
 
 	private final UtilisateurService utilisateurService;
-	private final ArticleService articleService;
-	
-	
-	public EncheresController(UtilisateurService utilisateurService, ArticleService articleService) {
+	private final EnchereService enchereService;
+
+	public EncheresController(UtilisateurService utilisateurService, EnchereService enchereService) {
 		this.utilisateurService = utilisateurService;
-		this.articleService = articleService;
+		this.enchereService = enchereService;
 	}
-	
-	@GetMapping("/article/{id}")
-	public String detailsArticle(
-			@PathVariable(name="id", required = false)int idArticle) {
-		ArticleAVendre articleEnBase = articleService.
+
+
+
+	@PostMapping("/articleDetail/{id}")
+	public String faireUneEnchere(
+			@ModelAttribute("articleSelect") ArticleAVendre article, 
+			Utilisateur user,
+			Principal ppal) {
 		
-		return "";
+		// Récup des infos du user
+		String pseudo = ppal.getName();
+		user = utilisateurService.consulterProfil(pseudo);
+				
+		if (user.getCredit() > article.getPrixVente()) {
+			try {
+				enchereService.placerUneEnchere(user, article);
+				
+			} catch (BusinessException be) {
+				be.add(BusinessCode.UTILISATEUR_MONTANT_INSUFFISANT);
+				throw be;
+			}
+		}
+		
+		return "redirect:/view-article-detail";
 	}
-	
 	
 }

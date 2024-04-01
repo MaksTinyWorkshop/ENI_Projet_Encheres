@@ -22,5 +22,7 @@ public interface ArticleDAO {
 	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
 
 	Adresse getAdress(String pseudo);
+	
+	void updatePrix(ArticleAVendre article);
 
 }

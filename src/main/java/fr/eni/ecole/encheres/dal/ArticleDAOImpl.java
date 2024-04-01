@@ -48,6 +48,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 										+ "(nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait)"
 										+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait)";
 
+	private static final String UPDATE_PRIX = "UPDATE ARTICLES_A_VENDRE SET prix_vente= :prix_vente where no_article= :no_article";
 	
 	@Override
 	public List<ArticleAVendre> getArticlesByName(String boutNom) {
@@ -110,6 +111,17 @@ public class ArticleDAOImpl implements ArticleDAO {
 			// Mise à jour de l'identifiant du film auto-généré par la base
 			newArticle.setId(keyHolder.getKey().longValue());
 		}
+	}
+	
+	@Override
+	public void updatePrix(ArticleAVendre article) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		
+		namedParam.addValue("prix_vente", article.getPrixVente());
+		namedParam.addValue("no_article", article.getId());
+		
+		jdbcTemp.update(UPDATE_PRIX, namedParam);
+		
 	}
 	
 	
@@ -178,4 +190,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 	}
+
+
 }

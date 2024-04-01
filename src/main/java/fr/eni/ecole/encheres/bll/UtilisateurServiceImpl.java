@@ -22,12 +22,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	// Injection des repository
 	private UtilisateurDAO utilisateurDAO;
 	private AdresseDAO adresseDAO;
-	private EnchereDAO enchereDAO;
 
-	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO, EnchereDAO enchereDAO) {
+	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
 		this.utilisateurDAO = utilisateurDAO;
 		this.adresseDAO = adresseDAO;
-		this.enchereDAO = enchereDAO;
 	}
 
 	@Override
@@ -83,12 +81,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	        
 	        try {
 	            // Enregistrement de l'utilisateur
-
 	            utilisateurDAO.save(utilisateur);
 
 	        } catch (DataAccessException e) {
 	            // Message d'erreur en cas d'échec
-	        	e.printStackTrace();
 	            be.add(BusinessCode.SAVE_USER_ERROR);
 	            throw be;
 	        }
@@ -146,21 +142,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 
 	}
-
-	@Override
-	@Transactional
-	public void placerUneEnchere(Utilisateur user, ArticleAVendre article) {
-		BusinessException be = new BusinessException();
-		
-		try {
-			enchereDAO.placerUneEnchere(user, article);
-		} catch (DataAccessException e) {
-			be.add(BusinessCode.BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR);
-			throw be;
-		}
-		
-	}
-	
 
 
 	/**

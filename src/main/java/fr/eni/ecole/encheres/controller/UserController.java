@@ -79,7 +79,6 @@ public class UserController {
 
 	@PostMapping("/profil")
 	public String mettreAJourMonProfil(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult, 
-			//Principal ppal,
 			@RequestParam(name = "motDePasseNew") Optional<String> nouveauMdp,
 			@RequestParam(name = "confirmation") Optional<String> confirmNouveauMdp) {
 		
@@ -100,7 +99,7 @@ public class UserController {
 																								.equals(confirmNouveauMdp.get())) {
 					try {
 						utilisateurService.updatePassword(user.getPseudo(), nouveauMdp.get());
-						System.out.println("Succes update mdp");
+						
 					} catch (BusinessException e) {
 						e	.getClefsExternalisations()
 							.forEach(key -> {
