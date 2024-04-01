@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
+import jakarta.validation.Valid;
 
 @Controller
 public class ArticleController {
@@ -55,9 +58,6 @@ public class ArticleController {
 			newArticle.setCategorie(categorie);
 			newArticle.setRetrait(adresse);
 			model.addAttribute("article", newArticle);
-			System.out.println("Le pseudo du mec au chargement de la page c'est : " + newArticle.getVendeur().getPseudo());
-			System.out.println("Le formulaire reçoit :");
-			System.out.println(newArticle);
 			return "view-article-creation";
 		}else {
 			return "redirect:/";
@@ -65,15 +65,19 @@ public class ArticleController {
 	}
 	
 	@PostMapping("/Creer-Article")
-	public String newArticle(@ModelAttribute("Article") ArticleAVendre newArticle) { //(@Valid @ModelAttribute("Article") ArticleAVendre newArticle, BindingResult br) {
-		System.out.println("Le formulaire retourne :");
-		System.out.println(newArticle);
-		articleService.creerArticle(newArticle);
-		return "redirect:/";
-		
+	public String newArticle(@Valid @ModelAttribute("article") ArticleAVendre newArticle, BindingResult br) {
+		if (!br.hasErrors()) {
+			try {
+				articleService.creerArticle(newArticle);
+				return "redirect:/";
+			} catch (BusinessException e) {
+				e.getClefsExternalisations().forEach(key -> {
+					ObjectError error = new ObjectError ("globalError", key);
+					br.addError(error);
+				});
+				return "view-article-creation";
+			}
+		}
+		return "view-article-creation";
 	}
-	
-	//TODO 1. ajouter un lien "Vendre un Objet" dans la navBar.
-	//TODO 2. Ajouter accès roles dans le security controller.
-	//TODO 3. créer un fragment de succès de création d'objet, avec une redirection vers l'accueil.
 }

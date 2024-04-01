@@ -37,12 +37,11 @@ public class BusinessCode {
 	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_HIGH = "bll.validation.article.date.init.high";
 	public static final String BLL_VALIDATION_ARTICLE_PRIX = "bll.validation.article.prix";
 	public static final String BLL_VALIDATION_ARTICLE_DESCR_BLANK = "bll.validation.article.descr.blank";
-	public static final String VALIDATION_ARTICLE_NOM_BLANK = "bll.validation.article.nom.blank";
-	public static final String VALIDATION_ARTICLE_NULL = "bll.validation.null";
+	public static final String BLL_VALIDATION_ARTICLE_NOM_BLANK = "bll.validation.article.nom.blank";
+	public static final String BLL_VALIDATION_ARTICLE_NULL = "bll.validation.null";
 	
 		// 4. ...
 	
 }
-	
-}
+
 	
