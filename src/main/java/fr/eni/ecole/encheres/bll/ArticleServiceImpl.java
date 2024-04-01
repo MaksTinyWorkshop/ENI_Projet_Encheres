@@ -40,10 +40,17 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	
 	@Override
+	public ArticleAVendre consulterArticleById(Long articleId) {
+		
+		return articleDAO.getArticleById(articleId);
+	}
+	
+	@Override
 	public Adresse getAdress(String pseudo) {				//récupère l'adresse du Principal pour le formulaire de créa d'article
 		Adresse adress = articleDAO.getAdress(pseudo);		//tranfère la demande à la DAL
 		return adress;
 	}
+	
 	
 	@Override
 	@Transactional

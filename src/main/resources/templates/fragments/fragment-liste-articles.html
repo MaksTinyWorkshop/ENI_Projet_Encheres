@@ -2,7 +2,10 @@
 	<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
 		<div class="img-box"></div>
 		<div class="details">
-			<h2 data-th-text="${article.nom}"></h2>
+			<h2>
+				<a data-th-href="@{|/articles/articleDetail/${article.id}|}" data-th-text="${article.nom}"></a>
+			</h2>
+			
 			<p data-th-text="'Prix : ' + ${article.prixVente}"></p>
 			<p data-th-text="'Date de fin : ' + ${article.dateFinEncheres}"></p>
 
