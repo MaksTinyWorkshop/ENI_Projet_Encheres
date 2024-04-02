@@ -12,6 +12,8 @@ import fr.eni.ecole.encheres.bll.EnchereService;
 import fr.eni.ecole.encheres.bll.UtilisateurService;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Utilisateur;
+import fr.eni.ecole.encheres.exceptions.BusinessCode;
+import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 @Controller
 public class EncheresController {
@@ -32,21 +34,28 @@ public class EncheresController {
 			@ModelAttribute("articleSelect") ArticleAVendre article, 
 			@RequestParam(name="enchere") int montantEnchere,
 			Principal ppal) {
-
+		
 		// Récup du pseudo user et idArticle
 		String pseudoUser = ppal.getName();
 		long idArticle = article.getId();
 		
-		// Récup des infos en base pour savoir si l'utilisateur a les moyens d'enchérir
+		// Récup des infos en base pour savoir si l'utilisateur a les moyens d'enchérir et s'il n'est pas le vendeur
 		Utilisateur user = utilisateurService.consulterProfil(pseudoUser);
-		ArticleAVendre articleAUpdate = articleService.consulterArticleById(idArticle);
+		ArticleAVendre articleEnBase = articleService.consulterArticleById(idArticle);
+		String pseudoVendeur = articleEnBase.getVendeur().getPseudo();
 
-		if (user.getCredit() > articleAUpdate.getPrixVente()) {
+		if (user.getCredit() > montantEnchere && !pseudoUser.equals(pseudoVendeur)) {
+			try {
 			enchereService.placerUneEnchere(pseudoUser, idArticle, montantEnchere);
 			return "redirect:/";
-
+			} catch (BusinessException be) {
+				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
+				throw be;
+			}	
 		} else {
-			return "redirect:/";
+			BusinessException be = new BusinessException();
+			be.add(BusinessCode.BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR);
+			throw be;
 		}
 
 	}

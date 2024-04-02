@@ -17,13 +17,14 @@
 </head>
 <body>
 	<main>
-		<form class="userProfil" data-th-object="${articleSelect}" method="post" data-th-action="@{|/articles/articleDetail/*{id}|}" >
+		<form class="userProfil" data-th-object="${articleSelect}" method="post"
+			data-th-action="@{|/articles/articleDetail/*{id}|}">
 
 			<h1 data-th-text="*{nom}"></h1>
 
 			<div class="profilGrid">
 				<label for="description" data-th-text=#{form.article.descrittion}></label>
-				<textarea rows="3" cols="40"  id="description" data-th-field="*{description}" disabled></textarea>
+				<textarea rows="3" cols="40" id="description" data-th-field="*{description}" disabled></textarea>
 
 				<label for="bestOffer" data-th-text=#{form.article.bestOffer}></label>
 				<input type="text" id="bestOffer" data-th-field="*{prixVente}" disabled>
@@ -33,46 +34,47 @@
 
 				<label for="debEnchere" data-th-text=#{form.article.enchere.debut}></label>
 				<input type="text" id="debEnchere" data-th-field="*{dateDebutEncheres}" disabled>
-				
+
 				<label for="finEnchere" data-th-text=#{form.article.enchere.fin}></label>
 				<input type="text" id="finEnchere" data-th-field="*{dateFinEncheres}" disabled>
-				
+
 				<label for="vendeur" data-th-text=#{form.article.vendeur}></label>
 				<a data-th-href="@{|/user/profil/*{vendeur.pseudo}|}" data-th-text="*{vendeur.pseudo}"></a>
 
-				<fieldset>
-			    	<legend data-th-text="#{form.article.retrait}"></legend>
+				<fieldset class="fieldset">
+					<legend data-th-text="#{form.article.retrait}"></legend>
 					<label for="rue" data-th-text=#{form.rue}></label>
 					<input type="text" id="rue" data-th-field="*{retrait.rue}" disabled>
-	
+
 					<label for="complement" data-th-text=#{form.complement}></label>
-					<textarea rows="3" cols="50"  id="complement" data-th-field="*{retrait.complement}" disabled></textarea>
-	
+					<textarea rows="3" cols="50" id="complement" data-th-field="*{retrait.complement}" disabled></textarea>
+
 					<label for="codePostal" data-th-text=#{form.codePostal}></label>
 					<input type="number" id="codePostal" data-th-field="*{retrait.codePostal}" disabled>
-	
+
 					<label for="ville" data-th-text=#{form.ville}></label>
 					<input type="text" id="ville" data-th-field="*{retrait.ville}" disabled>
 				</fieldset>
 			</div>
-			<label for="enchere">Mon offre</label>
-			<input type="number" id="enchere" data-th-min="*{prixVente}" name="enchere"/>
-			
-		<span data-th-if="${#authorization.expression('isAuthenticated()')}">
-			<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
-		           	<button type="submit" data-th-text="#{article.button.enchere}" ></button>
-		    </span>
-	       	<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
-		       	<a data-th-href="@{|/articles/modifier/*{}|}" >
-		           	<button type="button" data-th-text="#{article.button.modif}" ></button>
-		       	</a>
-		       	
-		       	<a data-th-href="@{|/articles/supprimer/*{id}|}" >
-		           	<button type="button" data-th-text="#{article.button.suppr}" ></button>
-		       	</a>
-		    </span>
-       	</span>
-       	</form>
+
+
+			<div data-th-if="${#authorization.expression('isAuthenticated()')}" class="btn-box">
+				<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
+					<label for="enchere" data-th-text="#{form.article.monoffre}"></label>
+					<input type="number" id="enchere" data-th-min="*{prixVente}" name="enchere" data-th-placeholder="*{prixVente}"/>
+					<button type="submit" data-th-text="#{article.button.enchere}"></button>
+				</span>
+				<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
+					<a data-th-href="@{|/articles/modifier/*{}|}">
+						<button type="button" data-th-text="#{article.button.modif}"></button>
+					</a>
+
+					<a data-th-href="@{|/articles/supprimer/*{id}|}">
+						<button type="button" data-th-text="#{article.button.suppr}"></button>
+					</a>
+				</span>
+			</div>
+		</form>
 	</main>
 </body>
 </html>
