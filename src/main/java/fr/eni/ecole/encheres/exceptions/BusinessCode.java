@@ -48,7 +48,9 @@ public class BusinessCode {
 	
 	// 4. Placement d'enchère
 	public static final String BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR = "bll.placement.enchere.error";
-	public static final String UTILISATEUR_MONTANT_INSUFFISANT = "placement.enchere.montant.insuffisant";
+	public static final String VALIDATION_ENCHERE_CREDIT = "placement.enchere.credit.insuffisant";
+	public static final String VALIDATION_ENCHERE_USER_EQUALS_VENDEUR = "placement.enchere.user.equals.vendeur";
+	public static final String VALIDATION_ENCHERE_MONTANT_INSUFFISANT = "placement.enchere.montant.insuffisant";
 }
 
 

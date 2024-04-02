@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.validation.constraints.NotNull;
+
 public class Enchere implements Serializable{
 	
 ///////////////////////////////////////////// num Série
@@ -13,7 +15,10 @@ public class Enchere implements Serializable{
 ///////////////////////////////////////////// Attributs
 	//Locaux
 	private LocalDate date;
+	
+	@NotNull
 	private int montant;
+	
 	//Liens
 	private Utilisateur acquereur;
 	private ArticleAVendre articleAVendre;

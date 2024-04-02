@@ -17,6 +17,7 @@
 </head>
 <body>
 	<main>
+
 		<form class="userProfil" data-th-object="${articleSelect}" method="post"
 			data-th-action="@{|/articles/articleDetail/*{id}|}">
 
@@ -57,10 +58,18 @@
 				</fieldset>
 			</div>
 
+			<div th:if="${not #lists.isEmpty(messageDErreur)}">
+				<ul>
+					<li th:each="errorMsg : ${messageDErreur}" th:text="${errorMsg}"></li>
+				</ul>
+			</div>
+			
 			<div data-th-if="${#authorization.expression('isAuthenticated()')}" class="btn-box">
 				<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
+				
 					<label for="enchere" data-th-text="#{form.article.monoffre}"></label>
-					<input type="number" id="enchere" data-th-min="*{prixVente}" name="enchere" data-th-placeholder="*{prixVente}"/>
+					<input type="number" id="enchere" data-th-min="*{prixVente} + 1" name="enchere" data-th-placeholder="*{prixVente} +1" />
+
 					<button type="submit" data-th-text="#{article.button.enchere}"></button>
 				</span>
 				<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">

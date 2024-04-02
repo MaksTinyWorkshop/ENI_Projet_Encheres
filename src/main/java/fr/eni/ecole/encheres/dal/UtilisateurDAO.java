@@ -17,4 +17,9 @@ public interface UtilisateurDAO {
 	int uniquePseudo(String pseudo);
 
 	Long saveAddress(Adresse adresse);
-}
+	
+	void crediter(Utilisateur utilisateur);
+	
+	void debiter(String pseudo, int montant);
+	
+	}

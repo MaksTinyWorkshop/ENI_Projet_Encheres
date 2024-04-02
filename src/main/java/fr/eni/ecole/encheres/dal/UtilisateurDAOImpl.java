@@ -14,17 +14,28 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
-	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, telephone, email, credit, administrateur, no_adresse from UTILISATEURS where pseudo = :pseudo";
-	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe) "
-													+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
-	private static final String INSERT_ADRESSE_QUERY = "INSERT INTO ADRESSES (rue, ville, code_postal) VALUES (:rue, :ville, :codePostal)";
+	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, telephone, email, credit, administrateur, no_adresse "
+			+ " from UTILISATEURS where pseudo = :pseudo";
+	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS "
+			+ " (pseudo, nom, prenom, email, telephone, mot_de_passe) "
+			+ " VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
+	private static final String INSERT_ADRESSE_QUERY = "INSERT INTO ADRESSES "
+			+ " (rue, ville, code_postal) VALUES (:rue, :ville, :codePostal)";
+	private static final String UPDATE_USER= "UPDATE UTILISATEURS SET "
+			+ " nom= :nom, prenom= :prenom, email= :email, telephone= :telephone "
+			+ " WHERE pseudo= :pseudo";
+	private static final String UPDATE_MOT_DE_PASSE= "UPDATE utilisateurs "
+			+ " SET mot_de_passe = :nouveauMdp WHERE pseudo = :pseudo";
+	
+	private static final String COUNT_EMAIL= "SELECT count(email) "
+			+ " FROM UTILISATEURS WHERE email = :email";
+	private static final String COUNT_PSEUDO= "SELECT count(pseudo) "
+			+ " FROM UTILISATEURS WHERE pseudo = :pseudo";
+	private static final String CREDIT_PRECEDENT_ENCHERISSEUR= "UPDATE UTILISATEURS SET"
+			+ " credit = credit + :credit WHERE pseudo= :pseudo";
+	private static final String DEBIT_PRECEDENT_ENCHERISSEUR= "UPDATE UTILISATEURS SET"
+			+ " credit = credit - :credit WHERE pseudo= :pseudo";
 
-	private static final String UPDATE_USER= "UPDATE UTILISATEURS SET nom= :nom, prenom= :prenom, email= :email, telephone= :telephone WHERE pseudo= :pseudo";
-	private static final String UPDATE_MOT_DE_PASSE= "UPDATE utilisateurs SET mot_de_passe = :nouveauMdp WHERE pseudo = :pseudo";
-	
-	private static final String COUNT_EMAIL= "SELECT count(email) FROM UTILISATEURS WHERE email = :email";
-	private static final String COUNT_PSEUDO= "SELECT count(pseudo) FROM UTILISATEURS WHERE pseudo = :pseudo";
-	
 	
 	@Autowired 
 	NamedParameterJdbcTemplate jdbcTemplate;
@@ -97,6 +108,25 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		jdbcTemplate.update(UPDATE_MOT_DE_PASSE, namedParam);
 	}
 	
+	@Override
+	public void crediter(Utilisateur utilisateur) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("pseudo", utilisateur.getPseudo());
+		namedParam.addValue("credit", utilisateur.getCredit());
+		
+		jdbcTemplate.update(CREDIT_PRECEDENT_ENCHERISSEUR, namedParam);
+	}
+	
+	@Override
+	public void debiter(String pseudo, int montant) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("pseudo", pseudo);
+		namedParam.addValue("credit", montant);
+		
+		jdbcTemplate.update(DEBIT_PRECEDENT_ENCHERISSEUR, namedParam);
+	}
+	
+	
 	/**
 	* Classe de mapping pour gérer les noms des colonnes
 	*/
@@ -139,6 +169,16 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParam.addValue("pseudo", pseudo);
 		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParam, Integer.class);
 	}
+
+
+
+
+
+
+
+
+
+
 
 
 
