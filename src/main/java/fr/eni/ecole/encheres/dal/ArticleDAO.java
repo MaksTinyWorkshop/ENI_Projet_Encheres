@@ -27,4 +27,6 @@ public interface ArticleDAO {
 	
 	void updatePrix(long idArticle, int montantEnchere);
 
+	List<Categorie> getAllCategories();
+
 }

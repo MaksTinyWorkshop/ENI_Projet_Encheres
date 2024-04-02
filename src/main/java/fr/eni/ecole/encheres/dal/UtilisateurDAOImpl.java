@@ -57,22 +57,22 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         jdbcTemplate.update(INSERT_USER_QUERY, params);
     }
 
-	@Override
-	public Long saveAddress(Adresse adresse) {
-	    MapSqlParameterSource params = new MapSqlParameterSource();
-	    params.addValue("rue", adresse.getRue());
-	    params.addValue("ville", adresse.getVille());
-	    params.addValue("codePostal", adresse.getCodePostal());
-
-	    // Insert l'adresse en BDD
-	    jdbcTemplate.update(INSERT_ADRESSE_QUERY, params);
-
-	    // Récupère l'ID généré
-	    String selectIdQuery = "SELECT SCOPE_IDENTITY() AS id";
-	    Long generatedId = jdbcTemplate.queryForObject(selectIdQuery, new MapSqlParameterSource(), Long.class);
-
-	    return generatedId;
-	}
+//	@Override
+//	public Long saveAddress(Adresse adresse) {
+//	    MapSqlParameterSource params = new MapSqlParameterSource();
+//	    params.addValue("rue", adresse.getRue());
+//	    params.addValue("ville", adresse.getVille());
+//	    params.addValue("codePostal", adresse.getCodePostal());
+//
+//	    // Insert l'adresse en BDD
+//	    jdbcTemplate.update(INSERT_ADRESSE_QUERY, params);
+//
+//	    // Récupère l'ID généré
+//	    String selectIdQuery = "SELECT SCOPE_IDENTITY() AS id";
+//	    Long generatedId = jdbcTemplate.queryForObject(selectIdQuery, new MapSqlParameterSource(), Long.class);
+//
+//	    return generatedId;
+//	}
   
 
 	@Override

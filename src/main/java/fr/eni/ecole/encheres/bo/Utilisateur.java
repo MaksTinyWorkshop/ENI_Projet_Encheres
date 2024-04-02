@@ -74,19 +74,7 @@ public class Utilisateur implements Serializable{
 	}
 	
 	
-	
-	public Utilisateur(String pseudo2, String email2, String motDePasseHash) {
-		this.getPseudo();
-		this.getEmail();
-		this.getMotDePasse();
-	}
-	
-	public Utilisateur(String pseudo2, String nom2, String prenom2, String telephone2, String email2, String rue,
-			String codePostal, String ville, String motDePasseHash) {
-		super();
-		
-	}
-	
+
 ////////////////////////////////////////////Setters / getters
 	
 	//Locaux
@@ -194,18 +182,6 @@ public class Utilisateur implements Serializable{
 		return builder.toString();
 	}
 	
-	public String getRue() {
-	return adresse != null ? adresse.getRue() : null;
-	    }
-
-	public String getCodePostal() {
-	return adresse != null ? adresse.getCodePostal() : null;
-	    }
-
-	public String getVille() {
-	return adresse != null ? adresse.getVille() : null;
 	
-	
-	   }
 		
 }

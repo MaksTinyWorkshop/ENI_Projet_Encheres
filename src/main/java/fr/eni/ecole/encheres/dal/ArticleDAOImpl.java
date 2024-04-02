@@ -59,10 +59,14 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 
 	@Override
-	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
-	    String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE no_categorie = :idCategorie";
-	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("idCategorie", categorie.getId());
-	    return jdbcTemp.query(query, params, new ArticleRowMapper());
+	public List<Categorie> getAllCategories() {
+	    String query = "SELECT no_categorie, libelle FROM CATEGORIES";
+	    return jdbcTemp.query(query, (rs, rowNum) -> {
+	        Categorie categorie = new Categorie();
+	        categorie.setNoCategorie(rs.getInt("no_categorie"));
+	        categorie.setLibelle(rs.getString("libelle"));
+	        return categorie;
+	    });
 	}
 	
 	@Override
@@ -198,6 +202,12 @@ public class ArticleDAOImpl implements ArticleDAO {
 			
 			return a;
 		}
+	}
+
+	@Override
+	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

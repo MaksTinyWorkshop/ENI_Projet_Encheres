@@ -159,5 +159,10 @@ public class ArticleServiceImpl implements ArticleService {
 		return null;
 	}
 	
+	@Override
+	public List<Categorie> getAllCategories() {
+	    return articleDAO.getAllCategories();
+	}
+	
 	
 }

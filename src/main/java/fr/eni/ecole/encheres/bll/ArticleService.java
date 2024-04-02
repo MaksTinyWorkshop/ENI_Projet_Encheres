@@ -22,4 +22,6 @@ public interface ArticleService {
 	Categorie getCategorieByName(String categorie);
 	ArticleAVendre consulterArticleById(Long articleId);
 	void supprArticleById(Long id);
+
+	List<Categorie> getAllCategories();
 }
