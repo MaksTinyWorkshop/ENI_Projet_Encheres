@@ -1,62 +1,60 @@
 package fr.eni.ecole.encheres.controller;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import fr.eni.ecole.encheres.bll.ArticleService;
+
 import fr.eni.ecole.encheres.bll.EnchereService;
-import fr.eni.ecole.encheres.bll.UtilisateurService;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
-import fr.eni.ecole.encheres.bo.Utilisateur;
-import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 @Controller
 public class EncheresController {
 
-	private final UtilisateurService utilisateurService;
-	private final EnchereService enchereService;
-	private final ArticleService articleService;
 
-	public EncheresController(UtilisateurService utilisateurService, EnchereService enchereService,
-			ArticleService articleService) {
-		this.utilisateurService = utilisateurService;
+	private final EnchereService enchereService;
+	private final MessageSource messageSource;
+
+
+	public EncheresController(EnchereService enchereService, MessageSource messageSource) {
 		this.enchereService = enchereService;
-		this.articleService = articleService;
+		this.messageSource = messageSource;
 	}
 
 	@PostMapping("/articles/articleDetail/{id}")
 	public String faireUneEnchere(
 			@ModelAttribute("articleSelect") ArticleAVendre article, 
 			@RequestParam(name="enchere") int montantEnchere,
-			Principal ppal) {
+			Principal ppal,
+			RedirectAttributes ra, Locale locale) {
 		
 		// Récup du pseudo user et idArticle
 		String pseudoUser = ppal.getName();
 		long idArticle = article.getId();
 		
-		// Récup des infos en base pour savoir si l'utilisateur a les moyens d'enchérir et s'il n'est pas le vendeur
-		Utilisateur user = utilisateurService.consulterProfil(pseudoUser);
-		ArticleAVendre articleEnBase = articleService.consulterArticleById(idArticle);
-		String pseudoVendeur = articleEnBase.getVendeur().getPseudo();
-
-		if (user.getCredit() > montantEnchere && !pseudoUser.equals(pseudoVendeur)) {
 			try {
 			enchereService.placerUneEnchere(pseudoUser, idArticle, montantEnchere);
-			return "redirect:/";
+			
 			} catch (BusinessException be) {
-				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
-				throw be;
+				List<String> messagesDErreur = be.getClefsExternalisations()
+						.stream()
+						.map(key-> messageSource.getMessage(key, null, locale))
+						.collect(Collectors.toList());
+				ra.addFlashAttribute("messageDErreur", messagesDErreur);
+				return "redirect:/articles/articleDetail/" + idArticle;
 			}	
-		} else {
-			BusinessException be = new BusinessException();
-			be.add(BusinessCode.BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR);
-			throw be;
-		}
+			return "redirect:/";
+
 
 	}
 

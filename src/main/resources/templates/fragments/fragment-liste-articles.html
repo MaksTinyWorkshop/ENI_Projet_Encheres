@@ -6,7 +6,7 @@
 				<a data-th-href="@{|/articles/articleDetail/${article.id}|}" data-th-text="${article.nom}"></a>
 			</h2>
 			
-			<p data-th-text="#{form.article.prixInit} + ' '  + ${article.prixVente}"></p>
+			<p data-th-text="#{form.article.bestOffer} + ' '  + ${article.prixVente}"></p>
 			<p data-th-text="#{form.article.enchere.fin} + ' '  + ${article.dateFinEncheres}"></p>
 
 			<p>

@@ -73,6 +73,13 @@ public class Utilisateur implements Serializable{
 		this.adresse = adresse;
 	}
 	
+<<<<<<< HEAD
+=======
+	
+	
+
+	
+>>>>>>> f7d2eafea2e557d9d94256218f2cd6a2638b2ed1
 ////////////////////////////////////////////Setters / getters
 	
 	//Locaux

@@ -7,7 +7,7 @@ public class BusinessCode {
 		
 	//Clés de Validation
 	public static final String VALIDATION_USER_NULL= "validation.user.null";
-	public static final String VALIDATION_USER_LOGIN_BLANK = "validation.user.loginBlank";
+	public static final String VALIDATION_USER_LOGIN_BLANK = "Notblank.user.pseudo";
 	public static final String VALIDATION_USER_LOGIN_FORM = "validation.user.userForm";
 	public static final String VALIDATION_USER_EMAIL_BLANK = "validation.user.emailBlank";
 	public static final String VALIDATION_USER_EMAIL_FORM = "validation.user.emailForm";
@@ -48,7 +48,9 @@ public class BusinessCode {
 	
 	// 4. Placement d'enchère
 	public static final String BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR = "bll.placement.enchere.error";
-	public static final String UTILISATEUR_MONTANT_INSUFFISANT = "placement.enchere.montant.insuffisant";
+	public static final String VALIDATION_ENCHERE_CREDIT = "placement.enchere.credit.insuffisant";
+	public static final String VALIDATION_ENCHERE_USER_EQUALS_VENDEUR = "placement.enchere.user.equals.vendeur";
+	public static final String VALIDATION_ENCHERE_MONTANT_INSUFFISANT = "placement.enchere.montant.insuffisant";
 }
 
 
