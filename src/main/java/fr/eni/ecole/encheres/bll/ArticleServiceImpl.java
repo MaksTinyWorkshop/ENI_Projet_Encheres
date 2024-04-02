@@ -90,7 +90,7 @@ public class ArticleServiceImpl implements ArticleService {
 		if (dF == null) {
 			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_DATE_FIN_NULL);
 			return false;
-		}else if (dI.compareTo(dF) < 0) {
+		}else if (dI.compareTo(dF) > 0) {
 			be.add(BusinessCode.BLL_VALIDATION_ARTICLE_DATE_FIN_LOW);
 			return false;
 		}

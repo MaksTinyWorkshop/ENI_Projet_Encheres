@@ -63,13 +63,15 @@
 		           	<button type="submit" data-th-text="#{article.button.enchere}" ></button>
 		    </span>
 	       	<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
-		       	<a data-th-href="@{|/articles/modifier/*{}|}" >
-		           	<button type="button" data-th-text="#{article.button.modif}" ></button>
-		       	</a>
-		       	
-		       	<a data-th-href="@{|/articles/supprimer/*{id}|}" >
-		           	<button type="button" data-th-text="#{article.button.suppr}" ></button>
-		       	</a>
+	       		<!--  <span data-th-if="${#dates.createNow().before(articleSelect.dateDebutEncheres)}">  ERREUR A CORRIGER ICI-->
+			       	<a data-th-href="@{|/articles/modifier/*{}|}" >
+			           	<button type="button" data-th-text="#{article.button.modif}" ></button>
+			       	</a>
+			       	
+			       	<a data-th-href="@{|/articles/supprimer/*{id}|}" >
+			           	<button type="button" data-th-text="#{article.button.suppr}" ></button>
+			       	</a>
+			    <!-- </span>  -->
 		    </span>
        	</span>
        	</form>
