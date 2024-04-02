@@ -39,13 +39,19 @@
         <label for="prixInit" data-th-text="#{form.article.prixInit}"></label>
         <input type="number" id="prixInit" data-th-field="*{prixInitial}" min="0" required>
         
+         <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prixInitial')}"></div>
+        
         <label for="enchereStart" data-th-text="#{form.article.enchere.debut}"></label>
         <input type="date" id="enchereStart" data-th-field="*{dateDebutEncheres}" required>
         
+        <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateDebutEncheres')}"></div>
+ 
         <label for="enchereEnd" data-th-text="#{form.article.enchere.fin}"></label>
         <input type="date" id="enchereEnd" data-th-field="*{dateFinEncheres}" required>
-        <th:block >
         
+        <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateFinEncheres')}"></div>
+        
+
         <!-- Partie retrait -->
 		<fieldset>
 		    <legend data-th-text="#{form.article.retrait}"></legend>

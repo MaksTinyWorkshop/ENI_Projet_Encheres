@@ -32,7 +32,6 @@ public class ArticleServiceImpl implements ArticleService {
 //////////////////////////////////////////// Méthodes
 	
 	@Override
-	@Transactional
 	public List<ArticleAVendre> charger(Principal user){										//appel la méthode de chargement de la liste des articles actifs via la DAO
 		List<ArticleAVendre> listeArticles = new ArrayList<>();
 		listeArticles = articleDAO.getActiveArticles();

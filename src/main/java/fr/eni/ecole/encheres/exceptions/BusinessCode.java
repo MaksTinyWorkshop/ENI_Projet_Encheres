@@ -37,13 +37,13 @@ public class BusinessCode {
 	
 	// 3. Création d'article
 	public static final String BLL_CREER_ARTICLE_ERROR = "bll.creer.article.error";
-	public static final String BLL_VALIDATION_ARTICLE_DATE_FIN_NULL = "bll.validation.article.date.fin.null";
-	public static final String BLL_VALIDATION_ARTICLE_DATE_FIN_LOW = "bll.validation.article.date.fin.low";
-	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_NULL = "bll.validation.article.date.init.null";
-	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_HIGH = "bll.validation.article.date.init.high";
-	public static final String BLL_VALIDATION_ARTICLE_PRIX = "bll.validation.article.prix";
-	public static final String BLL_VALIDATION_ARTICLE_DESCR_BLANK = "bll.validation.article.descr.blank";
-	public static final String BLL_VALIDATION_ARTICLE_NOM_BLANK = "bll.validation.article.nom.blank";
+	public static final String BLL_VALIDATION_ARTICLE_DATE_FIN_NULL = "NotNull.article.dateFinEncheres";
+	public static final String BLL_VALIDATION_ARTICLE_DATE_FIN_LOW = "Past.article.dateFinEncheres";
+	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_NULL = "NotNull.article.dateDebutEncheres";
+	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_HIGH = "Past.article.dateDebutEncheres";
+	public static final String BLL_VALIDATION_ARTICLE_PRIX = "NotNull.article.prixInitial";
+	public static final String BLL_VALIDATION_ARTICLE_DESCR_BLANK = "NotBlank.article.description";
+	public static final String BLL_VALIDATION_ARTICLE_NOM_BLANK = "NotBlank.article.nom";
 	public static final String BLL_VALIDATION_ARTICLE_NULL = "bll.validation.null";
 	
 	// 4. Placement d'enchère

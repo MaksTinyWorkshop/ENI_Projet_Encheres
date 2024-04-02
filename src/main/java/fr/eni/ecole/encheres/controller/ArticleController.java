@@ -36,25 +36,25 @@ public class ArticleController {
 ////////////////////////////////////////////Méthodes
 
 	@GetMapping("/")
-	public String accueil(Model model, Principal user) {											//Gère l'affichage des articles en cours de vente sur l'accueil.
+	public String accueil(Model model, Principal user) {								//Gère l'affichage des articles en cours de vente sur l'accueil.
 		try {
 			List<ArticleAVendre> articles = articleService.charger(user);				//appel du service pour charger la liste
 			model.addAttribute("articlesList", articles);
-			return "index";															//retour à l'index
-		}catch (BusinessException e){												//ici récupération de la BusinessException chargée dans le service
-			model.addAttribute("listArticleError", e.getClefsExternalisations());	//transfer au model de la liste codes erreurs retournée
+			return "index";																//retour à l'index
+		}catch (BusinessException e){													//ici récupération de la BusinessException chargée dans le service
+			model.addAttribute("listArticleError", e.getClefsExternalisations());		//transfer au model de la liste codes erreurs retournée
 			return "index";
 		}
 	}
 	
 	
-	@GetMapping("/Creer-Article")												//Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
+	@GetMapping("/Creer-Article")														//Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
 	public String creerArticle(Model model, Principal user) {
-		if (user != null) {														//vérifie le USer
+		if (user != null) {																//vérifie le USer
 			ArticleAVendre newArticle = new ArticleAVendre(); 
 			Utilisateur vendeur  = new Utilisateur();
 			Categorie categorie  = new Categorie();
-			Adresse adresse = articleService.getAdress(user.getName());			//Ajout d'une instance adresse qui va récupérer en base l'adresse du Principal
+			Adresse adresse = articleService.getAdress(user.getName());					//Ajout d'une instance adresse qui va récupérer en base l'adresse du Principal
 			newArticle.setVendeur(vendeur);
 			newArticle.getVendeur().setPseudo(user.getName());
 			newArticle.setCategorie(categorie);
@@ -74,11 +74,11 @@ public class ArticleController {
 		return "view-article-creation";
 	}
 	
-	@PostMapping("/Creer-Article")																// Permet d'enregistrer un nouvel article
+	@PostMapping("/Creer-Article")														// Permet d'enregistrer un nouvel article
 	public String newArticle(
 			@Valid @ModelAttribute("article") ArticleAVendre newArticle, BindingResult br) {
 		boolean create = false;
-		if (newArticle.getId() == null) {														// si l'ID est null, l'article est nouveau
+		if (newArticle.getId() == null) {												// si l'ID est null, l'article est nouveau
 			create = true;
 		}
 		if (!br.hasErrors()) {
@@ -125,7 +125,7 @@ public class ArticleController {
 
 
 	
-	@GetMapping("/articles/articleDetail/{id}")														//Permet d'atteindre la page d'affichage de détail de l'article sélectionné
+	@GetMapping("/articles/articleDetail/{id}")												//Permet d'atteindre la page d'affichage de détail de l'article sélectionné
 	public String articleDetail(
 			@PathVariable(name="id", required = false)Long articleId, Model model) {
 		ArticleAVendre articleAVoir = articleService.consulterArticleById(articleId);		//création d'un coquille que la requête va compléter avec le paramètre passé

@@ -23,15 +23,10 @@
 			<h1 data-th-text="*{nom}"></h1>
 
 			<div class="profilGrid">
-<<<<<<< HEAD
 				<input type="hidden" id="id" data-th-field="*{id}" required>
 			
 				<label for="description" data-th-text=#{form.article.description}></label>
-				<textarea rows="3" cols="40"  id="description" data-th-field="*{description}" disabled></textarea>
-=======
-				<label for="description" data-th-text=#{form.article.descrittion}></label>
 				<textarea rows="3" cols="40" id="description" data-th-field="*{description}" disabled></textarea>
->>>>>>> 146fde88869eeee6864eeb6d8a8d95e6de4979c1
 
 				<label for="bestOffer" data-th-text=#{form.article.bestOffer}></label>
 				<input type="text" id="bestOffer" data-th-field="*{prixVente}" disabled>
@@ -70,7 +65,7 @@
 					<button type="submit" data-th-text="#{article.button.enchere}"></button>
 				</span>
 					<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
-	       		<!--  <span data-th-if="${#articleSelect.statu <= 0}">  -->
+	       		<span data-th-if="*{statu} == 0">
 			       	<a data-th-href="@{|/modifier-Article/*{id}|}" >
 			           	<button type="button" data-th-text="#{article.button.modif}" ></button>
 			       	</a>
@@ -78,7 +73,7 @@
 			       	<a data-th-href="@{|/articles/supprimer/*{id}|}" >
 			           	<button type="button" data-th-text="#{article.button.suppr}" ></button>
 			       	</a>
-				<!-- </span>  -->
+				</span>
 		    </span>
 			</div>
 		</form>
