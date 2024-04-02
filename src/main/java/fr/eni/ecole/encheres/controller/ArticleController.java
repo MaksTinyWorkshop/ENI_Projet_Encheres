@@ -69,17 +69,21 @@ public class ArticleController {
 	@PostMapping("/Creer-Article")																// Permet d'enregistrer un nouvel article
 	public String newArticle(
 			@Valid @ModelAttribute("article") ArticleAVendre newArticle, BindingResult br) {
-		if (!br.hasErrors()) {
-			try {
-				articleService.creerArticle(newArticle);
-				return "redirect:/";
-			} catch (BusinessException e) {
-				e.getClefsExternalisations().forEach(key -> {
-					ObjectError error = new ObjectError ("globalError", key);
-					br.addError(error);
-				});
-				return "view-article-creation";
+		if (newArticle.getId() == null) {
+			if (!br.hasErrors()) {
+				try {
+					articleService.creerArticle(newArticle);
+					return "redirect:/";
+				} catch (BusinessException e) {
+					e.getClefsExternalisations().forEach(key -> {
+						ObjectError error = new ObjectError ("globalError", key);
+						br.addError(error);
+					});
+					return "view-article-creation";
+				}
 			}
+		}else {
+			
 		}
 		return "view-article-creation";
 	}
@@ -94,7 +98,7 @@ public class ArticleController {
 	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par nom
 	    } catch (BusinessException e) {
 	        model.addAttribute("listArticleError", e.getClefsExternalisations());
-	        return "/"; // Retourne la vue de la page d'accueil en cas d'erreur
+	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
 	    }
 	}
 
@@ -104,10 +108,10 @@ public class ArticleController {
 	        Categorie categorieObj = articleService.getCategorieByName(categorie);
 	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByCategorie(categorieObj);
 	        model.addAttribute("articlesList", articlesFiltres);
-	        return "/"; // Retourne la vue de la page d'accueil avec les articles filtrés par catégorie
+	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par catégorie
 	    } catch (BusinessException e) {
 	        model.addAttribute("listArticleError", e.getClefsExternalisations());
-	        return "/"; // Retourne la vue de la page d'accueil en cas d'erreur
+	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
 	    }
 	}
 

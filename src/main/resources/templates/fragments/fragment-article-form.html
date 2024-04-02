@@ -11,6 +11,7 @@
        	<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
     	
         <!-- Partie détails de l'article -->
+        <input type="hidden" id="id" data-th-field="*{id}" required>
         <input type="hidden" id="pseudo" data-th-field="*{vendeur.pseudo}" required>
         
         <label for="nom" data-th-text="#{form.nom}"></label>

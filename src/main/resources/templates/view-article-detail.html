@@ -57,7 +57,6 @@
 				</fieldset>
 			</div>
 
-
 			<div data-th-if="${#authorization.expression('isAuthenticated()')}" class="btn-box">
 				<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
 					<label for="enchere" data-th-text="#{form.article.monoffre}"></label>
@@ -75,6 +74,7 @@
 				</span>
 			</div>
 		</form>
+
 	</main>
 </body>
 </html>
