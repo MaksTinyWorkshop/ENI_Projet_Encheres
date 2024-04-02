@@ -1,12 +1,13 @@
 
 <form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-article-form(titreForm)" 
+		data-th-fragment="frag-article-form" 
 		class="form-poly"
 		method="post"
 		data-th-object="${article}"
 		data-th-action="@{/Creer-Article}" >
 		
-		<h1 data-th-text="${titreForm}"></h1>
+		<h1 data-th-text="${titreForm}"></h1><!--  titre pour créa -->
+		<h1 data-th-text="${titreForm}"></h1><!--  titre pour modification -->
 		
        	<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
     	
@@ -19,7 +20,7 @@
         
         <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
 		
-        <label for="description" data-th-text="#{form.article.descrittion}"></label>
+        <label for="description" data-th-text="#{form.article.description}"></label>
         <textarea id="description" rows="4" cols="50" data-th-field="*{description}" required></textarea>
         
         <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('description')}"></div>
@@ -43,6 +44,7 @@
         
         <label for="enchereEnd" data-th-text="#{form.article.enchere.fin}"></label>
         <input type="date" id="enchereEnd" data-th-field="*{dateFinEncheres}" required>
+        <th:block >
         
         <!-- Partie retrait -->
 		<fieldset>

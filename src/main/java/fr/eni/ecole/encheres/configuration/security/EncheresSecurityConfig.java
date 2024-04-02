@@ -59,6 +59,10 @@ public class EncheresSecurityConfig {
 				.permitAll()
 				.requestMatchers(HttpMethod.POST, "/articles/articleDetail/**")
 				.authenticated();// autorisation pour la page de détail des articles
+			
+			auth.requestMatchers(HttpMethod.GET, "/modifier-Article/**")
+				.authenticated();
+			
 			auth.requestMatchers(HttpMethod.GET, "/articles/supprimer/**")
 				.authenticated();
 			auth.requestMatchers("/*")
