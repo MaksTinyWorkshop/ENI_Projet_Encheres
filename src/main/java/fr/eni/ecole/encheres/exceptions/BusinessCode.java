@@ -7,7 +7,7 @@ public class BusinessCode {
 		
 	//Clés de Validation
 	public static final String VALIDATION_USER_NULL= "validation.user.null";
-	public static final String VALIDATION_USER_LOGIN_BLANK = "validation.user.loginBlank";
+	public static final String VALIDATION_USER_LOGIN_BLANK = "Notblank.user.pseudo";
 	public static final String VALIDATION_USER_LOGIN_FORM = "validation.user.userForm";
 	public static final String VALIDATION_USER_EMAIL_BLANK = "validation.user.emailBlank";
 	public static final String VALIDATION_USER_EMAIL_FORM = "validation.user.emailForm";

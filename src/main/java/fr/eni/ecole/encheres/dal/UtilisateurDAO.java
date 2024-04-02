@@ -1,12 +1,11 @@
 package fr.eni.ecole.encheres.dal;
 
-import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 public interface UtilisateurDAO {
 	Utilisateur read(String pseudo);
 
-	void save(Utilisateur utilisateur);
+	void save(Utilisateur utilisateur, long idAdresse);
 	
 	void update(Utilisateur utilisateur);
 	
@@ -15,8 +14,6 @@ public interface UtilisateurDAO {
 	int uniqueEmail(String email);
 	
 	int uniquePseudo(String pseudo);
-
-	Long saveAddress(Adresse adresse);
 	
 	void crediter(Utilisateur utilisateur);
 	

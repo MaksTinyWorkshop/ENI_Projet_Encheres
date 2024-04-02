@@ -9,25 +9,19 @@
 
 	<!-- Première colonne -->
 
-	<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-		<label for="pseudo" data-th-text=#{form.pseudo}></label>
-		<input type="text" id="pseudo" required data-th-field="*{pseudo}">
-		
-		<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
-	</th:block>
 
-	<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-		<label for="pseudo" data-th-text=#{form.pseudo}></label>
-		<input type="text" id="pseudo" disabled data-th-field="*{pseudo}">
-		<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
-	</th:block>
-	
-	<input type="hidden" id="pseudoHidden" data-th-field="*{pseudo}">
+
+	<label for="pseudo" data-th-text=#{form.pseudo}></label>
+	<input type="text" id="pseudo" data-th-field="*{pseudo}">
+	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
+
+
+<!-- 	<input type="hidden" id="pseudoHidden" data-th-field="*{pseudo}"> -->
 
 	<label for="nom" data-th-text=#{form.nom}></label>
 	<input type="text" id="nom" data-th-field="*{nom}" required>
 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
-	
+
 
 	<label for="prenom" data-th-text=#{form.prenom}></label>
 	<input type="text" id="prenom" data-th-field="*{prenom}" required>
@@ -35,22 +29,25 @@
 
 	<label for="telephone" data-th-text=#{form.telephone}></label>
 	<input type="text" id="telephone" data-th-field="*{telephone}">
-	<!-- ERROR --><div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
+	<!-- ERROR -->
+	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
 
 	<label for="email" data-th-text=#{form.email}>:</label>
 	<input type="text" id="email" data-th-field="*{email}" required>
-	<!-- ERROR --><div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
+	<!-- ERROR -->
+	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
 
 
 	<!-- Deuxième colonne -->
 
 	<label for="codePostal" data-th-text=#{form.codePostal}></label>
 	<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" required>
-	<!-- ERROR --><div data-th-replace="~{fragments/errors/fragment-error :: frag-error('codePostal')}"></div>
+	<!-- ERROR -->
+	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('codePostal')}"></div>
 
 	<label for="rue" data-th-text=#{form.rue}></label>
 	<input type="text" id="rue" data-th-field="*{adresse.rue}" required>
-	
+
 	<label for="complement" data-th-text=#{form.complement}></label>
 	<input type="text" id="complement" name="complement" data-th-field="*{adresse.complement}" required>
 

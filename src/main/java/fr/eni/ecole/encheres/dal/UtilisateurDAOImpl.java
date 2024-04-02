@@ -17,10 +17,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, telephone, email, credit, administrateur, no_adresse "
 			+ " from UTILISATEURS where pseudo = :pseudo";
 	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS "
-			+ " (pseudo, nom, prenom, email, telephone, mot_de_passe) "
-			+ " VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
-	private static final String INSERT_ADRESSE_QUERY = "INSERT INTO ADRESSES "
-			+ " (rue, ville, code_postal) VALUES (:rue, :ville, :codePostal)";
+			+ " (pseudo, nom, prenom, email, telephone, mot_de_passe, no_adresse) "
+			+ " VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse, :no_adresse )";
+	
 	private static final String UPDATE_USER= "UPDATE UTILISATEURS SET "
 			+ " nom= :nom, prenom= :prenom, email= :email, telephone= :telephone "
 			+ " WHERE pseudo= :pseudo";
@@ -50,7 +49,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	
 	@Override
-    public void save(Utilisateur utilisateur) {
+    public void save(Utilisateur utilisateur, long idAdresse) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("pseudo", utilisateur.getPseudo());
         params.addValue("nom", utilisateur.getNom());
@@ -58,33 +57,12 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         params.addValue("email", utilisateur.getEmail());
         params.addValue("telephone", utilisateur.getTelephone());
         params.addValue("motDePasse", utilisateur.getMotDePasse());
+        params.addValue("no_adresse", idAdresse);
 
-        // Insert l'adresse, puis créer une clé auto-générée
-        Long addressId = saveAddress(utilisateur.getAdresse());
-
-        // Associe l'adresse et l'Id utilisateur
-        params.addValue("noAdresse", addressId);
 
         jdbcTemplate.update(INSERT_USER_QUERY, params);
     }
 
-	@Override
-	public Long saveAddress(Adresse adresse) {
-	    MapSqlParameterSource params = new MapSqlParameterSource();
-	    params.addValue("rue", adresse.getRue());
-	    params.addValue("ville", adresse.getVille());
-	    params.addValue("codePostal", adresse.getCodePostal());
-
-	    // Insert l'adresse en BDD
-	    jdbcTemplate.update(INSERT_ADRESSE_QUERY, params);
-
-	    // Récupère l'ID généré
-	    String selectIdQuery = "SELECT SCOPE_IDENTITY() AS id";
-	    Long generatedId = jdbcTemplate.queryForObject(selectIdQuery, new MapSqlParameterSource(), Long.class);
-
-	    return generatedId;
-	}
-  
 
 	@Override
 	public void update(Utilisateur utilisateur) {
@@ -169,6 +147,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		namedParam.addValue("pseudo", pseudo);
 		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParam, Integer.class);
 	}
+
+
 
 
 
