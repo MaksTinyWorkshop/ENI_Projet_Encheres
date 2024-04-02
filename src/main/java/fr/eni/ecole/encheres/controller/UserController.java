@@ -35,24 +35,20 @@ public class UserController {
 		Utilisateur user = new Utilisateur();
 		
 		model.addAttribute("user", user);
-		
+
 		return "view-register-form";
 	}
 
 	/////// Méthode pour enregistrer l'utilisateur et son adresse
 	@PostMapping("/register") 
 	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
+
 	    if (bindingResult.hasErrors()) {
 	        return "view-register-form";
 	    } else {
 	        try {
 	            // Enregistre l'utilisateur
 	            utilisateurService.save(user);
-	            
-	            // Enregistre l'adresse utilisateur
-	            if (user.getAdresse() != null) {
-	                utilisateurService.saveAddress(user.getPseudo(), user.getAdresse());
-	            }
 
 	            return "redirect:/"; // Redirige vers al page d'accueil
 	        

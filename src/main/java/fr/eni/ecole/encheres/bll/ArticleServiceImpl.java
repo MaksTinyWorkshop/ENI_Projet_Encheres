@@ -1,6 +1,8 @@
 package fr.eni.ecole.encheres.bll;
 
+import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -30,12 +32,20 @@ public class ArticleServiceImpl implements ArticleService {
 //////////////////////////////////////////// Méthodes
 	
 	@Override
-	public List<ArticleAVendre> charger(){										//appel la méthode de chargement de la liste des articles actifs via la DAO
-		List<ArticleAVendre> listeArticles = articleDAO.getActiveArticles();
-		BusinessException be = new BusinessException();							//création d'une instance de la classe d'exception
+	public List<ArticleAVendre> charger(Principal user){										//appel la méthode de chargement de la liste des articles actifs via la DAO
+		List<ArticleAVendre> listeArticles = new ArrayList<>();
+		listeArticles = articleDAO.getActiveArticles();
+		if (user != null) {
+			List<ArticleAVendre> listeArticlesUser = new ArrayList<>();
+			listeArticlesUser = articleDAO.getUserAndActiveArticles(user.getName());
+			for (ArticleAVendre e : listeArticlesUser) {
+				listeArticles.add(e);
+			}
+		}
+		BusinessException be = new BusinessException();											//création d'une instance de la classe d'exception
 		if (listeArticles == null || listeArticles.isEmpty()) {
-			be.add(BusinessCode.ENCHERE_AUCUNE);								//ajout de la clé erreur
-			throw be;															//propage l'exception 
+			be.add(BusinessCode.ENCHERE_AUCUNE);												//ajout de la clé erreur
+			throw be;																			//propage l'exception 
 		}
 		return listeArticles;
 	}
@@ -59,7 +69,7 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Override
 	@Transactional
-	public void creerArticle(ArticleAVendre newArticle) {
+	public void creerArticle(ArticleAVendre newArticle, boolean create) {
 		BusinessException be = new BusinessException();
 		boolean isValid = true;
 		isValid &= validerArticle(newArticle, be);
@@ -71,7 +81,11 @@ public class ArticleServiceImpl implements ArticleService {
 		
 		if (isValid) {
 			try {
-				articleDAO.creerArticle(newArticle);
+				if (create) {
+					articleDAO.creerArticle(newArticle);
+				}else {
+					articleDAO.modifierArticle(newArticle);
+				}
 			}catch (BusinessException e) {
 				be.add(BusinessCode.BLL_CREER_ARTICLE_ERROR);
 				throw be;
@@ -158,11 +172,21 @@ public class ArticleServiceImpl implements ArticleService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	
 	@Override
 	public List<Categorie> getAllCategories() {
 	    return articleDAO.getAllCategories();
 	}
 	
+
+/*
+	@Override
+	public List<ArticleAVendre> charger() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	*/
+
 	
 }

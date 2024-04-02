@@ -73,7 +73,6 @@ public class Utilisateur implements Serializable{
 		this.adresse = adresse;
 	}
 	
-	
 
 ////////////////////////////////////////////Setters / getters
 	

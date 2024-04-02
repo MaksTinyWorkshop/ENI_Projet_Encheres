@@ -9,7 +9,7 @@ public interface AdresseDAO {
 	
 	void update(Utilisateur utilisateur, long idAdresse);
 
-	void save(Adresse adresse);
-
-	Long saveAddress(Adresse adresse);
+	void saveAddress(Adresse adresse);
+	
+	long readLast();
 }

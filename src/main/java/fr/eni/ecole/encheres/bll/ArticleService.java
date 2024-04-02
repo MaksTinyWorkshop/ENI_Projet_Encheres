@@ -2,6 +2,7 @@ package fr.eni.ecole.encheres.bll;
 
 
 
+import java.security.Principal;
 import java.util.List;
 
 import fr.eni.ecole.encheres.bo.Adresse;
@@ -9,9 +10,7 @@ import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
 
 public interface ArticleService {
-	List<ArticleAVendre> charger();
-	
-	void creerArticle(ArticleAVendre newArticle);
+	List<ArticleAVendre> charger(Principal user);
 
 	Adresse getAdress(String pseudo);
 
@@ -24,4 +23,7 @@ public interface ArticleService {
 	void supprArticleById(Long id);
 
 	List<Categorie> getAllCategories();
+	void creerArticle(ArticleAVendre newArticle, boolean create);
+
+	
 }

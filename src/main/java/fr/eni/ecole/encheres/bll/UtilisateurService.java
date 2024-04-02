@@ -12,10 +12,9 @@ public interface UtilisateurService {
 
 	void updatePassword(String pseudo, String nouveauMdp);
 
-
 	void save(Utilisateur utilisateur);
 
-	void saveAddress(String pseudo, Adresse adresse);
+//	void saveAddress(String pseudo, Adresse adresse);
 
 
 	

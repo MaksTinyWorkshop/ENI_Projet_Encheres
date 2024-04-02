@@ -7,7 +7,7 @@ public class BusinessCode {
 		
 	//Clés de Validation
 	public static final String VALIDATION_USER_NULL= "validation.user.null";
-	public static final String VALIDATION_USER_LOGIN_BLANK = "validation.user.loginBlank";
+	public static final String VALIDATION_USER_LOGIN_BLANK = "Notblank.user.pseudo";
 	public static final String VALIDATION_USER_LOGIN_FORM = "validation.user.userForm";
 	public static final String VALIDATION_USER_EMAIL_BLANK = "validation.user.emailBlank";
 	public static final String VALIDATION_USER_EMAIL_FORM = "validation.user.emailForm";
@@ -37,18 +37,20 @@ public class BusinessCode {
 	
 	// 3. Création d'article
 	public static final String BLL_CREER_ARTICLE_ERROR = "bll.creer.article.error";
-	public static final String BLL_VALIDATION_ARTICLE_DATE_FIN_NULL = "bll.validation.article.date.fin.null";
-	public static final String BLL_VALIDATION_ARTICLE_DATE_FIN_LOW = "bll.validation.article.date.fin.low";
-	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_NULL = "bll.validation.article.date.init.null";
-	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_HIGH = "bll.validation.article.date.init.high";
-	public static final String BLL_VALIDATION_ARTICLE_PRIX = "bll.validation.article.prix";
-	public static final String BLL_VALIDATION_ARTICLE_DESCR_BLANK = "bll.validation.article.descr.blank";
-	public static final String BLL_VALIDATION_ARTICLE_NOM_BLANK = "bll.validation.article.nom.blank";
+	public static final String BLL_VALIDATION_ARTICLE_DATE_FIN_NULL = "NotNull.article.dateFinEncheres";
+	public static final String BLL_VALIDATION_ARTICLE_DATE_FIN_LOW = "Past.article.dateFinEncheres";
+	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_NULL = "NotNull.article.dateDebutEncheres";
+	public static final String BLL_VALIDATION_ARTICLE_DATE_INIT_HIGH = "Past.article.dateDebutEncheres";
+	public static final String BLL_VALIDATION_ARTICLE_PRIX = "NotNull.article.prixInitial";
+	public static final String BLL_VALIDATION_ARTICLE_DESCR_BLANK = "NotBlank.article.description";
+	public static final String BLL_VALIDATION_ARTICLE_NOM_BLANK = "NotBlank.article.nom";
 	public static final String BLL_VALIDATION_ARTICLE_NULL = "bll.validation.null";
 	
 	// 4. Placement d'enchère
 	public static final String BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR = "bll.placement.enchere.error";
-	public static final String UTILISATEUR_MONTANT_INSUFFISANT = "placement.enchere.montant.insuffisant";
+	public static final String VALIDATION_ENCHERE_CREDIT = "placement.enchere.credit.insuffisant";
+	public static final String VALIDATION_ENCHERE_USER_EQUALS_VENDEUR = "placement.enchere.user.equals.vendeur";
+	public static final String VALIDATION_ENCHERE_MONTANT_INSUFFISANT = "placement.enchere.montant.insuffisant";
 }
 
 

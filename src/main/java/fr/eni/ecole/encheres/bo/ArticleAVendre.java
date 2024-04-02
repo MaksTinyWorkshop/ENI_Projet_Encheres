@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 
 public class ArticleAVendre implements Serializable{
 	
@@ -22,8 +23,10 @@ private static final long serialVersionUID = 1L;
 	@NotBlank
 	private String description;
 	private String photo;
+	//@Past
 	@NotNull
 	private LocalDate dateDebutEncheres;
+	//@Past
 	@NotNull
 	private LocalDate dateFinEncheres;
 	private int statu;

@@ -20,62 +20,87 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 @Repository
 public class ArticleDAOImpl implements ArticleDAO {
 	
-	/////////////////////////////////////// les attributs
+//////////////////////////////////////////////////////////////// les attributs
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemp;
 	
-	//!!!! NB !!!!! notice des statu :  0 : PAS COMMENCEE, 1 : EN COURS, 2 : CLOTUREE, 100 : ANNULEE
-	private final String FIND_ACTIVE = "SELECT no_article, nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE statu_enchere = 1";
-	//private final String FIND_BY_NAME = " ";	
-	//private final String FIND_BY_CATEGORIE = " ";
-	
+	//!!!! NB !!!!! notice des status :  0 : PAS COMMENCEE, 1 : EN COURS, 2 : CLOTUREE, 100 : ANNULEE
+	private final String FIND_ACTIVE = "SELECT no_article, nom_article, prix_vente, date_fin_encheres, id_utilisateur "
+										+ " FROM ARTICLES_A_VENDRE "
+										+ " WHERE statu_enchere = 1";
 	//requête de récupération de tout l'article
-	private final String FIND_ARTICLE_BY_ID = "SELECT a.*, d.* FROM ARTICLES_A_VENDRE a"
-												+ " INNER JOIN ADRESSES d ON a.no_adresse_retrait = d.no_adresse"
+	private final String FIND_ARTICLE_BY_PSEUDO = "SELECT no_article, nom_article, prix_vente, date_fin_encheres, id_utilisateur "
+													+ " FROM ARTICLES_A_VENDRE "
+													+ " WHERE id_utilisateur = :pseudo AND statu_enchere != 1";
+	//requête de récupération de tout l'article
+	private final String FIND_ARTICLE_BY_ID = "SELECT a.*, d.* "
+												+ " FROM ARTICLES_A_VENDRE a "
+												+ " INNER JOIN ADRESSES d ON a.no_adresse_retrait = d.no_adresse "
 												+ " WHERE a.no_article = :articleId";
 	//requête de suppression d'un article
-	private final String SUPPR_ARTICLE_BY_ID = "DELETE FROM ARTICLES_A_VENDRE "
-													+ " WHERE no_article = :articleId";
-	
-	//requêtes de création d'article
-	private final String FIND_ADRESS_PSEUDO = "SELECT a.no_adresse, a.rue, a.code_postal, a.ville" 
+	private final String SUPPR_ARTICLE_BY_ID = "DELETE"
+												+ " FROM ARTICLES_A_VENDRE "
+												+ " WHERE no_article = :articleId ";	
+	//requête de récupération de l'adresse
+	private final String FIND_ADRESS_PSEUDO = "SELECT a.no_adresse, a.rue, a.code_postal, a.ville " 
 													+ " FROM ADRESSES a "
-													+ "INNER JOIN UTILISATEURS u ON a.no_adresse = u.no_adresse "
-													+ "WHERE u.pseudo = :pseudo";
+													+ " INNER JOIN UTILISATEURS u ON a.no_adresse = u.no_adresse "
+													+ " WHERE u.pseudo = :pseudo ";	
+	//requête de création d'article
+	private final String INSERT_ARTICLE = "INSERT "
+											+ "INTO ARTICLES_A_VENDRE "
+											+ " (nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait) "
+											+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait) ";
 	
-	private final String INSERT_ARTICLE = "INSERT INTO ARTICLES_A_VENDRE "
-										+ "(nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait)"
-										+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait)";
-
-	private static final String UPDATE_PRIX = "UPDATE ARTICLES_A_VENDRE SET prix_vente= :prix_vente where no_article= :no_article";
+	//resquête de mise à jour du prix final si une enchère a été faite
+	private static final String MODIF_ARTICLE = "UPDATE ARTICLES_A_VENDRE "
+													+ " SET nom_article = :nom, description = :description, date_debut_encheres = :startEnchere, date_fin_encheres = :endEnchere "
+													+ " WHERE no_article = :no_article";
 	
-	///////// METHODES DE FILTRES PAR NOM ET PAS CATEGORIE
-	@Override
+	//resquête de mise à jour du prix final si une enchère a été faite
+	private static final String UPDATE_PRIX = "UPDATE ARTICLES_A_VENDRE "
+												+ " SET prix_vente= :prix_vente "
+												+ " WHERE no_article= :no_article ";
+	
+///////////////////////////////////////////////////////////////// les méthodes
+	
+	@Override																		//filtre par nom
 	public List<ArticleAVendre> getArticlesByName(String boutNom) {
-	    String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom";
+	    
+		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom";
 	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("boutNom", "%" + boutNom + "%");
 	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
 
-	@Override
-	public List<Categorie> getAllCategories() {
-	    String query = "SELECT no_categorie, libelle FROM CATEGORIES";
-	    return jdbcTemp.query(query, (rs, rowNum) -> {
-	        Categorie categorie = new Categorie();
-	        categorie.setNoCategorie(rs.getInt("no_categorie"));
-	        categorie.setLibelle(rs.getString("libelle"));
-	        return categorie;
-	    });
+
+
+
+	@Override																		//filtre par catégories
+	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
+	    
+		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE no_categorie = :idCategorie";
+	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("idCategorie", categorie.getId());
+	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
 	
 	@Override
-	public List<ArticleAVendre> getActiveArticles() {									//rempli la liste des Articles actif
+	public List<ArticleAVendre> getUserAndActiveArticles(String pseudo) {			//remplit la liste des Articles du User
+		MapSqlParameterSource np = new MapSqlParameterSource();
+		np.addValue("pseudo", pseudo);
+		
+		return jdbcTemp.query(FIND_ARTICLE_BY_PSEUDO, np, new ArticleRowMapper());
+	}
+	
+	@Override
+	public List<ArticleAVendre> getActiveArticles() {								//remplit la liste des Articles actif
+		
 		return jdbcTemp.query(FIND_ACTIVE, new ArticleRowMapper());
 	}
 	
 	@Override
 	public ArticleAVendre getArticleById(Long articleId) {							//récupère un objet Article par son ID
+		
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		np.addValue("articleId", articleId);
 		
@@ -83,64 +108,74 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 	
 	@Override
-	public void supprArticleById(Long articleId) {
+	public void supprArticleById(Long articleId) {									//supprime un article
+		
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		np.addValue("articleId", articleId);
-		
 		jdbcTemp.update(SUPPR_ARTICLE_BY_ID, np);
 	}
 	
-	@Override 																			//récupère une adresse par le pseudo User
+	@Override 																		//récupère une adresse par le pseudo User
 	public Adresse getAdress(String pseudo) {
 		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 		namedParameters.addValue("pseudo", pseudo);
-		
 		return jdbcTemp.queryForObject(FIND_ADRESS_PSEUDO,namedParameters, new ArticleAdressRowMapper());
 	}
 
-	
 	@Override
-	public void creerArticle(ArticleAVendre newArticle) {								//crée un nouvel article à vendre
+	public void creerArticle(ArticleAVendre newArticle) {							//crée un nouvel article à vendre
 		
-		KeyHolder keyHolder = new GeneratedKeyHolder();//keyholder à identification unique
-		
-		MapSqlParameterSource namedParameters = new MapSqlParameterSource();//mappeur SQL pour le remplissage des colonnes
-		
+		KeyHolder keyHolder = new GeneratedKeyHolder();								//keyholder pour générer l'ID
+		MapSqlParameterSource namedParameters = new MapSqlParameterSource();		//mappeur SQL pour le remplissage des colonnes
 		//remplissage de chaque catégorie (image abscente)
 		namedParameters.addValue("nom", newArticle.getNom());
 		namedParameters.addValue("description", newArticle.getDescription());
 		namedParameters.addValue("dateDebutEncheres", newArticle.getDateDebutEncheres());
 		namedParameters.addValue("dateFinEncheres", newArticle.getDateFinEncheres());
-		namedParameters.addValue("statu", "1");
+		namedParameters.addValue("statu", "0");										//passer ça a 0 quand fini !!!!
 		namedParameters.addValue("prixInitial", newArticle.getPrixInitial());
 		namedParameters.addValue("prixVente", null);
 		namedParameters.addValue("vendeur", newArticle.getVendeur().getPseudo());
 		namedParameters.addValue("categorie", newArticle.getCategorie().getId());
 		namedParameters.addValue("retrait", newArticle.getRetrait().getId());
 		
-		jdbcTemp.update(INSERT_ARTICLE, namedParameters, keyHolder);//injection dans la BDD
-		
+		jdbcTemp.update(INSERT_ARTICLE, namedParameters, keyHolder);				//injection dans la BDD
 		if (keyHolder != null && keyHolder.getKey() != null) {
-			// Mise à jour de l'identifiant du film auto-généré par la base
-			newArticle.setId(keyHolder.getKey().longValue());
+			newArticle.setId(keyHolder.getKey().longValue());						//Injection de l'identifiant par le Keyholder
 		}
 	}
 	
 	@Override
-	public void updatePrix(long idArticle, int montantEnchere) {
+	public void modifierArticle(ArticleAVendre newArticle) {						//Modifier un article
+		
+		MapSqlParameterSource np = new MapSqlParameterSource();
+		
+		np.addValue("no_article", newArticle.getId());
+		np.addValue("nom", newArticle.getNom());
+		np.addValue("description", newArticle.getDescription());
+		np.addValue("categorie", newArticle.getCategorie().getId());
+		np.addValue("prixDep",newArticle.getPrixInitial());
+		np.addValue("startEnchere", newArticle.getDateDebutEncheres());
+		np.addValue("endEnchere", newArticle.getDateFinEncheres());
+				
+		jdbcTemp.update(MODIF_ARTICLE, np);
+	}
+	
+	@Override
+	public void updatePrix(long idArticle, int montantEnchere) {					// Mise à jour du prix final
+		
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		
 		namedParam.addValue("prix_vente", montantEnchere);
 		namedParam.addValue("no_article", idArticle);
 		
 		jdbcTemp.update(UPDATE_PRIX, namedParam);
-		
 	}
 	
 	
-	///////////////////////////////////////////////////////////////////////// ROWMAPPERS CUSTOM
+///////////////////////////////////////////////////////////////////////// ROWMAPPERS CUSTOM
 	
-	class ArticleRowMapper implements RowMapper<ArticleAVendre> {
+	class ArticleRowMapper implements RowMapper<ArticleAVendre> {							// 1. pour l'affichage de la liste des articles
 		@Override
 		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ArticleAVendre a = new ArticleAVendre();
@@ -148,7 +183,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 			a.setNom(rs.getString("nom_article"));
 			a.setPrixVente(rs.getInt("prix_vente"));
 			//date finale
-			a.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());//dte finale convertie en LocalDate
+			a.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());//date finale convertie en LocalDate
 			
 			// Association pour le vendeur
 			Utilisateur vendeur = new Utilisateur();
@@ -159,7 +194,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 	
-	class ArticleAdressRowMapper implements RowMapper<Adresse> {
+	class ArticleAdressRowMapper implements RowMapper<Adresse> {							// 2. pour la récupération d'une adresse
 		@Override
 		public Adresse mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Adresse a = new Adresse();
@@ -172,7 +207,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 	
-	class FullArticleRowMapper implements RowMapper<ArticleAVendre> {
+	class FullArticleRowMapper implements RowMapper<ArticleAVendre> {						// 3. pour la création d'un nouvel article
 		@Override
 		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ArticleAVendre a = new ArticleAVendre();
@@ -205,10 +240,13 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 
 	@Override
-	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
+	public List<Categorie> getAllCategories() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
 
 
 }
