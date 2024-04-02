@@ -68,17 +68,21 @@ public class ArticleController {
 	@PostMapping("/Creer-Article")																// Permet d'enregistrer un nouvel article
 	public String newArticle(
 			@Valid @ModelAttribute("article") ArticleAVendre newArticle, BindingResult br) {
-		if (!br.hasErrors()) {
-			try {
-				articleService.creerArticle(newArticle);
-				return "redirect:/";
-			} catch (BusinessException e) {
-				e.getClefsExternalisations().forEach(key -> {
-					ObjectError error = new ObjectError ("globalError", key);
-					br.addError(error);
-				});
-				return "view-article-creation";
+		if (newArticle.getId() == null) {
+			if (!br.hasErrors()) {
+				try {
+					articleService.creerArticle(newArticle);
+					return "redirect:/";
+				} catch (BusinessException e) {
+					e.getClefsExternalisations().forEach(key -> {
+						ObjectError error = new ObjectError ("globalError", key);
+						br.addError(error);
+					});
+					return "view-article-creation";
+				}
 			}
+		}else {
+			
 		}
 		return "view-article-creation";
 	}
