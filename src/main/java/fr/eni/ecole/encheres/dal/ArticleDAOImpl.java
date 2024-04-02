@@ -2,8 +2,6 @@ package fr.eni.ecole.encheres.dal;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +48,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 										+ "(nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait)"
 										+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait)";
 
+	private static final String UPDATE_PRIX = "UPDATE ARTICLES_A_VENDRE SET prix_vente= :prix_vente where no_article= :no_article";
 	
+	///////// METHODES DE FILTRES PAR NOM ET PAS CATEGORIE
 	@Override
 	public List<ArticleAVendre> getArticlesByName(String boutNom) {
 	    String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom";
@@ -122,6 +122,17 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 	
+	@Override
+	public void updatePrix(long idArticle, int montantEnchere) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		
+		namedParam.addValue("prix_vente", montantEnchere);
+		namedParam.addValue("no_article", idArticle);
+		
+		jdbcTemp.update(UPDATE_PRIX, namedParam);
+		
+	}
+	
 	
 	///////////////////////////////////////////////////////////////////////// ROWMAPPERS CUSTOM
 	
@@ -189,5 +200,5 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 
-	
+
 }

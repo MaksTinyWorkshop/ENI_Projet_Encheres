@@ -204,6 +204,8 @@ public class Utilisateur implements Serializable{
 
 	public String getVille() {
 	return adresse != null ? adresse.getVille() : null;
+	
+	
 	   }
 		
 }

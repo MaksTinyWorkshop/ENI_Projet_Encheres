@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
@@ -18,6 +17,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, telephone, email, credit, administrateur, no_adresse from UTILISATEURS where pseudo = :pseudo";
 	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe) "
 													+ "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse)";
+	private static final String INSERT_ADRESSE_QUERY = "INSERT INTO ADRESSES (rue, ville, code_postal) VALUES (:rue, :ville, :codePostal)";
+
 	private static final String UPDATE_USER= "UPDATE UTILISATEURS SET nom= :nom, prenom= :prenom, email= :email, telephone= :telephone WHERE pseudo= :pseudo";
 	private static final String UPDATE_MOT_DE_PASSE= "UPDATE utilisateurs SET mot_de_passe = :nouveauMdp WHERE pseudo = :pseudo";
 	
@@ -37,20 +38,42 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 
 	
-	 @Override
-	    public void save(Utilisateur utilisateur) {
-	        MapSqlParameterSource params = new MapSqlParameterSource();
-	        params.addValue("pseudo", utilisateur.getPseudo());
-	        params.addValue("nom", utilisateur.getNom());
-	        params.addValue("prenom", utilisateur.getPrenom());
-	        params.addValue("email", utilisateur.getEmail());
-	        params.addValue("telephone", utilisateur.getTelephone());
-	        params.addValue("motDePasse", utilisateur.getMotDePasse());
-	        
-	        jdbcTemplate.update(INSERT_USER_QUERY, params);
-	        
-	    }
-	
+	@Override
+    public void save(Utilisateur utilisateur) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("pseudo", utilisateur.getPseudo());
+        params.addValue("nom", utilisateur.getNom());
+        params.addValue("prenom", utilisateur.getPrenom());
+        params.addValue("email", utilisateur.getEmail());
+        params.addValue("telephone", utilisateur.getTelephone());
+        params.addValue("motDePasse", utilisateur.getMotDePasse());
+
+        // Insert l'adresse, puis créer une clé auto-générée
+        Long addressId = saveAddress(utilisateur.getAdresse());
+
+        // Associe l'adresse et l'Id utilisateur
+        params.addValue("noAdresse", addressId);
+
+        jdbcTemplate.update(INSERT_USER_QUERY, params);
+    }
+
+	@Override
+	public Long saveAddress(Adresse adresse) {
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("rue", adresse.getRue());
+	    params.addValue("ville", adresse.getVille());
+	    params.addValue("codePostal", adresse.getCodePostal());
+
+	    // Insert l'adresse en BDD
+	    jdbcTemplate.update(INSERT_ADRESSE_QUERY, params);
+
+	    // Récupère l'ID généré
+	    String selectIdQuery = "SELECT SCOPE_IDENTITY() AS id";
+	    Long generatedId = jdbcTemplate.queryForObject(selectIdQuery, new MapSqlParameterSource(), Long.class);
+
+	    return generatedId;
+	}
+  
 
 	@Override
 	public void update(Utilisateur utilisateur) {

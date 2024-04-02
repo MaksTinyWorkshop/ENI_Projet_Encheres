@@ -29,6 +29,7 @@ public class UserController {
 		this.utilisateurService = utilisateurService;
 	}
 
+	/////// Mapping du formulaire User
 	@GetMapping("/register")
 	public String showRegisterForm(Model model) {
 		Utilisateur user = new Utilisateur();
@@ -38,29 +39,32 @@ public class UserController {
 		return "view-register-form";
 	}
 
-	@PostMapping("/register") // Add this annotation to specify that this method handles POST requests to "/user/register"
+	/////// Méthode pour enregistrer l'utilisateur et son adresse
+	@PostMapping("/register") 
 	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
 	    if (bindingResult.hasErrors()) {
 	        return "view-register-form";
 	    } else {
-	    	try {
-    		
-	    		// Transmit the user object to the service layer for registration
-	    	    utilisateurService.save(user);
+	        try {
+	            // Enregistre l'utilisateur
+	            utilisateurService.save(user);
+	            
+	            // Enregistre l'adresse utilisateur
+	            if (user.getAdresse() != null) {
+	                utilisateurService.saveAddress(user.getPseudo(), user.getAdresse());
+	            }
 
-	    	    return "redirect:/"; // Redirect the user to the home page
-	    	
-	    	} catch (BusinessException e) {
-	    		// Afficher les messages d’erreur - il faut les injecter dans le contexte de
-				// BindingResult
-				e.getClefsExternalisations().forEach(key -> {
-					ObjectError error = new ObjectError("globalError", key);
-					bindingResult.addError(error);
-				});
-				return "view-register-form";
-	    	}
+	            return "redirect:/"; // Redirige vers al page d'accueil
+	        
+	        } catch (BusinessException e) {
+	            // Affiche message d'erreur
+	            e.getClefsExternalisations().forEach(key -> {
+	                ObjectError error = new ObjectError("globalError", key);
+	                bindingResult.addError(error);
+	            });
+	            return "view-register-form";
+	        }
 	    }
-	
 	}
 
 	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL PERSO
@@ -74,12 +78,11 @@ public class UserController {
 		} else {
 			System.out.println("User inconnu");
 		}
-		return "redirect:/profil";
+		return "redirect:/";
 	}
 
 	@PostMapping("/profil")
 	public String mettreAJourMonProfil(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult, 
-			//Principal ppal,
 			@RequestParam(name = "motDePasseNew") Optional<String> nouveauMdp,
 			@RequestParam(name = "confirmation") Optional<String> confirmNouveauMdp) {
 		
@@ -100,7 +103,7 @@ public class UserController {
 																								.equals(confirmNouveauMdp.get())) {
 					try {
 						utilisateurService.updatePassword(user.getPseudo(), nouveauMdp.get());
-						System.out.println("Succes update mdp");
+						
 					} catch (BusinessException e) {
 						e	.getClefsExternalisations()
 							.forEach(key -> {

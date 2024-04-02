@@ -1,5 +1,6 @@
 package fr.eni.ecole.encheres.dal;
 
+import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 public interface UtilisateurDAO {
@@ -14,4 +15,6 @@ public interface UtilisateurDAO {
 	int uniqueEmail(String email);
 	
 	int uniquePseudo(String pseudo);
+
+	Long saveAddress(Adresse adresse);
 }

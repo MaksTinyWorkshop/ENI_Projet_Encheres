@@ -1,17 +1,14 @@
 package fr.eni.ecole.encheres.bll;
 
 import org.springframework.dao.DataAccessException;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.eni.ecole.encheres.bo.Adresse;
-import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.dal.AdresseDAO;
-import fr.eni.ecole.encheres.dal.EnchereDAO;
 import fr.eni.ecole.encheres.dal.UtilisateurDAO;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
@@ -22,12 +19,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	// Injection des repository
 	private UtilisateurDAO utilisateurDAO;
 	private AdresseDAO adresseDAO;
-	private EnchereDAO enchereDAO;
 
-	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO, EnchereDAO enchereDAO) {
+	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
 		this.utilisateurDAO = utilisateurDAO;
 		this.adresseDAO = adresseDAO;
-		this.enchereDAO = enchereDAO;
 	}
 
 	@Override
@@ -58,14 +53,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	public void save(Utilisateur utilisateur) {
 	    BusinessException be = new BusinessException();
 	    boolean isValid = true;
-	    
-	    // Validation d'abord du mot de passe
+
+	    if (utilisateur == null) {
+	        be.add(BusinessCode.VALIDATION_USER_NULL);
+	        throw be;
+	    }
+
 	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isEmpty()) {
 	        be.add(BusinessCode.VALIDATION_USER_PASSWORD_BLANK);
 	        throw be;
 	    }
-	    
-	    // Valitation des données ensuite
+
 	    isValid &= validerUtilisateur(utilisateur, be);
 	    isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
 	    isValid &= validerUniqueMail(utilisateur.getEmail(), be);
@@ -73,22 +71,27 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    isValid &= validerEmail(utilisateur.getEmail(), be);
 	    isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
 
-
 	    if (isValid) {
-
-	        // Encodage du mot de passe
+	        // Encode le Mot-de-passe
 	        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
+	        String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
+	        utilisateur.setMotDePasse(encodedPassword);
 
-	        
 	        try {
+	            // Enregistre l'adresse et récupère l'ID généré
+	            Long addressId = adresseDAO.saveAddress(utilisateur.getAdresse());
+
+	            // Set L'ID Adresse dans l'objet User
+	            utilisateur.getAdresse().setId(addressId);
+
+	            // Enregistre l'utilisateur
+
 	            // Enregistrement de l'utilisateur
-
 	            utilisateurDAO.save(utilisateur);
-
+	            System.out.println("PROFIL ENREGISTRE");
 	        } catch (DataAccessException e) {
+
 	            // Message d'erreur en cas d'échec
-	        	e.printStackTrace();
 	            be.add(BusinessCode.SAVE_USER_ERROR);
 	            throw be;
 	        }
@@ -127,6 +130,36 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			throw be;
 		}
 	}
+	
+	@Override
+	@Transactional
+	public void saveAddress(String pseudo, Adresse adresse) {
+	    BusinessException be = new BusinessException();
+
+	    if (pseudo == null || pseudo.isBlank() || adresse == null) {
+	        be.add(BusinessCode.VALIDATION_ADDRESS_INVALID);
+	        throw be;
+	    }
+
+	    try {
+	        // Enregistre l'adresse et récupère l'ID généré
+	        Long addressId = adresseDAO.saveAddress(adresse);
+	        
+	        // Mise à jour de l'adresse
+	        Utilisateur user = utilisateurDAO.read(pseudo);
+	        if (user != null) {
+	            adresse.setId(addressId); // Set l'ID adresse dans l'objet User
+	            user.setAdresse(adresse);
+	            utilisateurDAO.update(user);
+	            System.out.println("Address saved successfully for user: " + pseudo);
+	        } else {
+	            throw new BusinessException(BusinessCode.VALIDATION_USER_NOT_FOUND);
+	        }
+	    } catch (DataAccessException e) {
+	        be.add(BusinessCode.ERROR_SAVING_ADDRESS);
+	        throw be;
+	    }
+	}
 
 	@Override
 	@Transactional
@@ -146,21 +179,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 
 	}
-
-	@Override
-	@Transactional
-	public void placerUneEnchere(Utilisateur user, ArticleAVendre article) {
-		BusinessException be = new BusinessException();
-		
-		try {
-			enchereDAO.placerUneEnchere(user, article);
-		} catch (DataAccessException e) {
-			be.add(BusinessCode.BLL_UTILISATEUR_PLACEMENT_ENCHERE_ERREUR);
-			throw be;
-		}
-		
-	}
-	
 
 
 	/**

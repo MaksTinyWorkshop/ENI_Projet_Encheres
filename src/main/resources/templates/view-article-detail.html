@@ -17,7 +17,7 @@
 </head>
 <body>
 	<main>
-		<form class="userProfil" data-th-object="${articleSelect}">
+		<form class="userProfil" data-th-object="${articleSelect}" method="post" data-th-action="@{|/articles/articleDetail/*{id}|}" >
 
 			<h1 data-th-text="*{nom}"></h1>
 
@@ -55,12 +55,12 @@
 					<input type="text" id="ville" data-th-field="*{retrait.ville}" disabled>
 				</fieldset>
 			</div>
-		</form>
+			<label for="enchere">Mon offre</label>
+			<input type="number" id="enchere" data-th-min="*{prixVente}" name="enchere"/>
+			
 		<span data-th-if="${#authorization.expression('isAuthenticated()')}">
 			<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
-				<a data-th-href="@{|/TonJoliLien/*{}|}">
-		           	<button type="button" data-th-text="#{article.button.enchere}" ></button>
-		       	</a>
+		           	<button type="submit" data-th-text="#{article.button.enchere}" ></button>
 		    </span>
 	       	<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
 	       		<!--  <span data-th-if="${#dates.createNow().before(articleSelect.dateDebutEncheres)}">  ERREUR A CORRIGER ICI-->
@@ -74,7 +74,7 @@
 			    <!-- </span>  -->
 		    </span>
        	</span>
-       	
+       	</form>
 	</main>
 </body>
 </html>

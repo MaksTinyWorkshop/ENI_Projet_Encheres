@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
+import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.dal.ArticleDAOImpl;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
@@ -137,5 +138,26 @@ public class ArticleServiceImpl implements ArticleService {
 			return false;
 		}
 		return true;
-	}	
+	}
+
+	/////////// FILTRES ARTICLES
+	@Override
+	public List<ArticleAVendre> getArticlesByName(String nomArticle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorieObj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Categorie getCategorieByName(String categorie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }
