@@ -94,7 +94,7 @@ public class ArticleController {
 	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par nom
 	    } catch (BusinessException e) {
 	        model.addAttribute("listArticleError", e.getClefsExternalisations());
-	        return "/"; // Retourne la vue de la page d'accueil en cas d'erreur
+	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
 	    }
 	}
 
@@ -104,10 +104,10 @@ public class ArticleController {
 	        Categorie categorieObj = articleService.getCategorieByName(categorie);
 	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByCategorie(categorieObj);
 	        model.addAttribute("articlesList", articlesFiltres);
-	        return "/"; // Retourne la vue de la page d'accueil avec les articles filtrés par catégorie
+	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par catégorie
 	    } catch (BusinessException e) {
 	        model.addAttribute("listArticleError", e.getClefsExternalisations());
-	        return "/"; // Retourne la vue de la page d'accueil en cas d'erreur
+	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
 	    }
 	}
 
