@@ -15,8 +15,6 @@
 	<input type="text" id="pseudo" data-th-field="*{pseudo}">
 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
 
-
-
 	<label for="nom" data-th-text=#{form.nom}></label>
 	<input type="text" id="nom" data-th-field="*{nom}" required>
 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
@@ -34,7 +32,7 @@
 	<label for="email" data-th-text=#{form.email}>:</label>
 	<input type="text" id="email" data-th-field="*{email}" required>
 	<!-- ERROR -->
-	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
+	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div> 
 
 
 	<!-- Deuxième colonne -->
@@ -42,7 +40,8 @@
 	<label for="codePostal" data-th-text=#{form.codePostal}></label>
 	<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" required>
 	<!-- ERROR -->
-	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('codePostal')}"></div>
+	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse.codePostal')}"></div>
+
 
 	<label for="rue" data-th-text=#{form.rue}></label>
 	<input type="text" id="rue" data-th-field="*{adresse.rue}" required>

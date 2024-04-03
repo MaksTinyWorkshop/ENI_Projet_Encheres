@@ -1,5 +1,7 @@
 package fr.eni.ecole.encheres.bll;
 
+import fr.eni.ecole.encheres.bo.Enchere;
+
 public interface EnchereService {
-	void placerUneEnchere(String pseudoUser, long idArticle, int montantEnchere);
+	void placerUneEnchere(Enchere enchere);
 }

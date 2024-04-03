@@ -72,7 +72,6 @@ public class Utilisateur implements Serializable{
 		this.admin = admin;
 		this.adresse = adresse;
 	}
-	
 
 ////////////////////////////////////////////Setters / getters
 	

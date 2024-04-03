@@ -5,6 +5,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.eni.ecole.encheres.bo.ArticleAVendre;
+import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 import fr.eni.ecole.encheres.dal.ArticleDAO;
 import fr.eni.ecole.encheres.dal.EnchereDAO;
@@ -29,13 +31,13 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 
 	@Override
 	@Transactional
-	public void placerUneEnchere(String pseudoUser, long idArticle, int montantEnchere) {
+	public void placerUneEnchere(Enchere enchere) {
 		BusinessException be = new BusinessException();
 		// Méthodes de vérifiaction
 		boolean isValid = true;
-		isValid &= validerCreditUtilisateur(pseudoUser, idArticle, be);
-		isValid &= validerUserNotVendeur(pseudoUser, idArticle, be);
-		isValid &= validerMontantEnchere(montantEnchere, idArticle, be);
+		isValid &= validerCreditUtilisateur(enchere, be);
+		isValid &= validerUserNotVendeur(enchere, be);
+		isValid &= validerMontantEnchere(enchere, be);
 
 		if (!isValid) {
 			throw be;
@@ -45,10 +47,10 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 		
 			Utilisateur previousEncherisseur = null;
 			try {
-				previousEncherisseur = enchereDAO.lireEncherisseur(idArticle);
+				previousEncherisseur = enchereDAO.lireEncherisseur(enchere);
 				//Remboursement de l'enchérisseur précédent s'il existe
 				if (previousEncherisseur != null) {
-					enchereDAO.supprimerEncherePrecedente(idArticle);
+					enchereDAO.supprimerEncherePrecedente(enchere);
 					utilisateurDAO.crediter(previousEncherisseur);
 				}
 			} catch (EmptyResultDataAccessException e) {
@@ -56,9 +58,9 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 			}
 					
 			// 2 : Placer enchère user connecté
-			enchereDAO.placerUneEnchere(pseudoUser, idArticle, montantEnchere);
-			articleDAO.updatePrix(idArticle, montantEnchere);
-			utilisateurDAO.debiter(pseudoUser, montantEnchere);
+			enchereDAO.placerUneEnchere(enchere);
+			articleDAO.updatePrix(enchere);
+			utilisateurDAO.debiter(enchere);
 	}
 
 	/**
@@ -67,9 +69,13 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 	
 	// User a assez de crédit / User != vendeur / montantEnchere > prixVente
 	
-	private boolean validerCreditUtilisateur(String pseudoUser, long idArticle, BusinessException be) {
-		int creditUtilisateur = utilisateurDAO.read(pseudoUser).getCredit();
-		int prixVente = articleDAO.getArticleById(idArticle).getPrixVente();
+	private boolean validerCreditUtilisateur(Enchere enchere, BusinessException be) {
+		Utilisateur u = enchere.getAcquereur();
+		ArticleAVendre a = enchere.getArticleAVendre();
+		
+		int creditUtilisateur = utilisateurDAO.read(u.getPseudo()).getCredit();
+		int prixVente = a.getPrixVente();
+		
 		if (creditUtilisateur < prixVente) {
 			be.add(BusinessCode.VALIDATION_ENCHERE_CREDIT);
 			return false;
@@ -77,17 +83,24 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 		return true;
 	}
 	
-	private boolean validerUserNotVendeur(String pseudoUser, long idArticle, BusinessException be) {
-		String pseudoVendeur = articleDAO.getArticleById(idArticle).getVendeur().getPseudo();
-		if (pseudoUser.equals(pseudoVendeur)) {
+	private boolean validerUserNotVendeur(Enchere enchere, BusinessException be) {
+		Utilisateur u = enchere.getAcquereur();
+		ArticleAVendre a = enchere.getArticleAVendre();
+		
+		String pseudoVendeur = a.getVendeur().getPseudo();
+		String pseudoAcquereur = u.getPseudo();
+		if (pseudoAcquereur.equals(pseudoVendeur)) {
 			be.add(BusinessCode.VALIDATION_ENCHERE_USER_EQUALS_VENDEUR);
 			return false;
 		}
 		return true;
 	}
 	
-	private boolean validerMontantEnchere(int montantEnchere, long idArticle, BusinessException be) {
-		int prixVente = articleDAO.getArticleById(idArticle).getPrixVente();
+	private boolean validerMontantEnchere(Enchere enchere, BusinessException be) {
+		ArticleAVendre a = enchere.getArticleAVendre();
+		int montantEnchere = enchere.getMontant();
+		
+		int prixVente = a.getPrixVente();
 		if (montantEnchere <= prixVente) {
 			be.add(BusinessCode.VALIDATION_ENCHERE_MONTANT_INSUFFISANT);
 			return false;
