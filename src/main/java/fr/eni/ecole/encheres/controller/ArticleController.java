@@ -130,6 +130,7 @@ public class ArticleController {
 		return "redirect:/";
 	}
 	
+	//////// filtre par catégorie et mapping vers la vue :
 	@GetMapping("/fragment-liste-articles-connecte")
     public String getAllCategories(Model model) {
         List<Categorie> categories = ArticleService.getAllCategories();

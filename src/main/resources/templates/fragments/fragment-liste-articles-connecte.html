@@ -19,8 +19,7 @@
 </div>
 	
 	
-	
-	
+<div>
 	    <select name="categorie" id="categorie">
        		 <option value="">Sélectionnez une catégorie</option>
        		 <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>

@@ -174,8 +174,5 @@ public class ArticleServiceImpl implements ArticleService {
 		return null;
 	}
 
-//	@Override
-//	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorieObj) {
-//
-//}
+
 }
