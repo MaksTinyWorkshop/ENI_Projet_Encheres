@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
+import fr.eni.ecole.encheres.dal.AdresseDAOImpl;
 import fr.eni.ecole.encheres.dal.ArticleDAOImpl;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
@@ -22,6 +23,7 @@ public class ArticleServiceImpl implements ArticleService {
 ///////////////////////////////////////////// Attributs
 	
 	private ArticleDAOImpl articleDAO;//dépendance
+	private AdresseDAOImpl adresseDAO;
 	
 ///////////////////////////////////////////// Constructeurs
 	
@@ -52,7 +54,6 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Override
 	public ArticleAVendre consulterArticleById(Long articleId) {
-		
 		return articleDAO.getArticleById(articleId);
 	}
 	@Override
@@ -62,7 +63,7 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Override
 	public Adresse getAdress(String pseudo) {				//récupère l'adresse du Principal pour le formulaire de créa d'article
-		Adresse adress = articleDAO.getAdress(pseudo);		//tranfère la demande à la DAL
+		Adresse adress = adresseDAO.read(pseudo);			//tranfère la demande à la DAL
 		return adress;
 	}
 	
@@ -179,5 +180,11 @@ public class ArticleServiceImpl implements ArticleService {
 		return null;
 	}
 	*/
+
+	@Override
+	public List<Categorie> getAllCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

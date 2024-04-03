@@ -8,31 +8,27 @@ import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.bo.Enchere;
 
 public interface ArticleDAO {
-	//1.les méthodes permettant de consulter les Articles
 	
+	//1.les méthodes permettant de récupérer des listes les Articles
 	List<ArticleAVendre> getUserAndActiveArticles(String pseudo);
-	
 	List<ArticleAVendre> getActiveArticles();//pour afficher tous les articles par date
+	List<ArticleAVendre> getArticlesByName(String boutNom);
+	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
+	
+	//3. récupération d'un article complet
+	ArticleAVendre getArticleById(Long articleId);
 	
 	//2. les méthodes permettant de créer ou modifier des articles
 	void creerArticle(ArticleAVendre newArticle);
-
-	List<ArticleAVendre> getArticlesByName(String boutNom);
-	
-	ArticleAVendre getArticleById(Long articleId);
 	
 	void supprArticleById(Long articleId);
-
-	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
 
 	Adresse getAdress(String pseudo);
 	
 	void updatePrix(Enchere enchere);
 
 	void modifierArticle(ArticleAVendre newArticle);
-
 	
-
-	
+	List<Categorie> getAllCategories();
 
 }

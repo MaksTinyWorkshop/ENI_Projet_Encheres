@@ -180,18 +180,6 @@ public class Utilisateur implements Serializable{
 		return builder.toString();
 	}
 	
-	public String getRue() {
-	return adresse != null ? adresse.getRue() : null;
-	    }
-
-	public String getCodePostal() {
-	return adresse != null ? adresse.getCodePostal() : null;
-	    }
-
-	public String getVille() {
-	return adresse != null ? adresse.getVille() : null;
 	
-	
-	   }
 		
 }

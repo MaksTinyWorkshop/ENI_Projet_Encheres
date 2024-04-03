@@ -43,11 +43,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private final String SUPPR_ARTICLE_BY_ID = "DELETE"
 												+ " FROM ARTICLES_A_VENDRE "
 												+ " WHERE no_article = :articleId ";	
-	//requête de récupération de l'adresse
-	private final String FIND_ADRESS_PSEUDO = "SELECT a.no_adresse, a.rue, a.code_postal, a.ville " 
-													+ " FROM ADRESSES a "
-													+ " INNER JOIN UTILISATEURS u ON a.no_adresse = u.no_adresse "
-													+ " WHERE u.pseudo = :pseudo ";	
+	
 	//requête de création d'article
 	private final String INSERT_ARTICLE = "INSERT "
 											+ "INTO ARTICLES_A_VENDRE "
@@ -73,6 +69,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("boutNom", "%" + boutNom + "%");
 	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
+
+
+
 
 	@Override																		//filtre par catégories
 	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
@@ -113,13 +112,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 		jdbcTemp.update(SUPPR_ARTICLE_BY_ID, np);
 	}
 	
-	@Override 																		//récupère une adresse par le pseudo User
-	public Adresse getAdress(String pseudo) {
-		MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-		namedParameters.addValue("pseudo", pseudo);
-		return jdbcTemp.queryForObject(FIND_ADRESS_PSEUDO,namedParameters, new ArticleAdressRowMapper());
-	}
-
 	@Override
 	public void creerArticle(ArticleAVendre newArticle) {							//crée un nouvel article à vendre
 		
@@ -192,20 +184,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 	
-	class ArticleAdressRowMapper implements RowMapper<Adresse> {							// 2. pour la récupération d'une adresse
-		@Override
-		public Adresse mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Adresse a = new Adresse();
-			a.setId(rs.getLong("no_adresse"));
-			a.setRue(rs.getString("rue"));
-			a.setCodePostal(rs.getString("code_postal"));
-			a.setVille(rs.getString("ville"));
-			
-			return a;
-		}
-	}
-	
-	class FullArticleRowMapper implements RowMapper<ArticleAVendre> {						// 3. pour la création d'un nouvel article
+	class FullArticleRowMapper implements RowMapper<ArticleAVendre> {						// 2. pour la création d'un nouvel article
 		@Override
 		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ArticleAVendre a = new ArticleAVendre();
@@ -236,4 +215,27 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 	}
+
+	@Override
+	public List<Categorie> getAllCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+	@Override
+	public Adresse getAdress(String pseudo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+
+
+
+
 }
