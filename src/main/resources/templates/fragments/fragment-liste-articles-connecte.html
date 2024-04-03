@@ -11,20 +11,20 @@
 
 			<p>
 				<a data-th-href="@{|/user/profil/${article.vendeur.pseudo}|}" data-th-text="#{form.article.vendeur} + ' '  + ${article.vendeur.pseudo}"></a>
-			</p>
-		</div>
+		</p>
 	</div>
-	<div data-th-if="${listArticleError != null}">
+</div>
+<div data-th-if="${listArticleError != null}">
 		<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
-	</div>
+</div>
 	
 	
 	
 	
-	   <select name="categorie" id="categorie">
-            <option value="">Sélectionnez une catégorie</option>
-            <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
-        </select>
+	    <select name="categorie" id="categorie">
+       		 <option value="">Sélectionnez une catégorie</option>
+       		 <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
+    	</select>
 </div>
 
     <!-- Ajout de liens pour filtrer par nom d'article et par catégorie -->
@@ -33,11 +33,6 @@
         <button type="submit">Filtrer par nom d'article</button>
     </form>
 
-    <form method="get" action="/filtrer-par-categorie">
-        <input type="text" name="categorie" placeholder="Nom de la catégorie">
-        <button type="submit">Filtrer par catégorie</button>
-    </form>
-
-
+  
 
      

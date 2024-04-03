@@ -1,5 +1,5 @@
-<form xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-prof-form(titreForm, action)" class="form-poly"
-	method="post" data-th-object="${user}" data-th-action="@{${action}}">
+<form xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-update-form(titreForm, action)" class="form-poly"
+	method="post" data-th-object="${update}" data-th-action="@{${action}}">
 
 	<h1 data-th-text="${titreForm}"></h1>
 
@@ -16,6 +16,7 @@
 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
 
 
+	<input type="hidden" id="pseudoHidden" data-th-field="*{pseudo}">
 
 	<label for="nom" data-th-text=#{form.nom}></label>
 	<input type="text" id="nom" data-th-field="*{nom}" required>

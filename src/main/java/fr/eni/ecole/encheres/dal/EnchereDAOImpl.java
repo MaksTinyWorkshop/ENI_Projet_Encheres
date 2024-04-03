@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import fr.eni.ecole.encheres.bo.Utilisateur;
-import fr.eni.ecole.encheres.dal.UtilisateurDAOImpl.UtilisateurRowMapper;
 
 
 @Repository

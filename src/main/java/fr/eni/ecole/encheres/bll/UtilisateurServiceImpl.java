@@ -102,23 +102,23 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 	@Override
 	@Transactional
-	public void update(Utilisateur user) {
+	public void update(Utilisateur update) {
 		BusinessException be = new BusinessException();
 		
 		
 		// Méthodes de vérification
 		boolean isValid = true;
-		isValid &= validerUtilisateur(user, be);
-		isValid &= validerEmail(user.getEmail(), be);
+		isValid &= validerUtilisateur(update, be);
+		isValid &= validerEmail(update.getEmail(), be);
 
 		if (isValid) {
 			try {
 				// Récupération de l'idAdresse pour update redirigé vers adresseDAO
-				long idAdresse = user	.getAdresse()
+				long idAdresse = update	.getAdresse()
 											.getId();
 
-				utilisateurDAO.update(user);
-				adresseDAO.update(user, idAdresse);
+				utilisateurDAO.update(update);
+				adresseDAO.update(update, idAdresse);
 
 			} catch (DataAccessException e) {
 				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);
