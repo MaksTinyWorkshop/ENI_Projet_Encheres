@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
-import fr.eni.ecole.encheres.dal.AdresseDAO;
 import fr.eni.ecole.encheres.dal.AdresseDAOImpl;
 import fr.eni.ecole.encheres.dal.ArticleDAOImpl;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
@@ -165,28 +164,16 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
+	public Categorie getCategorieByName(String categorie) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorieObj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Categorie getCategorieByName(String categorie) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-/*
-	@Override
-	public List<ArticleAVendre> charger() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
 
-	@Override
-	public List<Categorie> getAllCategories() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

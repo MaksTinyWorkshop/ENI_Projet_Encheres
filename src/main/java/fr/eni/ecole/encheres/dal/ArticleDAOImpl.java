@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -221,11 +222,13 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 	}
-
-	@Override
+	
+	//////// RECUPERATION DE LA LISTE POUR FILTRE
 	public List<Categorie> getAllCategories() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        String sql = "SELECT [no_categorie] AS noCategorie, [libelle] FROM [dbo].[CATEGORIES]";
+        return jdbcTemp.query(sql, BeanPropertyRowMapper.newInstance(Categorie.class));
+    }
+	
 
 }
+

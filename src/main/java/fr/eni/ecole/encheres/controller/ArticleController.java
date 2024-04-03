@@ -110,18 +110,7 @@ public class ArticleController {
 	    }
 	}
 
-	////////// GET MAPPING DU FRAGMETN FILTRE CAT2GORIE
-	@GetMapping("/fragment-filtre")
-	public String categorieFragment(Model model) {
-	    try {
-	        List<Categorie> categories = articleService.getAllCategories();
-	        model.addAttribute("categories", categories);
-	        return "fragments/fragment-filtre";
-	    } catch (BusinessException e) {
-	        model.addAttribute("error", e.getClefsExternalisations());
-	        return "fragments/fragment-filtre";
-	    }
-	}
+
 
 
 	
@@ -140,5 +129,12 @@ public class ArticleController {
 		articleService.supprArticleById(articleId);
 		return "redirect:/";
 	}
-
+	
+	//////// filtre par catégorie et mapping vers la vue :
+	@GetMapping("/fragment-liste-articles-connecte")
+    public String getAllCategories(Model model) {
+        List<Categorie> categories = ArticleService.getAllCategories();
+        model.addAttribute("categories", categories);
+        return "fragment-liste-articles-connecte";
+    }
 }

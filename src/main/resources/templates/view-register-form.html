@@ -17,9 +17,14 @@
 </head>
 <body>
    <main>
-	<!-- Injecter ici le register-form transformé en fragment, si jamais ça veut bien marcher -->
-        <div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form(#{view-register-form.h1}, '/user/register')}">
-        </div>
+		<!-- Injecter ici le register-form transformé en fragment, si l'utilisateur n'est pas reconnu -->
+        <div data-th-if="${#authorization.expression('isAuthenticated()')}"></div>
+		<div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form(#{view-register-form.h1}, '/user/register')}"></div>
+		
+		<!-- Injecter ici le update-form, si l'utilisateur est déjà authentifié -->
+		<div data-th-if="${#authorization.expression('isAuthenticated()')}"></div>
+		<div data-th-replace="~{fragments/fragment-update-form :: frag-update-form(#{view-register-form.h1}, '/user/register')}"></div>
+        
     </main>
 </body>
 </html>
