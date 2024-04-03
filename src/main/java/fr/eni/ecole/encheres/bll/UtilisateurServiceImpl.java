@@ -56,15 +56,16 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    if (utilisateur == null) {
 	        be.add(BusinessCode.VALIDATION_USER_NULL);
 	        throw be;
+	        
 	    }
 
 	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isEmpty()) {
 	        be.add(BusinessCode.VALIDATION_USER_PASSWORD_BLANK);
+	        throw be;
 	    }
 
 	    // Validate the user object and collect validation errors
 	    boolean isValid = true;
-	    isValid &= validerUtilisateur(utilisateur, be);
 	    isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
 	    isValid &= validerUniqueMail(utilisateur.getEmail(), be);
 	    isValid &= validerPseudo(utilisateur.getPseudo(), be);

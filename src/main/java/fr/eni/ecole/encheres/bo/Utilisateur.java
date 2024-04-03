@@ -23,13 +23,15 @@ public class Utilisateur implements Serializable{
 	@NotBlank
 	private String prenom;
 	
+	@NotBlank
 	@Email
 	private String email;
 	
 	private String telephone;
 	
 	@NotBlank
-	@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,20}$")
+	@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\\\d)(?=.*[@$!%*?&])[A-Za-z\\\\d@$!%*?&]*$")
+	@Size(min = 8, max = 20)
 	private String motDePasse;
 	
 	@PositiveOrZero

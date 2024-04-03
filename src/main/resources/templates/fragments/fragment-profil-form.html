@@ -1,78 +1,106 @@
 <form xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-prof-form(titreForm, action)" class="form-poly"
 	method="post" data-th-object="${user}" data-th-action="@{${action}}">
 
+	<div class="bloc-titre">
+		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
+			<h1 data-th-text="${titreForm}"></h1>
+		</th:block>
 
-	<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-	<h1 data-th-text="${titreForm}"></h1>
-	</th:block>
-	
-	<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-	<h1 data-th-text="'Profil de ' + *{pseudo}"></h1>
-	</th:block>
+		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<h1 data-th-text="'Profil de ' + *{pseudo}"></h1>
+		</th:block>
 
-	<th:block data-th-if="${!#strings.isEmpty(action)}">
-		<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
-	</th:block>
+		<th:block data-th-if="${!#strings.isEmpty(action)}">
+			<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
+		</th:block>
+	</div>
 
-	<!-- Première colonne -->
-	<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-	<label for="pseudo" data-th-text=#{form.pseudo}></label>
-	<input type="text" id="pseudo" data-th-field="*{pseudo}">
-	</th:block>
-<!-- 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div> -->
+	<div class="bloc-colonnes">
+		<div class="colonne colonne-user">
+			<!-- Première colonne -->
+			<div class="item">
+				<div class="input-label">
+					<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
+						<label for="pseudo" data-th-text=#{form.pseudo}></label>
+						<input type="text" id="pseudo" data-th-field="*{pseudo}" required>
+					</th:block>
+				</div>
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('pseudo')}"></div>
+			</div>
 
+			<div class="item">
+				<div class="input-label">
+					<label for="prenom" data-th-text=#{form.prenom}></label>
+					<input type="text" id="prenom" data-th-field="*{prenom}" required>
+				</div>
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prenom')}"></div>
+			</div>
 
-	<input type="hidden" id="pseudoHidden" data-th-field="*{pseudo}">
+			<div class="item">
+				<div class="input-label">
+					<label for="nom" data-th-text=#{form.nom}></label>
+					<input type="text" id="nom" data-th-field="*{nom}" required>
+				</div>
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
+			</div>
 
-	<label for="nom" data-th-text=#{form.nom}></label>
-	<input type="text" id="nom" data-th-field="*{nom}" required>
-<!-- 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div> -->
+			<div class="item">
+				<div class="input-label">
+					<label for="telephone" data-th-text=#{form.telephone}></label>
+					<input type="text" id="telephone" data-th-field="*{telephone}">
+				</div>
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
+			</div>
 
+			<div class="item">
+				<div class="input-label">
+					<label for="email" data-th-text=#{form.email}>:</label>
+					<input type="text" id="email" data-th-field="*{email}" required>
+				</div>
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
+			</div>
+		</div>
 
-	<label for="prenom" data-th-text=#{form.prenom}></label>
-	<input type="text" id="prenom" data-th-field="*{prenom}" required>
-<!-- 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prenom')}"></div> -->
+		<div class="colonne colonne-adresse">
+			<!-- Deuxième colonne -->
+			<div class="item">
+				<div class="input-label">
+					<label for="rue" data-th-text=#{form.rue}></label>
+					<input type="text" id="rue" data-th-field="*{adresse.rue}" required>
+				</div>
+			</div>
 
-	<label for="telephone" data-th-text=#{form.telephone}></label>
-	<input type="text" id="telephone" data-th-field="*{telephone}">
-	<!-- ERROR -->
-<!-- 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div> -->
+			<div class="item">
+				<div class="input-label">
+					<label for="complement" data-th-text=#{form.complement}></label>
+					<input type="text" id="complement" name="complement" data-th-field="*{adresse.complement}" required>
+				</div>
+			</div>
 
-	<label for="email" data-th-text=#{form.email}>:</label>
-	<input type="text" id="email" data-th-field="*{email}" required>
-	<!-- ERROR -->
-	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div> 
-<!-- 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div> -->
+			<div class="item">
+				<div class="input-label">
+					<label for="codePostal" data-th-text=#{form.codePostal}></label>
+					<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" required>
+				</div>
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse.codePostal')}"></div>
+			</div>
 
+			<div class="item">
+				<div class="input-label">
+					<label for="ville" data-th-text=#{form.ville}></label>
+					<input type="text" id="ville" data-th-field="*{adresse.ville}" required>
+				</div>
+			</div>
+		</div>
+		<!-- Si je suis sur mon profil, affichage de mon credit -->
 
+	</div>
 
-	<!-- Deuxième colonne -->
-
-	<label for="codePostal" data-th-text=#{form.codePostal}></label>
-	<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" required>
-	<!-- ERROR -->
-	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse.codePostal')}"></div>
-
-
-<!-- 	<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('codePostal')}"></div> -->
-
-	<label for="rue" data-th-text=#{form.rue}></label>
-	<input type="text" id="rue" data-th-field="*{adresse.rue}" required>
-
-	<label for="complement" data-th-text=#{form.complement}></label>
-	<input type="text" id="complement" name="complement" data-th-field="*{adresse.complement}" required>
-
-	<label for="ville" data-th-text=#{form.ville}></label>
-	<input type="text" id="ville" data-th-field="*{adresse.ville}" required>
-
-	<input type="hidden" id="adresseId" data-th-field="*{adresse.id}" />
-
-	<!-- Si je suis sur mon profil, affichage de mon credit -->
-	<div class="credit-box" data-th-if="${#authorization.expression('isAuthenticated()')}">
+	<div class="bloc-credit" data-th-if="${#authorization.expression('isAuthenticated()')}">
 		<p data-th-text="#{form.credit} + ' ' + *{credit}"></p>
 	</div>
 
-	<div class="password-box">
+	<div class="bloc-password">
 		<!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
 		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
 			<label for="motDePasse" data-th-text=#{form.mdpNewUser}></label>
@@ -93,8 +121,7 @@
 		<input type="password" id="confirmation" name="confirmation" required>
 	</div>
 
-
-	<div class="btn-box">
+	<div class="bloc-boutons">
 		<!-- Construire fonction JS pour le ONCLICK  -->
 		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
 			<button type="submit" id="submitButton" data-th-text=#{form.enregistrer}></button>
@@ -103,9 +130,12 @@
 			<button type="submit" id="submitButton" data-th-text=#{form.creer}></button>
 		</th:block>
 		<a data-th-href="@{/}">
-				<button type="button" data-th-text=#{form.annuler}></button>
+			<button type="button" data-th-text=#{form.annuler}></button>
 		</a>
-
 	</div>
 
+	<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+		<input type="hidden" id="pseudoHidden" data-th-field="*{pseudo}">
+	</th:block>
+	<input type="hidden" id="adresseId" data-th-field="*{adresse.id}" />
 </form>

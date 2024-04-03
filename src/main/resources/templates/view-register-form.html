@@ -2,7 +2,7 @@
 
 <!-- Mise en place du layout -->
 <html xmlns:th="http://www.thymeleaf.org"
-    data-th-replace="~{layouts/layout :: layout-projet(titrePage=~{:: title},
+	data-th-replace="~{layouts/layout :: layout-projet(titrePage=~{:: title},
                     contenuPage=~{:: main},
                     ressourcesSupp=~{:: #ressources-css})}">
 
@@ -12,19 +12,13 @@
 <script src="script.js"></script>
 <title data-th-text="#{enregistrer.title}"></title>
 <th:block id="ressources-css">
-    <link rel="stylesheet" data-th-href="@{/css/form.css}" />
+	<link rel="stylesheet" data-th-href="@{/css/form.css}" />
+	<link rel="stylesheet" data-th-href="@{/css/error.css}" />
 </th:block>
 </head>
 <body>
-   <main>
-		<!-- Injecter ici le register-form transformé en fragment, si l'utilisateur n'est pas reconnu -->
-        <div data-th-if="${#authorization.expression('isAuthenticated()')}"></div>
+	<main>
 		<div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form(#{view-register-form.h1}, '/user/register')}"></div>
-		
-		<!-- Injecter ici le update-form, si l'utilisateur est déjà authentifié -->
-		<div data-th-if="${#authorization.expression('isAuthenticated()')}"></div>
-		<div data-th-replace="~{fragments/fragment-update-form :: frag-update-form(#{view-register-form.h1}, '/user/register')}"></div>
-        
-    </main>
+	</main>
 </body>
 </html>

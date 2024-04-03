@@ -1,11 +1,22 @@
 @charset "UTF-8";
-.errors {
-   display: flex;
-   flex-direction: column;
-   justify-content: space-around;
-   color:rgb(29, 28, 28);
-   background-color: #ff6a6a;
-   margin: 5px;
-   padding: 1rem;
-   border-radius: 10px;
+/* .errors { */
+/*    display: flex; */
+/*    flex-direction: column; */
+/*    justify-content: space-around; */
+/*    color:rgb(29, 28, 28); */
+/*    background-color: #ff6a6a; */
+/*    margin: 5px; */
+/*    padding: 1rem; */
+/*    border-radius: 10px; */
+/* } */
+
+.errorsh2 {
+	color: #ff6a6a;
+	text-align: center;
+}
+
+.errorsul li {
+	color: #ff6a6a;
+	text-align: center;
+	font-size: .7rem;
 }
