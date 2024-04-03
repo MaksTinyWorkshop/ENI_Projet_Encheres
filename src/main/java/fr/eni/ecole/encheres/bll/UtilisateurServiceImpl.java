@@ -35,7 +35,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 		return u;
 	}
-
+	
 	/**
 	 * Méthode privée pour centraliser l'association entre un user et son adresse
 	 * 

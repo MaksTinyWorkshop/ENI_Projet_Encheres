@@ -8,7 +8,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 import fr.eni.ecole.encheres.bo.Adresse;
+import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 @Repository
@@ -96,13 +98,29 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 	
 	@Override
-	public void debiter(String pseudo, int montant) {
+	public void debiter(Enchere enchere) {
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
-		namedParam.addValue("pseudo", pseudo);
-		namedParam.addValue("credit", montant);
+		namedParam.addValue("pseudo", enchere.getAcquereur().getPseudo());
+		namedParam.addValue("credit", enchere.getMontant());
 		
 		jdbcTemplate.update(DEBIT_PRECEDENT_ENCHERISSEUR, namedParam);
 	}
+	
+	@Override
+	public int uniqueEmail(String email) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("email", email);
+		return jdbcTemplate.queryForObject(COUNT_EMAIL, namedParam, Integer.class);
+	}
+
+
+	@Override
+	public int uniquePseudo(String pseudo) {
+		MapSqlParameterSource namedParam = new MapSqlParameterSource();
+		namedParam.addValue("pseudo", pseudo);
+		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParam, Integer.class);
+	}
+
 	
 	
 	/**
@@ -129,23 +147,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			return u;
 		}
 		
-	}
-
-
-
-	@Override
-	public int uniqueEmail(String email) {
-		MapSqlParameterSource namedParam = new MapSqlParameterSource();
-		namedParam.addValue("email", email);
-		return jdbcTemplate.queryForObject(COUNT_EMAIL, namedParam, Integer.class);
-	}
-
-
-	@Override
-	public int uniquePseudo(String pseudo) {
-		MapSqlParameterSource namedParam = new MapSqlParameterSource();
-		namedParam.addValue("pseudo", pseudo);
-		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParam, Integer.class);
 	}
 
 

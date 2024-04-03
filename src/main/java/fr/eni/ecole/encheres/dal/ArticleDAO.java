@@ -5,6 +5,7 @@ import java.util.List;
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
+import fr.eni.ecole.encheres.bo.Enchere;
 
 public interface ArticleDAO {
 	//1.les méthodes permettant de consulter les Articles
@@ -26,7 +27,7 @@ public interface ArticleDAO {
 
 	Adresse getAdress(String pseudo);
 	
-	void updatePrix(long idArticle, int montantEnchere);
+	void updatePrix(Enchere enchere);
 
 	void modifierArticle(ArticleAVendre newArticle);
 

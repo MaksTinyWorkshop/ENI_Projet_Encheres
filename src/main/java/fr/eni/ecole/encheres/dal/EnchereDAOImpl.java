@@ -2,7 +2,6 @@ package fr.eni.ecole.encheres.dal;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,8 +9,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
-import fr.eni.ecole.encheres.dal.UtilisateurDAOImpl.UtilisateurRowMapper;
+
 
 
 @Repository
@@ -27,34 +27,30 @@ public class EnchereDAOImpl implements EnchereDAO {
 	NamedParameterJdbcTemplate jdbcTemplate;
 
 	@Override
-	public void placerUneEnchere(String pseudoUser, long idArticle, int montantEnchere) {
+	public void placerUneEnchere(Enchere enchere) {
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		
-		//Date d'enchère = moment de l'insertion
-		LocalDateTime dateEnchere = LocalDateTime.now();
-
-		
-		namedParam.addValue("pseudo", pseudoUser);
-		namedParam.addValue("no_article", idArticle);
-		namedParam.addValue("montant_enchere", montantEnchere);
-		namedParam.addValue("date_enchere", dateEnchere);
+		namedParam.addValue("pseudo", enchere.getAcquereur().getPseudo());
+		namedParam.addValue("no_article", enchere.getArticleAVendre().getId());
+		namedParam.addValue("montant_enchere", enchere.getMontant());
+		namedParam.addValue("date_enchere", enchere.getDate());
 
 		jdbcTemplate.update(INSERT_ENCHERE, namedParam);
 		
 	}
 
 	@Override
-	public Utilisateur lireEncherisseur(long idArticle) {
+	public Utilisateur lireEncherisseur(Enchere enchere) {
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
-		namedParam.addValue("no_article", idArticle);
+		namedParam.addValue("no_article", enchere.getArticleAVendre().getId());
 		return jdbcTemplate.queryForObject(FIND_ENCHERISSEUR_BY_ID_ARTICLE, namedParam, new UtilisateurTemporaireRowMapper());
 	}
 	
 	
 	@Override
-	public void supprimerEncherePrecedente(long idArticle) {
+	public void supprimerEncherePrecedente(Enchere enchere) {
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
-		namedParam.addValue("no_article", idArticle);
+		namedParam.addValue("no_article", enchere.getArticleAVendre().getId());
 		
 		jdbcTemplate.update(DELETE_ENCHERE_BY_ID, namedParam);
 		

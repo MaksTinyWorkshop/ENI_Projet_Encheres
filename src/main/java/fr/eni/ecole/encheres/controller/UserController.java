@@ -49,10 +49,6 @@ public class UserController {
 	        try {
 	            // Enregistre l'utilisateur
 	            utilisateurService.save(user);
-//	            // Enregistre l'adresse utilisateur
-//	            if (user.getAdresse() != null) {
-//	                utilisateurService.saveAddress(user.getPseudo(), user.getAdresse());
-//	            }
 
 	            return "redirect:/"; // Redirige vers al page d'accueil
 	        

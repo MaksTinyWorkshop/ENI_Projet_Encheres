@@ -17,10 +17,13 @@ public class AdresseDAOImpl implements AdresseDAO {
 
 	private final String FIND_BY_PSEUDO = "SELECT U.pseudo, A.rue, A.complement, A.code_postal, A.ville, A.no_adresse "
 			+ "FROM UTILISATEURS U INNER JOIN ADRESSES A ON U.no_adresse = A.no_adresse WHERE U.pseudo = :pseudo";
-	private static final String UPDATE_ADRESSE = "UPDATE ADRESSES SET complement= :complement, rue= :rue, code_postal= :codePostal, ville= :ville WHERE no_adresse= :no_adresse";
+	private static final String UPDATE_ADRESSE = "UPDATE ADRESSES SET "
+			+ " complement= :complement, rue= :rue, code_postal= :codePostal, ville= :ville "
+			+ " WHERE no_adresse= :no_adresse";
 	private static final String INSERT_ADRESSE_QUERY = "INSERT INTO ADRESSES "
 			+ " (rue, ville, code_postal, complement) VALUES (:rue, :ville, :codePostal, :complement)";
 	private static final String RECUP_ADRESSE = "SELECT MAX(no_adresse) FROM ADRESSES";
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -44,16 +47,27 @@ public class AdresseDAOImpl implements AdresseDAO {
 		namedParamA.addValue("ville", adresse.getVille());
 		namedParamA.addValue("no_adresse", idAdresse);
 		jdbcTemplate.update(UPDATE_ADRESSE, namedParamA);
-		
 	}
 	
+	@Override
+	public void saveAddress(Adresse adresse) {
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("rue", adresse.getRue());
+	    params.addValue("ville", adresse.getVille());
+	    params.addValue("codePostal", adresse.getCodePostal());
+	    params.addValue("complement", adresse.getComplement());
+
+	    // Insert l'adresse en BDD
+	    jdbcTemplate.update(INSERT_ADRESSE_QUERY, params);
+	}
+		
 	@Override
 	public long readLast() {
 		 Long dernierAdresseId = jdbcTemplate.queryForObject(RECUP_ADRESSE, new MapSqlParameterSource(), Long.class);
 		    return dernierAdresseId != null ? dernierAdresseId : -1;
 	}
 	
-
+	
 	/**
 	 * Classe de mapping pour gérer les noms des colonnes
 	 */
@@ -73,17 +87,7 @@ public class AdresseDAOImpl implements AdresseDAO {
 
 	}
 
-	@Override
-	public void saveAddress(Adresse adresse) {
-	    MapSqlParameterSource params = new MapSqlParameterSource();
-	    params.addValue("rue", adresse.getRue());
-	    params.addValue("ville", adresse.getVille());
-	    params.addValue("codePostal", adresse.getCodePostal());
-	    params.addValue("complement", adresse.getComplement());
 
-	    // Insert l'adresse en BDD
-	    jdbcTemplate.update(INSERT_ADRESSE_QUERY, params);
-	}
 
 
 }
