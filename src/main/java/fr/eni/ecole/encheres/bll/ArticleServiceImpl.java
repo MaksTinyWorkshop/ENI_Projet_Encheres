@@ -174,6 +174,14 @@ public class ArticleServiceImpl implements ArticleService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+	@Override
+	public List<Categorie> getAllCategories() {
+	    return articleDAO.getAllCategories();
+	}
+	
+
 /*
 	@Override
 	public List<ArticleAVendre> charger() {
@@ -181,5 +189,6 @@ public class ArticleServiceImpl implements ArticleService {
 		return null;
 	}
 	*/
+
 	
 }

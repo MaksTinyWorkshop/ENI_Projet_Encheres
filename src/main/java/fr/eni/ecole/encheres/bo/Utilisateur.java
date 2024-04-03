@@ -72,6 +72,10 @@ public class Utilisateur implements Serializable{
 		this.admin = admin;
 		this.adresse = adresse;
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> bb468532d3785da2c0ff1fe751bb9bfb4396ad25
 
 ////////////////////////////////////////////Setters / getters
 	
@@ -180,18 +184,6 @@ public class Utilisateur implements Serializable{
 		return builder.toString();
 	}
 	
-	public String getRue() {
-	return adresse != null ? adresse.getRue() : null;
-	    }
-
-	public String getCodePostal() {
-	return adresse != null ? adresse.getCodePostal() : null;
-	    }
-
-	public String getVille() {
-	return adresse != null ? adresse.getVille() : null;
 	
-	
-	   }
 		
 }

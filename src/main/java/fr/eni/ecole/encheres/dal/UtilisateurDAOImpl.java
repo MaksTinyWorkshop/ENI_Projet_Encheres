@@ -62,6 +62,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
         jdbcTemplate.update(INSERT_USER_QUERY, params);
     }
+  
 
 
 	@Override

@@ -69,6 +69,9 @@ public class ArticleDAOImpl implements ArticleDAO {
 	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
 
+
+
+
 	@Override																		//filtre par catégories
 	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
 	    
@@ -211,4 +214,15 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 	}
+
+	@Override
+	public List<Categorie> getAllCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+
 }

@@ -110,16 +110,16 @@ public class ArticleController {
 	    }
 	}
 
-	@GetMapping("/filtrer-par-categorie")
-	public String filtrerParCategorie(Model model, @RequestParam("categorie") String categorie) {
+	////////// GET MAPPING DU FRAGMETN FILTRE CAT2GORIE
+	@GetMapping("/fragment-filtre")
+	public String categorieFragment(Model model) {
 	    try {
-	        Categorie categorieObj = articleService.getCategorieByName(categorie);
-	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByCategorie(categorieObj);
-	        model.addAttribute("articlesList", articlesFiltres);
-	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par catégorie
+	        List<Categorie> categories = articleService.getAllCategories();
+	        model.addAttribute("categories", categories);
+	        return "fragments/fragment-filtre";
 	    } catch (BusinessException e) {
-	        model.addAttribute("listArticleError", e.getClefsExternalisations());
-	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
+	        model.addAttribute("error", e.getClefsExternalisations());
+	        return "fragments/fragment-filtre";
 	    }
 	}
 

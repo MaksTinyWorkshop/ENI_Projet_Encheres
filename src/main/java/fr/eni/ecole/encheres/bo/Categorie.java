@@ -66,4 +66,8 @@ private static final long serialVersionUID = 1L;
 		builder.append("]");
 		return builder.toString();
 	}
+	public void setNoCategorie(int int1) {
+		// TODO Auto-generated method stub
+		
+	}
 }

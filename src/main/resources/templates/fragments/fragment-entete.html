@@ -1,5 +1,4 @@
 <header xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-entete">
-<script type="text/javascript" src="filtres.js"></script>
 	<div class="left-box">
 		<h1>
 			<a href="/">
@@ -34,19 +33,7 @@
 			<li data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<a data-th-href="@{/logout}" data-th-text="#{frag-entete.a.deconnexion}"></a>
 			</li>
-			<!-- Ajout de liens pour filtrer par nom d'article et par catégorie -->
-			<li>
-				<form method="get" action="/filtrer-par-nom-article">
-					<input type="text" name="nomArticle" placeholder="Nom de l'article">
-					<button type="submit">Filtrer par nom d'article</button>
-				</form>
-			</li>
-			<li>
-				<form method="get" action="/filtrer-par-categorie">
-					<input type="text" name="categorie" placeholder="Nom de la catégorie">
-					<button type="submit">Filtrer par catégorie</button>
-				</form>
-			</li>
+			
 		</ul>
 	</nav>
 
