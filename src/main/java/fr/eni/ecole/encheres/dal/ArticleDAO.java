@@ -13,10 +13,10 @@ public interface ArticleDAO {
 	List<ArticleAVendre> getArticlesByName(String boutNom);
 	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
 	
-	//3. récupération d'un article complet
+	//2. récupération d'un article complet
 	ArticleAVendre getArticleById(Long articleId);
 	
-	//2. les méthodes permettant de créer ou modifier des articles
+	//3. les méthodes permettant de créer ou modifier des articles
 	void creerArticle(ArticleAVendre newArticle);
 	void supprArticleById(Long articleId);
 	void updatePrix(long idArticle, int montantEnchere);
