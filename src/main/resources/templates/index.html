@@ -29,6 +29,17 @@
        	    	<!-- Utilisateur connecté -->
        	 		<div th:replace="fragments/fragment-liste-articles-connecte :: frag-list-articles-connecte"></div>
        	 </div>
+		 <!-- Condition pour inclure le fragment de filtrage -->
+    	 <div data-th-if="${!#authorization.expression('isAuthenticated()')}">
+    	 <!-- Utilisateur non connecté -->
+        		<div data-th-replace="~{fragments/fragment-liste-articles :: frag-list-articles}"></div>
+    	 </div>
+        		
+    	<div data-th-if="${#authorization.expression('isAuthenticated()')}">
+    	<!-- Utilisateur connecté -->
+       	 		<div th:replace="fragments/fragment-liste-articles-connecte :: frag-list-articles-connecte"></div>
+    	</div>
+       	    	
   	</main>
 </body>
 </html>
