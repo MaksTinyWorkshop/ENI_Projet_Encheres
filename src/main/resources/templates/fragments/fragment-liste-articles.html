@@ -2,6 +2,24 @@
 	<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
 		<div class="img-box"></div>
 		<div class="details">
+		<script src="chemin/vers/votre/fichier/filtres.js"></script>
+			
+	<div>
+	    <select name="categorie" id="categorie">
+    			<option value="">Sélectionnez une catégorie</option>
+   			    <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
+ 		</select>
+	</div>
+
+    <!-- Ajout de liens pour filtrer par nom d'article et par catégorie -->
+    <form method="get" action="/filtrer-par-nom-article">
+        <input type="text" name="nomArticle" placeholder="Nom de l'article">
+        <button type="submit">Rechercher</button>
+    </form>
+	<div data-th-if="${listArticleError != null}">
+		<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
+	</div>
+			
 			<h2>
 				<a data-th-href="@{|/articles/articleDetail/${article.id}|}" data-th-text="${article.nom}"></a>
 			</h2>
@@ -14,7 +32,7 @@
 			</p>
 		</div>
 	</div>
-	<div data-th-if="${listArticleError != null}">
-		<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
-	</div>
+	
 </div>
+
+

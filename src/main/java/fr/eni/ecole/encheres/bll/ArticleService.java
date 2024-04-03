@@ -16,9 +16,6 @@ public interface ArticleService {
 
 	List<ArticleAVendre> getArticlesByName(String nomArticle);
 
-	List<ArticleAVendre> getArticlesByCategorie(Categorie categorieObj);
-
-	Categorie getCategorieByName(String categorie);
 	ArticleAVendre consulterArticleById(Long articleId);
 	void supprArticleById(Long id);
 

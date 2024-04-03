@@ -131,10 +131,10 @@ public class ArticleController {
 	}
 	
 	//////// filtre par catégorie et mapping vers la vue :
-	@GetMapping("/fragment-liste-articles-connecte")
-    public String getAllCategories(Model model) {
-        List<Categorie> categories = ArticleService.getAllCategories();
-        model.addAttribute("categories", categories);
-        return "fragment-liste-articles-connecte";
-    }
+	@GetMapping("/fragment-liste-articles")
+	public String getAllCategories(Model model) {
+	    List<Categorie> categories = ArticleService.getAllCategories();
+	    model.addAttribute("categories", categories);
+	    return "fragment-liste-articles";
+	}
 }
