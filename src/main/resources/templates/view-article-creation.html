@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <script src="script.js"></script>
-<title>Vendre un Article</title>
+<title data-th-text="#{form.article.titre}"></title>
 <th:block id="ressources-css">
     <link rel="stylesheet" data-th-href="@{/css/form.css}" />
 </th:block>
@@ -17,7 +17,7 @@
 <body>
    <main>
 	<!-- fragment 1 pour la création d'objet -->
-        <div data-th-replace="~{fragments/fragment-article-form :: frag-article-form}">
+        <div data-th-replace="~{fragments/fragment-article-form :: frag-article-form(titre)}">
         </div>
     <!-- fragment 2 pour la réussite de création, avec redirection vers l'accueil -->
     </main>

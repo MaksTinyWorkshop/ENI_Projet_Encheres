@@ -36,15 +36,11 @@ public class EncheresController {
 	
 	@PostMapping("/articles/articleDetail/{id}")
 	public String faireUneEnchere(@ModelAttribute("articleSelect") ArticleAVendre article,
-<<<<<<< HEAD
-			@RequestParam(name = "enchere") int montantEnchere, Principal ppal, RedirectAttributes ra, Locale locale) {
-		// Création  de "coquille" pour transporter les infos"
-=======
 			@RequestParam(name = "enchere", required = true) int montantEnchere, Principal ppal,
 			Model model) {
 
 		// Création de "coquille" pour transporter les infos
->>>>>>> 37761271372efd572c7dd50561ff664092ddf9f5
+
 		Enchere enchere = new Enchere();
 		Utilisateur user = new Utilisateur();
 		article = articleService.consulterArticleById(article.getId());

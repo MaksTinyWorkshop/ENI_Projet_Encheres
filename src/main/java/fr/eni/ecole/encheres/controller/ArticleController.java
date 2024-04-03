@@ -62,6 +62,7 @@ public class ArticleController {
 			model.addAttribute("article", newArticle);
 			System.out.println("la je crée un nouvel article !!!!!");
 			System.out.println(newArticle.getId());
+			model.addAttribute("titre", false);
 			return "view-article-creation";
 		}else {
 			return "redirect:/";
@@ -71,6 +72,7 @@ public class ArticleController {
 	public String modifierArticle(@PathVariable(name="id", required = false) Long id, Model model) {
 		ArticleAVendre newArticle = articleService.consulterArticleById(id);
 		model.addAttribute("article", newArticle);
+		model.addAttribute("titre", true);
 		return "view-article-creation";
 	}
 	
