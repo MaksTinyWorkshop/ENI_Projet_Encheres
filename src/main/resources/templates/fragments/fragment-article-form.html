@@ -47,10 +47,9 @@
         <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateDebutEncheres')}"></div>
  
         <label for="enchereEnd" data-th-text="#{form.article.enchere.fin}"></label>
-        <input type="date" id="enchereEnd" data-th-field="*{dateFinEncheres}" required>
+        <input type="date" id="enchereEnd" data-th-value="*{dateFinEncheres}" name="dateFinEncheres" required>
         
         <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateFinEncheres')}"></div>
-        
 
         <!-- Partie retrait -->
 		<fieldset>
