@@ -35,10 +35,11 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 		BusinessException be = new BusinessException();
 		// Méthodes de vérifiaction
 		boolean isValid = true;
-		isValid &= validerCreditUtilisateur(enchere, be);
 		isValid &= validerUserNotVendeur(enchere, be);
+		isValid &= validerTopEncherisseur(enchere, be);
 		isValid &= validerMontantEnchere(enchere, be);
-
+		isValid &= validerCreditUtilisateur(enchere, be);
+		
 		if (!isValid) {
 			throw be;
 		}
@@ -65,9 +66,12 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 
 	/**
 	 * Méthodes de validation 
+	 * - Le User doit avoir assez de crédit
+	 * - Le user(enchérisseur) ne doit pas être le vendeur
+	 * - Le user doit faire une offre supérieure au prix de vente actuel
+	 * - Le user ne doit pas déjà être le détenteur de l'enchère
 	 */
 	
-	// User a assez de crédit / User != vendeur / montantEnchere > prixVente
 	
 	private boolean validerCreditUtilisateur(Enchere enchere, BusinessException be) {
 		Utilisateur u = enchere.getAcquereur();
@@ -100,6 +104,10 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 		ArticleAVendre a = enchere.getArticleAVendre();
 		int montantEnchere = enchere.getMontant();
 		
+		if ((Integer)montantEnchere == null) {
+			return false;
+		}
+		
 		int prixVente = a.getPrixVente();
 		if (montantEnchere <= prixVente) {
 			be.add(BusinessCode.VALIDATION_ENCHERE_MONTANT_INSUFFISANT);
@@ -108,4 +116,15 @@ public class EnchereServiceImpl implements EnchereService {	// Enlever $$ acqué
 		return true;
 	}
 	
+	private boolean validerTopEncherisseur(Enchere enchere, BusinessException be) {
+		String encherisseur = enchere.getAcquereur().getPseudo();
+		String precedentEncherisseur = enchereDAO.lireEncherisseur(enchere).getPseudo();
+		
+		if (encherisseur.equals(precedentEncherisseur)) {
+			be.add(BusinessCode.VALIDATION_ENCHERE_USER_EQUALS_ENCHERISSEUR);
+			return false;
+		}
+		
+		return true;
+	}
 }

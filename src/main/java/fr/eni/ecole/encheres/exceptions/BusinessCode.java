@@ -51,6 +51,7 @@ public class BusinessCode {
 	public static final String VALIDATION_ENCHERE_CREDIT = "placement.enchere.credit.insuffisant";
 	public static final String VALIDATION_ENCHERE_USER_EQUALS_VENDEUR = "placement.enchere.user.equals.vendeur";
 	public static final String VALIDATION_ENCHERE_MONTANT_INSUFFISANT = "placement.enchere.montant.insuffisant";
+	public static final String VALIDATION_ENCHERE_USER_EQUALS_ENCHERISSEUR = "placement.enchere.user.equals.encherisseur";
 }
 
 

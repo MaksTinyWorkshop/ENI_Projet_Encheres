@@ -227,4 +227,18 @@ public class ArticleDAOImpl implements ArticleDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 37761271372efd572c7dd50561ff664092ddf9f5
 }

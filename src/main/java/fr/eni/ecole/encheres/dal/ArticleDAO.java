@@ -20,6 +20,10 @@ public interface ArticleDAO {
 	//3. les méthodes permettant de créer ou modifier des articles
 	void creerArticle(ArticleAVendre newArticle);
 	void supprArticleById(Long articleId);
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 37761271372efd572c7dd50561ff664092ddf9f5
 	void updatePrix(Enchere enchere);
 	void modifierArticle(ArticleAVendre newArticle);
 	
