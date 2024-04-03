@@ -10,20 +10,19 @@
 
 <head>
 
-	<!-- Accueil comme titre de page -->
-	<title data-th-text="#{monprofil.title}"></title>
-	
-	<th:block id="ressources-css">
-		<link rel="stylesheet" data-th-href="@{/css/error.css}" />
-		<link rel="stylesheet" data-th-href="@{/css/form.css}" />
-	</th:block>
+<!-- Accueil comme titre de page -->
+<title data-th-text="#{monprofil.title}"></title>
+
+<th:block id="ressources-css">
+	<link rel="stylesheet" data-th-href="@{/css/error.css}" />
+	<link rel="stylesheet" data-th-href="@{/css/form.css}" />
+</th:block>
 
 </head>
 <body>
 	<main>
-	<!-- Injecter ici le register-form transformé en fragment, si jamais ça veut bien marcher -->
-        <div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form(#{view-mon-profil.h1}, '/user/profil',)}">
-        </div>
-    </main>
+		<div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form(#{view-mon-profil.h1}, '/user/profil',)}">
+		</div>
+	</main>
 </body>
 </html>

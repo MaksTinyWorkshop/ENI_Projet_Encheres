@@ -22,8 +22,6 @@ public interface ArticleDAO {
 	void creerArticle(ArticleAVendre newArticle);
 	
 	void supprArticleById(Long articleId);
-
-	Adresse getAdress(String pseudo);
 	
 	void updatePrix(Enchere enchere);
 

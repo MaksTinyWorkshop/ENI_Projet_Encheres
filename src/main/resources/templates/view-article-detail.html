@@ -13,6 +13,7 @@
 <title data-th-text="#{enregistrer.title}"></title>
 <th:block id="ressources-css">
 	<link rel="stylesheet" data-th-href="@{/css/profil.css}" />
+	<link rel="stylesheet" data-th-href="@{/css/error.css}" />
 </th:block>
 </head>
 <body>
@@ -62,9 +63,9 @@
 			</div>
 
 
-			<div th:if="${not #lists.isEmpty(messageDErreur)}">
+			<div data-th-if="${not #lists.isEmpty(messageDErreur)}" class="errors">
 				<ul>
-					<li th:each="errorMsg : ${messageDErreur}" th:text="${errorMsg}"></li>
+					<li data-th-each="errorMsg : ${messageDErreur}" data-th-text="#{${errorMsg}}"></li>
 				</ul>
 			</div>
 			
@@ -73,8 +74,8 @@
 				<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
 				
 					<label for="enchere" data-th-text="#{form.article.monoffre}"></label>
-					<input type="number" id="enchere" data-th-min="*{prixVente} + 1" name="enchere" data-th-placeholder="*{prixVente} +1" />
-
+					<input type="number" id="enchere" data-th-min="*{prixVente} + 1" name="enchere" data-th-placeholder="*{prixVente} +1" required/>
+					
 					<button type="submit" data-th-text="#{article.button.enchere}"></button>
 				</span>
 					<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">

@@ -225,12 +225,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 
 
-	@Override
-	public Adresse getAdress(String pseudo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 
 

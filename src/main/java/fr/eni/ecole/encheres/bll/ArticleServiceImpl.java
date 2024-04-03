@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
+import fr.eni.ecole.encheres.dal.AdresseDAO;
 import fr.eni.ecole.encheres.dal.AdresseDAOImpl;
 import fr.eni.ecole.encheres.dal.ArticleDAOImpl;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
@@ -27,8 +28,9 @@ public class ArticleServiceImpl implements ArticleService {
 	
 ///////////////////////////////////////////// Constructeurs
 	
-	public ArticleServiceImpl(ArticleDAOImpl articleDAO) {
+	public ArticleServiceImpl(ArticleDAOImpl articleDAO, AdresseDAOImpl adresseDAO) {
 		this.articleDAO = articleDAO;
+		this.adresseDAO = adresseDAO;
 	}
 
 //////////////////////////////////////////// Méthodes
