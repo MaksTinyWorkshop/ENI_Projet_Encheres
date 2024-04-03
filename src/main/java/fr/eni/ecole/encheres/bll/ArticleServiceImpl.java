@@ -54,7 +54,6 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Override
 	public ArticleAVendre consulterArticleById(Long articleId) {
-		
 		return articleDAO.getArticleById(articleId);
 	}
 	@Override
@@ -64,7 +63,7 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Override
 	public Adresse getAdress(String pseudo) {				//récupère l'adresse du Principal pour le formulaire de créa d'article
-		Adresse adress = adresseDAO.read(pseudo);		//tranfère la demande à la DAL
+		Adresse adress = adresseDAO.read(pseudo);			//tranfère la demande à la DAL
 		return adress;
 	}
 	
@@ -174,14 +173,6 @@ public class ArticleServiceImpl implements ArticleService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	@Override
-	public List<Categorie> getAllCategories() {
-	    return articleDAO.getAllCategories();
-	}
-	
-
 /*
 	@Override
 	public List<ArticleAVendre> charger() {
@@ -190,5 +181,10 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	*/
 
+	@Override
+	public List<Categorie> getAllCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
