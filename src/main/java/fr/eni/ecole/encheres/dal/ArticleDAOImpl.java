@@ -2,6 +2,7 @@ package fr.eni.ecole.encheres.dal;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,13 +123,18 @@ public class ArticleDAOImpl implements ArticleDAO {
 		namedParameters.addValue("description", newArticle.getDescription());
 		namedParameters.addValue("dateDebutEncheres", newArticle.getDateDebutEncheres());
 		namedParameters.addValue("dateFinEncheres", newArticle.getDateFinEncheres());
-		namedParameters.addValue("statu", "0");										//passer ça a 0 quand fini !!!!
 		namedParameters.addValue("prixInitial", newArticle.getPrixInitial());
 		namedParameters.addValue("prixVente", null);
 		namedParameters.addValue("vendeur", newArticle.getVendeur().getPseudo());
 		namedParameters.addValue("categorie", newArticle.getCategorie().getId());
 		namedParameters.addValue("retrait", newArticle.getRetrait().getId());
 		
+		if (newArticle.getDateDebutEncheres().isAfter(LocalDate.now())) {			//assignation du statu en fonction de la date de début d'enchère
+			namedParameters.addValue("statu", "0");
+		}else {
+			namedParameters.addValue("statu", "1");
+		}
+				
 		jdbcTemp.update(INSERT_ARTICLE, namedParameters, keyHolder);				//injection dans la BDD
 		if (keyHolder != null && keyHolder.getKey() != null) {
 			newArticle.setId(keyHolder.getKey().longValue());						//Injection de l'identifiant par le Keyholder
@@ -221,21 +227,4 @@ public class ArticleDAOImpl implements ArticleDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-
-
-	@Override
-	public Adresse getAdress(String pseudo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-
-
-
-
-
 }

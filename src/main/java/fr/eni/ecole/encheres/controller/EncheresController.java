@@ -36,7 +36,7 @@ public class EncheresController {
 
 	@PostMapping("/articles/articleDetail/{id}")
 	public String faireUneEnchere(@ModelAttribute("articleSelect") ArticleAVendre article,
-			@RequestParam(name = "enchere") int montantEnchere, Principal ppal, RedirectAttributes ra, Locale locale, Model model) {
+			@RequestParam(name = "enchere") int montantEnchere, Principal ppal, RedirectAttributes ra, Locale locale) {
 		// Création  de "coquille" pour transporter les infos"
 		Enchere enchere = new Enchere();
 		Utilisateur user = new Utilisateur();
@@ -60,7 +60,5 @@ public class EncheresController {
 			return "redirect:/articles/articleDetail/" + article.getId();
 		}
 		return "redirect:/";
-
 	}
-
 }

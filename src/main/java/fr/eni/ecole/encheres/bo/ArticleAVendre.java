@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -24,6 +26,7 @@ private static final long serialVersionUID = 1L;
 	private String description;
 	private String photo;
 	//@Past
+	//@DateTimeFormat(pattern = "dd/MM/yyyy")//utile pour formater la date
 	@NotNull
 	private LocalDate dateDebutEncheres;
 	//@Past

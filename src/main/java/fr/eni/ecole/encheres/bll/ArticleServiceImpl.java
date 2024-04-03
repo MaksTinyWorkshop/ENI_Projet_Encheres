@@ -27,8 +27,9 @@ public class ArticleServiceImpl implements ArticleService {
 	
 ///////////////////////////////////////////// Constructeurs
 	
-	public ArticleServiceImpl(ArticleDAOImpl articleDAO) {
+	public ArticleServiceImpl(ArticleDAOImpl articleDAO, AdresseDAOImpl adresseDAO) {
 		this.articleDAO = articleDAO;
+		this.adresseDAO = adresseDAO;
 	}
 
 //////////////////////////////////////////// Méthodes
