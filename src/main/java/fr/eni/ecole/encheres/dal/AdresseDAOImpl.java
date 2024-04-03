@@ -15,7 +15,6 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 @Repository
 public class AdresseDAOImpl implements AdresseDAO {
 
-////////////////////////////////////////////les attributs
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
@@ -58,9 +57,10 @@ public class AdresseDAOImpl implements AdresseDAO {
 		namedParamA.addValue("codePostal", adresse.getCodePostal());
 		namedParamA.addValue("ville", adresse.getVille());
 		namedParamA.addValue("no_adresse", idAdresse);
-		
-		jdbcTemplate.update(UPDATE_ADRESSE, namedParamA);	
+
+		jdbcTemplate.update(UPDATE_ADRESSE, namedParamA);
 	}
+	
 	
 	@Override
 	public long readLast() {														// recherche la dernière adresse de la table

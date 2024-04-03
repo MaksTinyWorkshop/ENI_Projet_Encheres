@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
+import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 @Repository
@@ -151,12 +152,12 @@ public class ArticleDAOImpl implements ArticleDAO {
 	}
 	
 	@Override
-	public void updatePrix(long idArticle, int montantEnchere) {					// Mise à jour du prix final
+	public void updatePrix(Enchere enchere) {					// Mise à jour du prix final
 		
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		
-		namedParam.addValue("prix_vente", montantEnchere);
-		namedParam.addValue("no_article", idArticle);
+		namedParam.addValue("prix_vente", enchere.getMontant());
+		namedParam.addValue("no_article", enchere.getArticleAVendre().getId());
 		
 		jdbcTemp.update(UPDATE_PRIX, namedParam);
 	}
@@ -220,6 +221,18 @@ public class ArticleDAOImpl implements ArticleDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+
+	@Override
+	public Adresse getAdress(String pseudo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 
 
 

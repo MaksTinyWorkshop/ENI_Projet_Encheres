@@ -2,8 +2,10 @@ package fr.eni.ecole.encheres.dal;
 
 import java.util.List;
 
+import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
+import fr.eni.ecole.encheres.bo.Enchere;
 
 public interface ArticleDAO {
 	
@@ -18,8 +20,13 @@ public interface ArticleDAO {
 	
 	//3. les méthodes permettant de créer ou modifier des articles
 	void creerArticle(ArticleAVendre newArticle);
+	
 	void supprArticleById(Long articleId);
-	void updatePrix(long idArticle, int montantEnchere);
+
+	Adresse getAdress(String pseudo);
+	
+	void updatePrix(Enchere enchere);
+
 	void modifierArticle(ArticleAVendre newArticle);
 	
 	List<Categorie> getAllCategories();

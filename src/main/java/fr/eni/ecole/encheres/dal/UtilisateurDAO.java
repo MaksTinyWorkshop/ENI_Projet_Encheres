@@ -1,5 +1,6 @@
 package fr.eni.ecole.encheres.dal;
 
+import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 public interface UtilisateurDAO {
@@ -11,12 +12,12 @@ public interface UtilisateurDAO {
 	
 	void updateMdp(String pseudo, String nouveauMdp);
 		
+	void crediter(Utilisateur utilisateur);
+	
+	void debiter(Enchere enchere);
+	
 	int uniqueEmail(String email);
 	
 	int uniquePseudo(String pseudo);
-	
-	void crediter(Utilisateur utilisateur);
-	
-	void debiter(String pseudo, int montant);
 	
 	}
