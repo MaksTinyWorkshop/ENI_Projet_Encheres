@@ -1,14 +1,13 @@
 
 <form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-article-form" 
+		data-th-fragment="frag-article-form(titre)" 
 		class="form-poly"
 		method="post"
 		data-th-object="${article}"
 		data-th-action="@{/Creer-Article}" >
 		
-		<h1 data-th-text="${titreForm}"></h1><!--  titre pour créa -->
-		<h1 data-th-text="${titreForm}"></h1><!--  titre pour modification -->
-		
+		<h1 data-th-text="#{form.article.titre}"></h1>
+
        	<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
     	
         <!-- Partie détails de l'article -->

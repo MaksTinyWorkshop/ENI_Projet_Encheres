@@ -1,0 +1,70 @@
+.content {
+	color: #134A7F;
+	transition: 1s;
+}
+
+#side-bar {
+	position: absolute;
+	width: 230px;
+	height: 100%;
+	background: #134A7F;
+	top: 0;
+	right: -230px;
+	transition: 0.5s ease-out;
+	z-index: 1000;
+	opacity: 0.9;
+}
+
+#side-bar.opened {
+	right: 0;
+}
+
+#side-bar li {
+	margin-top: 2rem;
+	text-align: center;
+}
+
+#side-bar li:hover {
+	scale: 2;
+}
+
+
+.toggle-btn {
+	display: none;
+	position: absolute;
+	top: 2.5rem;
+	left: -6rem;
+	cursor: pointer;
+	height: 50px;
+	width: 50px; 
+}
+	
+.toggle-btn	span { 
+	width : 4rem;
+	height: 0.75rem;
+	border-radius: 5px;
+	background: #134A7F;
+	display: block;
+	margin-top: 4px;
+	transition: 0.3s ease;
+}
+	
+.toggle-btn	span.opened:nth-child(1){
+    transform: rotate(45deg) translate(15px, 6px);
+}
+
+.toggle-btn	span.opened:nth-child(2) {
+	opacity: 0;
+}
+
+.toggle-btn	span.opened:nth-child(3) {
+	transform: rotate(-45deg) translate(16px, -9px);
+}
+
+
+
+@media screen and (max-width: 760px) {
+	.toggle-btn {
+		display: block;
+	}
+}
