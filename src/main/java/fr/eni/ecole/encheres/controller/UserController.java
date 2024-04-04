@@ -43,14 +43,13 @@ public class UserController {
 	/////// Méthode pour enregistrer l'utilisateur et son adresse
 	@PostMapping("/register") 
 	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
-
 	    if (bindingResult.hasErrors()) {
 	        return "view-register-form";
 	    } else {
 	        try {
 	            // Enregistre l'utilisateur
+
 	            utilisateurService.save(user);
-	            System.out.println("Success");
 	            return "redirect:/"; // Redirige vers al page d'accueil
 	        
 	        } catch (BusinessException e) {
@@ -59,6 +58,7 @@ public class UserController {
 	                ObjectError error = new ObjectError("globalError", key);
 	                bindingResult.addError(error);
 	            });
+
 	            return "view-register-form";
 	        }
 	    }

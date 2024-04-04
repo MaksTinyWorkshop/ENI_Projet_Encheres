@@ -158,7 +158,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	private boolean validerUniquePseudo(String pseudo, BusinessException be) {
 		int count = utilisateurDAO.uniquePseudo(pseudo);
-		if (count == 1) {
+		if (count> 0 ) {
 			be.add(BusinessCode.VALIDATION_USER_USER_EXISTS);
 			return false;
 		}
@@ -168,7 +168,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 	private boolean validerUniqueMail(String email, BusinessException be) {
 		int count = utilisateurDAO.uniqueEmail(email);
-		if (count == 1) {
+		if (count > 0) {
 			be.add(BusinessCode.VALIDATION_USER_EMAIL_EXISTS);
 			return false;
 		}
@@ -209,7 +209,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			be.add(BusinessCode.VALIDATION_USER_PASSWORD_LENGTH);
 			return false;
 		}
-		if (!motDePasse.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,20}$")) {
+		if (!motDePasse.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]*$")) {
 			be.add(BusinessCode.VALIDATION_USER_PASSWORD_FORM);
 			return false;
 		}

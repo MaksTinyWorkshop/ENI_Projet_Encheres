@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -42,7 +43,13 @@ public class EnchereDAOImpl implements EnchereDAO {
 	public Utilisateur lireEncherisseur(Enchere enchere) {
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("no_article", enchere.getArticleAVendre().getId());
-		return jdbcTemplate.queryForObject(FIND_ENCHERISSEUR_BY_ID_ARTICLE, namedParam, new UtilisateurTemporaireRowMapper());
+		
+		try {
+			return jdbcTemplate.queryForObject(FIND_ENCHERISSEUR_BY_ID_ARTICLE, namedParam, new UtilisateurTemporaireRowMapper());
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+		
 	}
 	
 	

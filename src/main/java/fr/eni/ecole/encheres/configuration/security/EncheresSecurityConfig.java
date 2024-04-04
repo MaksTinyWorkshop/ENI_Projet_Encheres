@@ -44,20 +44,20 @@ public class EncheresSecurityConfig {
 //				.requestMatchers(HttpMethod.POST, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
 //				.requestMatchers(" ").hasRole("ADMINISTRATEUR");
 			
-			auth.requestMatchers(HttpMethod.GET, "/user/**")
+			auth.requestMatchers(HttpMethod.GET, "/user/profil")
 				.authenticated()
 				.requestMatchers(HttpMethod.POST, "/user/profil")
 				.authenticated()
 				.requestMatchers(HttpMethod.GET, "/Creer-Article")
-				.authenticated()
+				.hasRole("USER")
 				.requestMatchers(HttpMethod.POST, "/Creer-Article")
-				.authenticated()
+				.hasRole("USER")
 				.requestMatchers(HttpMethod.POST, "/articles/articleDetail/**")
-				.authenticated()
+				.hasRole("USER")
 				.requestMatchers(HttpMethod.GET, "/modifier-Article/**")
-				.authenticated()
+				.hasRole("USER")
 				.requestMatchers(HttpMethod.GET, "/articles/supprimer/**")
-				.authenticated();
+				.hasRole("USER");
 			auth.requestMatchers(HttpMethod.GET, "/user/register")
 				.permitAll()
 				.requestMatchers(HttpMethod.POST, "/user/register")
