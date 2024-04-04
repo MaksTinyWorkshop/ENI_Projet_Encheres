@@ -20,6 +20,7 @@
 </head>
 <body>
 	<main>
+
 		 <!-- Condition pour inclure le fragment de filtrage -->
     	 <div data-th-if="${!#authorization.expression('isAuthenticated()')}">
         		<!-- Utilisateur non connecté -->
@@ -31,5 +32,6 @@
     	</div>
        	    	
   	</main>
+
 </body>
 </html>

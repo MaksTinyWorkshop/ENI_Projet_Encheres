@@ -30,7 +30,7 @@ public class Utilisateur implements Serializable{
 	private String telephone;
 	
 	@NotBlank
-	@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\\\d)(?=.*[@$!%*?&])[A-Za-z\\\\d@$!%*?&]*$")
+	@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]*$")
 	@Size(min = 8, max = 20)
 	private String motDePasse;
 	

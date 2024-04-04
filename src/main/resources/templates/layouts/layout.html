@@ -10,7 +10,9 @@
 <link rel="stylesheet" data-th-href="@{/css/general.css}">
 <link rel="stylesheet" data-th-href="@{/css/header.css}">
 <link rel="stylesheet" data-th-href="@{/css/sidebar.css}">
-
+<th:block data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
+<link rel="stylesheet" data-th-href="@{/css/specialAL.css}">
+</th:block>
 <!-- Permettre d’ajouter ou non des ressources CSS -->
 <th:block data-th-replace="${ressourcesSupp} ?: ~{}"></th:block>
 

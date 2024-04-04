@@ -12,7 +12,7 @@ header {
 }
 
 .left-box h1 {
-  margin-left: 2rem;
+  margin-left: calc(.5rem + 2vw);
 }
 
 .left-box h1 img {
@@ -40,7 +40,6 @@ header {
 
 .nav-list li {
   margin-right: 1rem;
-  width: calc(4rem + 5vw);
   height: 2.5rem;
   background-color: #134A7F;
   border: 1px solid rgb(29, 28, 28);
@@ -56,6 +55,7 @@ header {
 }
 
 .nav-list li a {
+	padding: 0 1rem;
   line-height: 2.5rem;
   text-align: center;
   font-size: calc(0.2rem + 1vw);
@@ -78,8 +78,17 @@ header {
 	color: rgb(29, 28, 28);
 }
 
+@media screen and (max-width: 1050px) {
+.header-card  {
+	display: none;
+}
+	}
+
+
 @media screen and (max-width: 760px) {
 .nav-box .nav-list {
 	display: none;
 }
 	}
+	
+	

@@ -1,5 +1,9 @@
 <!-- Affichage d'un message global s'il y a des erreurs -->
-<h2 xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-errors"
-	class="errorsh2" th:if="${#fields.hasErrors('*')}"
-	 data-th-text="#{frag-errors.h2}"></h2>
 
+
+<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-errors" data-th-if="${#fields.hasGlobalErrors()}">
+	<h2 class="errorsh2" data-th-text="#{frag-errors.h2}"></h2>
+	<ul class="errorsul">
+		<li data-th-each="err : ${#fields.globalErrors()}" data-th-text="#{${err}}"></li>
+	</ul>
+</div>

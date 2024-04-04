@@ -1,23 +1,30 @@
 /*Formulaire d'inscription & Vue Profil*/
-.form-poly {
+.form-poly, 
+.form-poly .bloc-colonnes, 
+.form-poly .bloc-colonnes .colonne .item .input-label,
+.form-poly .bloc-password,
+.form-poly .bloc-password .pass, 
+.form-poly .bloc-password .password,
+.form-poly .bloc-boutons {
 	display: flex;
-	height: 100%;
-	width: 100vw;
-	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
 
+.form-poly {
+	height: 100%;
+	width: 100vw;
+	flex-direction: column;
+}
+
 .form-poly .bloc-colonnes {
-	margin-top: 1rem; width : 100%;
-	display: flex;
-	align-items: center;
+	margin-top: 1rem;
 	justify-content: space-around;
 	width: 100%;
 }
 
 .form-poly .bloc-colonnes .colonne {
-	width: 30%;
+	width: 35%;
 }
 
 .form-poly .bloc-colonnes .colonne .item {
@@ -25,26 +32,35 @@
 }
 
 .form-poly .bloc-colonnes .colonne .item .input-label {
-	display: flex;
-	align-items: center;
 	justify-content: space-between;
 }
 
 .form-poly .bloc-colonnes .colonne .item .input-label input,
-	.bloc-password input {
-	padding: 10px; color : #282c34;
+.form-poly .bloc-password input {
+	padding: 10px;
+	color: #282c34;
 	background-color: #ABB2BF;
-	color: #282c34; background-color : #ABB2BF;
+	color: #282c34;
+	background-color: #ABB2BF;
 	border-radius: 15px;
 }
 
+.form-poly .bloc-password input {
+	margin-top: 5px;
+}
 .form-poly .bloc-credit {
-	margin-top: 1rem;
+	margin: 1rem;
 }
 
 .form-poly .bloc-password {
-	margin: 2.5rem;
+	margin: 2rem 0 1rem 0;
 	position: relative;
+	flex-direction: column;
+}
+
+.form-poly .bloc-password .pass {
+	margin: 1rem 1rem;
+	flex-direction: column;
 }
 
 .form-poly .bloc-password::before {
@@ -59,9 +75,26 @@
 }
 
 .form-poly .bloc-boutons button {
-	width: 200px;
+	width: calc(50px + 25vw);
+	max-width: 250px;
 	height: 80px;
-	font-size: 2rem;
+	font-size: 1.7rem;
+}
+
+@media screen and (max-width: 760px) {
+	.form-poly .bloc-colonnes {
+		flex-direction: column;
+	}
+	.form-poly .bloc-colonnes .colonne {
+		width: 80%;
+	}
+	.form-poly .bloc-colonnes .colonne .item .input-label input,
+		.bloc-password input {
+		font-size: calc(.5rem + 2vw);
+	}
+	.form-poly .bloc-password .password {
+		flex-direction: column;
+	}
 }
 
 /*Formulaire de Login*/
