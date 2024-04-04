@@ -32,7 +32,7 @@ public class EncheresController {
 		this.articleService = articleService;
 
 	}
-
+ 
 	
 	@PostMapping("/articles/articleDetail/{id}")
 	public String faireUneEnchere(@ModelAttribute("articleSelect") ArticleAVendre article,

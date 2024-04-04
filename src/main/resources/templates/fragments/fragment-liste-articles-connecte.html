@@ -1,21 +1,55 @@
 <div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-list-articles-connecte" class="items-cards">
-	<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
-	<script src="chemin/vers/votre/fichier/filtres.js"></script>
-		<div class="img-box"></div>
-		<div class="details">
-		
-	<div>
-	    <select name="categorie" id="categorie">
-    			<option value="">Sélectionnez une catégorie</option>
-   			    <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
- 		</select>
-	</div>
+<div>
+	
+<form method="get" action="/filtrer-par-nom-article" id="filtreForm">
+    <select name="categorie" id="categorie">
+        <option value="">Sélectionnez une catégorie</option>
+        <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
+    </select>
 
     <!-- Ajout de liens pour filtrer par nom d'article et par catégorie -->
-    <form method="get" action="/filtrer-par-nom-article">
-        <input type="text" name="nomArticle" placeholder="Nom de l'article">
-        <button type="submit">Rechercher</button>
-    </form>
+    <input type="text" name="nomArticle" placeholder="Nom de l'article">
+
+    <!-- Ajout de boutons radio pour choisir entre ACHATS et MES VENTES -->
+    <div id="typeFiltreForm">
+        <input type="radio" id="achats" name="typeFiltre" value="achats" checked>
+        <label for="achats">ACHATS</label>
+        <input type="radio" id="mesVentes" name="typeFiltre" value="mesVentes">
+        <label for="mesVentes">MES VENTES</label>
+    </div>
+
+    <!-- Ajout de checkboxes pour choisir les types d'enchères -->
+    <div id="enchereFiltreForm">
+        <input type="checkbox" id="enchereOuverts" name="enchereType" value="enchereOuverts">
+        <label for="enchereOuverts">ENCHERES OUVERTS</label>
+        <input type="checkbox" id="mesEncheres" name="enchereType" value="mesEncheres">
+        <label for="mesEncheres">MES ENCHERES EN COURS</label>
+        <input type="checkbox" id="mesEncheresRemportees" name="enchereType" value="mesEncheresRemportees">
+        <label for="mesEncheresRemportees">MES ENCHERES REMPORTEES</label>
+    </div>
+
+    <!-- Ajout de checkboxes pour choisir les types de ventes -->
+    <div id="venteFiltreForm">
+        <input type="checkbox" id="venteEnCours" name="venteType" value="venteEnCours">
+        <label for="venteEnCours">VENTES EN COURS</label>
+        <input type="checkbox" id="venteNonDebutees" name="venteType" value="venteNonDebutees">
+        <label for="venteNonDebutees">VENTES NON DEBUTEES</label>
+        <input type="checkbox" id="venteTerminees" name="venteType" value="venteTerminees">
+        <label for="venteTerminees">VENTES TERMINEES</label>
+    </div>
+
+    <button type="submit">Rechercher</button>
+</form>
+</div>
+
+<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
+	
+		<div class="img-box"></div>
+		
+	
+		
+		<div class="details">
+
 	<div data-th-if="${listArticleError != null}">
 		<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
 	</div>
@@ -35,10 +69,6 @@
 <div data-th-if="${listArticleError != null}">
 		<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
 </div>
+
 </div>
-	
-
-
-  
-
-     
+<script src="chemin/vers/votre/fichier/filtres.js"></script>

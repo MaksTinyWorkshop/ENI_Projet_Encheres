@@ -230,5 +230,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 	    return jdbcTemp.query(lstcategorie, BeanPropertyRowMapper.newInstance(Categorie.class));
 	}
 	
+
 }
 

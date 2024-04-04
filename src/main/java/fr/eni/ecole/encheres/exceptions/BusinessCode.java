@@ -8,12 +8,12 @@ public class BusinessCode {
 	//Clés de Validation
 	public static final String VALIDATION_USER_NULL= "validation.user.null";
 	public static final String VALIDATION_USER_LOGIN_BLANK = "Notblank.user.pseudo";
-	public static final String VALIDATION_USER_LOGIN_FORM = "validation.user.userForm";
-	public static final String VALIDATION_USER_EMAIL_BLANK = "validation.user.emailBlank";
-	public static final String VALIDATION_USER_EMAIL_FORM = "validation.user.emailForm";
-	public static final String VALIDATION_USER_PASSWORD_BLANK = "validation.user.passwordBlank";
-	public static final String VALIDATION_USER_PASSWORD_LENGTH = "validation.user.passwordLength";
-	public static final String VALIDATION_USER_PASSWORD_FORM = "validation.user.passwordForm";
+	public static final String VALIDATION_USER_LOGIN_FORM = "Pattern.user.pseudo";
+	public static final String VALIDATION_USER_EMAIL_BLANK = "Notblank.user.email";
+	public static final String VALIDATION_USER_EMAIL_FORM = "Email.user.email";
+	public static final String VALIDATION_USER_PASSWORD_BLANK = "Notblank.user.password";
+	public static final String VALIDATION_USER_PASSWORD_LENGTH = "Size.user.password";
+	public static final String VALIDATION_USER_PASSWORD_FORM = "Pattern.user.password";
 	public static final String VALIDATION_USER_USER_EXISTS = "validation.user.usernameUnicity";
 	public static final String VALIDATION_USER_EMAIL_EXISTS = "validation.user.emailUnicity";
 	public static final String VALIDATION_ADDRESS_INVALID = "validation.adress.invalid";

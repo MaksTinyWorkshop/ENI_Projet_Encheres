@@ -1,26 +1,54 @@
-  document.addEventListener('DOMContentLoaded', function() {
-        // Récupération des éléments de formulaire et d'options radio
-        const typeFiltreForm = document.getElementById('typeFiltreForm');
-        const achatsRadio = document.getElementById('achats');
-        const mesVentesRadio = document.getElementById('mesVentes');
+document.addEventListener('DOMContentLoaded', function() {
+    const achatsRadio = document.getElementById('achats');
+    const mesVentesRadio = document.getElementById('mesVentes');
+    const enchereFiltreForm = document.getElementById('enchereFiltreForm');
+    const venteFiltreForm = document.getElementById('venteFiltreForm');
 
-        const enchereFiltreForm = document.getElementById('enchereFiltreForm');
-        const venteFiltreForm = document.getElementById('venteFiltreForm');
+    function updateFormState() {
+        if (achatsRadio.checked) {
+            rendreFormVentesInactif();
+            rendreFormEncheresActif();
+        } else if (mesVentesRadio.checked) {
+            rendreFormEncheresInactif();
+            rendreFormVentesActif();
+        }
+    }
 
-        // Écouteur d'événement pour les changements de sélection de type de filtre
-        typeFiltreForm.addEventListener('change', function() {
-            // Si ACHATS est sélectionné, afficher le formulaire d'enchères et masquer le formulaire de ventes
-            if (achatsRadio.checked) {
-                enchereFiltreForm.style.display = 'block';
-                venteFiltreForm.style.display = 'none';
-            } 
-            // Si MES VENTES est sélectionné, afficher le formulaire de ventes et masquer le formulaire d'enchères
-            else if (mesVentesRadio.checked) {
-                venteFiltreForm.style.display = 'block';
-                enchereFiltreForm.style.display = 'none';
-            }
+    achatsRadio.addEventListener('click', updateFormState);
+    mesVentesRadio.addEventListener('click', updateFormState);
+
+    // Initialiser l'état du formulaire au chargement de la page
+    updateFormState();
+
+    // Fonction pour rendre le formulaire de ventes actif
+    function rendreFormVentesActif() {
+        const checkboxesVentes = venteFiltreForm.querySelectorAll('input[type="checkbox"]');
+        checkboxesVentes.forEach(function(checkbox) {
+            checkbox.disabled = false;
         });
+    }
 
-        // Déclencher l'événement de changement au chargement de la page pour afficher le bon formulaire initialement
-        typeFiltreForm.dispatchEvent(new Event('change'));
-    });
+    // Fonction pour rendre le formulaire d'enchères actif
+    function rendreFormEncheresActif() {
+        const checkboxesEncheres = enchereFiltreForm.querySelectorAll('input[type="checkbox"]');
+        checkboxesEncheres.forEach(function(checkbox) {
+            checkbox.disabled = false;
+        });
+    }
+
+    // Fonction pour rendre le formulaire de ventes inactif
+    function rendreFormVentesInactif() {
+        const checkboxesVentes = venteFiltreForm.querySelectorAll('input[type="checkbox"]');
+        checkboxesVentes.forEach(function(checkbox) {
+            checkbox.disabled = true;
+        });
+    }
+
+    // Fonction pour rendre le formulaire d'enchères inactif
+    function rendreFormEncheresInactif() {
+        const checkboxesEncheres = enchereFiltreForm.querySelectorAll('input[type="checkbox"]');
+        checkboxesEncheres.forEach(function(checkbox) {
+            checkbox.disabled = true;
+        });
+    }
+});
