@@ -156,7 +156,7 @@ public class ArticleServiceImpl implements ArticleService {
 		return true;
 	}
 
-	/////////// FILTRES ARTICLES
+	////////////////////// FILTRES ARTICLES
 	@Override
 	public List<ArticleAVendre> getArticlesByName(String nomArticle) {
 		// TODO Auto-generated method stub
@@ -165,6 +165,18 @@ public class ArticleServiceImpl implements ArticleService {
 
 	public List<Categorie> getAllCategories() {
 	    return articleDAO.getAllCategories();
+	}
+
+	@Override
+	public Object findArticlesByCategorie(String categorie) {
+		// filtre les articles grâce au libelle de leur catégorie
+		return null;
+	}
+
+	@Override
+	public Object findAllArticles() {
+		//// retourne tous les articles en enchères actives
+		return null;
 	}
 
 

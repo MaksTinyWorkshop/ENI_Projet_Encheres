@@ -263,6 +263,14 @@ public class ArticleDAOImpl implements ArticleDAO {
 	    return jdbcTemp.query(lstcategorie, BeanPropertyRowMapper.newInstance(Categorie.class));
 	}
 
+	/////////
+	public List<ArticleAVendre> getArticlesByFilters(String nomArticle, String categorieId) {
+	    String sql = "SELECT * FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :nomArticle AND no_categorie = :categorieId";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("nomArticle", "%" + nomArticle + "%");
+	    params.addValue("categorieId", categorieId); // Assurez-vous de gérer la conversion de String à Long si nécessaire
+	    return jdbcTemp.query(sql, params, new ArticleRowMapper());
+	}
 
 
 }

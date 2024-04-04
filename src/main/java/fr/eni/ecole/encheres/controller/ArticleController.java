@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,8 +29,12 @@ public class ArticleController {
 
 ///////////////////////////////////////////// Attributs
 	
+<<<<<<< HEAD
 	private static LocalDate lastCheck = LocalDate.now();
 	private SynchroService synchoService;
+=======
+	@Autowired
+>>>>>>> d38d07ce8403c52688490e93e464348020c1209a
 	private ArticleService articleService;//dépendance
 	
 ///////////////////////////////////////////// Constructeurs
@@ -122,24 +127,49 @@ public class ArticleController {
 		return "redirect:/";
 	}
 	
-	//////// filtre par catégorie et mapping vers la vue :
-	@GetMapping("/fragment-liste-articles")
-	public String getAllCategories(Model model) {
-	    List<Categorie> categories = ArticleService.getAllCategories();
-	    model.addAttribute("categories", categories);
-	    return "fragment-liste-articles";
-	}
+//	//////// filtre par catégorie et mapping vers la vue :
+//	@GetMapping("/fragment-liste-articles")
+//	public String getAllCategories(Model model) {
+//	    List<Categorie> categories = ArticleService.getAllCategories();
+//	    model.addAttribute("categories", categories);
+//	    return "fragment-liste-articles";
+//	}
+//	
+//    /////// GET MAPPING DES FILTRES DU FOMRULAIRE HTML 
+//	@GetMapping("/filtrer-par-nom-article")
+//	public String filtrerParNomArticle(Model model, @RequestParam("nomArticle") String nomArticle) {
+//	    try {
+//	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByName(nomArticle);
+//	        model.addAttribute("articlesList", articlesFiltres);
+//	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par nom
+//	    } catch (BusinessException e) {
+//	        model.addAttribute("listArticleError", e.getClefsExternalisations());
+//	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
+//	    }
+//	}
 	
-    /////// GET MAPPING DES FILTRES DU FOMRULAIRE HTML 
-	@GetMapping("/filtrer-par-nom-article")
-	public String filtrerParNomArticle(Model model, @RequestParam("nomArticle") String nomArticle) {
-	    try {
-	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByName(nomArticle);
-	        model.addAttribute("articlesList", articlesFiltres);
-	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par nom
-	    } catch (BusinessException e) {
-	        model.addAttribute("listArticleError", e.getClefsExternalisations());
-	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
+	
+
+
+
+	    @GetMapping("/fragments-liste-articles-connecte")
+	    public String listArticles(Model model) {
+	        model.addAttribute("categories", ArticleService.getAllCategories());
+	        model.addAttribute("articles", articleService.findAllArticles());
+	        return "articles"; 
 	    }
-	}
+
+	    @PostMapping("/fragments-liste-articles-connecte")
+	    public String filterArticles(@RequestParam("categorie") String categorie, Model model) {
+	        if (categorie.equals("Toutes")) {
+	            model.addAttribute("articles", articleService.findAllArticles());
+	        } else {
+	            model.addAttribute("articles", articleService.findArticlesByCategorie(categorie));
+	        }
+	        model.addAttribute("categories", ArticleService.getAllCategories());
+	        model.addAttribute("selectedCategorie", categorie);
+	        return "fragment-liste-	articles-connecte"; // Réutilisation de la vue avec les articles filtrés
+	    }
+	    
 }
+

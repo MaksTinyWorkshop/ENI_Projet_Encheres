@@ -20,10 +20,13 @@ public interface ArticleService {
 	void supprArticleById(Long id);
 
 	static List<Categorie> getAllCategories() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	void creerArticle(ArticleAVendre newArticle, boolean create);
+
+	Object findArticlesByCategorie(String categorie);
+
+	Object findAllArticles();
 
 	
 }
