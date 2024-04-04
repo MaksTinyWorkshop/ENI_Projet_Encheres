@@ -52,48 +52,42 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	@Transactional
 	public void save(Utilisateur utilisateur) {
 	    BusinessException be = new BusinessException();
-	    boolean isValid = true;
 
 	    if (utilisateur == null) {
 	        be.add(BusinessCode.VALIDATION_USER_NULL);
 	        throw be;
+	        
 	    }
 
 	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isEmpty()) {
-	    	
 	        be.add(BusinessCode.VALIDATION_USER_PASSWORD_BLANK);
 	        throw be;
 	    }
 
-	    isValid &= validerUtilisateur(utilisateur, be);
+	    // Validate the user object and collect validation errors
+	    boolean isValid = true;
 	    isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
 	    isValid &= validerUniqueMail(utilisateur.getEmail(), be);
 	    isValid &= validerPseudo(utilisateur.getPseudo(), be);
 	    isValid &= validerEmail(utilisateur.getEmail(), be);
 	    isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
 
-	    if (isValid) {
-	        // Encode le Mot-de-passe
-	        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	        String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
-	        utilisateur.setMotDePasse(encodedPassword);
+	    if (!isValid) {
+	        throw be; // Throw exception if any validation fails
+	    }
 
-	        try {
-	            
-	            // Enregistrement de l'utilisateur
-	        	adresseDAO.saveAddress(utilisateur.getAdresse());
-	        	
-	        	long idAdresse = adresseDAO.readLast();
-	
-	            utilisateurDAO.save(utilisateur, idAdresse);
+	    // Encode the password
+	    PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	    String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
+	    utilisateur.setMotDePasse(encodedPassword);
 
-	        } catch (DataAccessException e) {
-
-	            // Message d'erreur en cas d'échec
-	            be.add(BusinessCode.SAVE_USER_ERROR);
-	            throw be;
-	        }
-	    } else {
+	    // Save the user and address details
+	    try {
+	        adresseDAO.saveAddress(utilisateur.getAdresse());
+	        long idAdresse = adresseDAO.readLast();
+	        utilisateurDAO.save(utilisateur, idAdresse);
+	    } catch (DataAccessException e) {
+	        be.add(BusinessCode.SAVE_USER_ERROR);
 	        throw be;
 	    }
 	}
@@ -102,23 +96,23 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	
 	@Override
 	@Transactional
-	public void update(Utilisateur user) {
+	public void update(Utilisateur update) {
 		BusinessException be = new BusinessException();
 		
 		
 		// Méthodes de vérification
 		boolean isValid = true;
-		isValid &= validerUtilisateur(user, be);
-		isValid &= validerEmail(user.getEmail(), be);
+		isValid &= validerUtilisateur(update, be);
+		isValid &= validerEmail(update.getEmail(), be);
 
 		if (isValid) {
 			try {
 				// Récupération de l'idAdresse pour update redirigé vers adresseDAO
-				long idAdresse = user	.getAdresse()
+				long idAdresse = update	.getAdresse()
 											.getId();
 
-				utilisateurDAO.update(user);
-				adresseDAO.update(user, idAdresse);
+				utilisateurDAO.update(update);
+				adresseDAO.update(update, idAdresse);
 
 			} catch (DataAccessException e) {
 				be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_ERREUR);

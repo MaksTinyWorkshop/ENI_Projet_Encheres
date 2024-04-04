@@ -29,6 +29,7 @@ public class UserController {
 		this.utilisateurService = utilisateurService;
 	}
 
+	
 	/////// Mapping du formulaire User
 	@GetMapping("/register")
 	public String showRegisterForm(Model model) {
@@ -49,7 +50,7 @@ public class UserController {
 	        try {
 	            // Enregistre l'utilisateur
 	            utilisateurService.save(user);
-
+	            System.out.println("Success");
 	            return "redirect:/"; // Redirige vers al page d'accueil
 	        
 	        } catch (BusinessException e) {

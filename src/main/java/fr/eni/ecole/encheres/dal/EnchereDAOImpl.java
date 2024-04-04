@@ -13,7 +13,6 @@ import fr.eni.ecole.encheres.bo.Enchere;
 import fr.eni.ecole.encheres.bo.Utilisateur;
 
 
-
 @Repository
 public class EnchereDAOImpl implements EnchereDAO {
 

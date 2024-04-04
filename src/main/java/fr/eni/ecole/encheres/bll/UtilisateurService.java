@@ -13,6 +13,5 @@ public interface UtilisateurService {
 
 	void updatePassword(String pseudo, String nouveauMdp);
 
-
 	
 }

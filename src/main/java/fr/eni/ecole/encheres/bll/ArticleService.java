@@ -22,7 +22,10 @@ public interface ArticleService {
 	ArticleAVendre consulterArticleById(Long articleId);
 	void supprArticleById(Long id);
 
-	List<Categorie> getAllCategories();
+	static List<Categorie> getAllCategories() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	void creerArticle(ArticleAVendre newArticle, boolean create);
 
 	

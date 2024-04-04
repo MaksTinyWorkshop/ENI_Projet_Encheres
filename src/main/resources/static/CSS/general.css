@@ -12,6 +12,7 @@
 body {
   font-family: Roboto;
   font-weight: 400;
+  font-size: calc(.5rem + 1vw);
   background-color: #282c34;
   overflow: hidden;
 }
@@ -24,7 +25,7 @@ h1 {
 }
 
 h2 {
-  font-size: calc(0.4rem + 2vw);
+  font-size: calc(0.65rem + 1vw);
   font-family: Roboto;
   font-weight: 400;
 }
@@ -40,7 +41,6 @@ a:hover {
 html {
   scroll-behavior: smooth;
 }
-
 
 
 button {
