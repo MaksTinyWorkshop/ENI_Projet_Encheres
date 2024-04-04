@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
-import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.dal.AdresseDAOImpl;
 import fr.eni.ecole.encheres.dal.ArticleDAOImpl;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
@@ -98,24 +97,7 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 	}
 	
-	@Override
-	public List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data) {
-		List<ArticleAVendre> listeArticles = new ArrayList<>();
- 		if (data.getNom() != null ) {
-			List<ArticleAVendre> lstName = articleDAO.getArticlesByName(data.getNom());
-			for (ArticleAVendre e : lstName) {
-				listeArticles.add(e);
-			}
-		}
-		if (data.getCategorie() != null) {
-			List<ArticleAVendre> lstCtg = articleDAO.getArticlesByCategorie(data.getCategorie());
-			for (ArticleAVendre e : lstCtg) {
-				listeArticles.add(e);
-			}
-		}
 
-		return listeArticles;
-	}
 	
 	//////////////////////////////// VALIDATIONS BLL /////////////////////////////////////////////
 	
@@ -176,7 +158,23 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 
-
+	@Override
+	public List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data) {
+		List <ArticleAVendre> listeArticle = new ArrayList<>();
+		if (data.getNom() != null) {
+			List <ArticleAVendre> listeString = articleDAO.getArticlesByName(data.getNom());
+			for (ArticleAVendre e : listeString) {
+                listeArticle.add(e);
+            }
+		} 
+		if (data.getCategorie() != null) {
+			List <ArticleAVendre> listeCategorie = articleDAO.getArticlesByCategorie(data.getCategorie());
+			for (ArticleAVendre e : listeCategorie) {
+                listeArticle.add(e);
+            }
+		}
+		return listeArticle;
+	}
 
 
 

@@ -1,6 +1,7 @@
 package fr.eni.ecole.encheres.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import fr.eni.ecole.encheres.bll.ArticleService;
+import fr.eni.ecole.encheres.bll.SynchroService;
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
 import fr.eni.ecole.encheres.bo.Categorie;
@@ -25,12 +27,14 @@ import jakarta.validation.Valid;
 public class ArticleController {
 
 ///////////////////////////////////////////// Attributs
-	
+	private static LocalDate lastCheck = LocalDate.now();
+	private SynchroService synchoService;
 	private ArticleService articleService;//dépendance
 	
 ///////////////////////////////////////////// Constructeurs
-	public ArticleController(ArticleService articleService) {
+	public ArticleController(ArticleService articleService, SynchroService synchoService) {
 		this.articleService = articleService;
+		this.synchoService = synchoService;
 	}
 	
 ////////////////////////////////////////////Méthodes
@@ -38,6 +42,7 @@ public class ArticleController {
 	@GetMapping("/")
 	public String accueil(Model model, Principal user) {								//Gère l'affichage des articles en cours de vente sur l'accueil.
 		try {
+			synchoService.updateStatus(lastCheck);
 			List<ArticleAVendre> articles = articleService.charger(user);				//appel du service pour charger la liste
 			model.addAttribute("articlesList", articles);
 			return "index";																//retour à l'index
@@ -48,6 +53,21 @@ public class ArticleController {
 	}
 	
 
+	
+	@PostMapping("/")
+    public String filterArticles(@RequestParam(name = "categories", required = true) long idCategorie,@ModelAttribute("filter") ArticleAVendre article, Model model) {
+		model.addAttribute("filter", article);
+		Categorie categorie = new Categorie();
+		categorie.setId(idCategorie);
+		
+		article.setCategorie(categorie);
+		article.setNom(article.getNom());
+		System.out.println(article);
+        return "index"; 
+    }
+	
+	
+	
 	
 	@GetMapping("/Creer-Article")														//Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
 	public String creerArticle(Model model, Principal user) {
@@ -119,4 +139,6 @@ public class ArticleController {
 	
 	
 
+
 }
+

@@ -9,6 +9,7 @@ import fr.eni.ecole.encheres.bo.Enchere;
 public interface ArticleDAO {
 	
 	//1.les méthodes permettant de récupérer des listes les Articles
+	List<ArticleAVendre> getAllArticles();
 	List<ArticleAVendre> getUserAndActiveArticles(String pseudo);
 	List<ArticleAVendre> getActiveArticles();//pour afficher tous les articles par date
 	List<ArticleAVendre> getArticlesByName(String boutNom);
@@ -24,6 +25,9 @@ public interface ArticleDAO {
 	void updatePrix(Enchere enchere);
 	void modifierArticle(ArticleAVendre newArticle);
 	
-	
+
+//	List<Categorie> getAllCategories();
+	void updateStatus(ArticleAVendre article);
+
 
 }

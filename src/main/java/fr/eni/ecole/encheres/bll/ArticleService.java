@@ -20,4 +20,5 @@ public interface ArticleService {
 	
 	List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data);
 
+
 }

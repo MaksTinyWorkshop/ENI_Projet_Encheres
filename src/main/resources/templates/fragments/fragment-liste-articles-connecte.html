@@ -1,45 +1,45 @@
 <div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-list-articles-connecte" class="items-cards">
 <div>
 	
-  <form method="get" action="/filtrer-par-nom-article" id="filtreForm">
-                <select name="categorie" id="categorie">
-                    <option value="">Sélectionnez une catégorie</option>
-                    <option value="Ameublement">Ameublement</option>
-                    <option value="Informatique">Informatique</option>
-                    <option value="Sport & Loisirs">Sport et Loisirs</option>
-                    <option value="Vêtements">Vêtements</option>
-                    <option value="Toutes les catégories">Toutes les catégories</option>
-                </select>
-                
-                <input type="text" name="nomArticle" placeholder="Nom de l'article">
-                
-                <div id="typeFiltreForm">
-                    <input type="radio" id="achats" name="typeFiltre" value="achats" checked>
-                    <label for="achats">ACHATS</label>
-                    <input type="radio" id="mesVentes" name="typeFiltre" value="mesVentes">
-                    <label for="mesVentes">MES VENTES</label>
-                </div>
-                
-                <div id="enchereFiltreForm" class="achats hidden" th:classappend="${typeFiltre == 'achats'} ? '' : 'hidden'">
-                    <input type="checkbox" id="enchereOuverts" name="enchereType" value="enchereOuverts">
-                    <label for="enchereOuverts">ENCHERES OUVERTES</label>
-                    <input type="checkbox" id="mesEncheres" name="enchereType" value="mesEncheres">
-                    <label for="mesEncheres">MES ENCHERES EN COURS</label>
-                    <input type="checkbox" id="mesEncheresRemportees" name="enchereType" value="mesEncheresRemportees">
-                    <label for="mesEncheresRemportees">MES ENCHERES REMPORTEES</label>
-                </div>
-                
-                <div id="venteFiltreForm" class="mesVentes hidden" th:classappend="${typeFiltre == 'mesVentes'} ? '' : 'hidden'">
-                    <input type="checkbox" id="venteEnCours" name="venteType" value="venteEnCours">
-                    <label for="venteEnCours">VENTES EN COURS</label>
-                    <input type="checkbox" id="venteNonDebutees" name="venteType" value="venteNonDebutees">
-                    <label for="venteNonDebutees">VENTES NON DEBUTEES</label>
-                    <input type="checkbox" id="venteTerminees" name="venteType" value="venteTerminees">
-                    <label for="venteTerminees">VENTES TERMINEES</label>
-                </div>
-                
-                <button type="submit">Rechercher</button>
-            </form>
+ <form data-th-object="${filter}" method="get" action="/filtrer-par-nom-article" id="filtreForm">
+            <select name="categorie" id="categorie">
+                <option value="">Sélectionnez une catégorie</option>
+                <option value="Ameublement">Ameublement</option>
+                <option value="Informatique">Informatique</option>
+                <option value="Sport & Loisirs">Sport et Loisirs</option>
+                <option value="Vêtements">Vêtements</option>
+                <option value="Toutes les catégories">Toutes les catégories</option>
+            </select>
+            
+            <input type="text" name="nomArticle" placeholder="Nom de l'article">
+            
+            <div id="typeFiltreForm">
+                <input type="radio" id="achats" name="typeFiltre" value="achats">
+                <label for="achats">Achats</label>
+                <input type="radio" id="mesVentes" name="typeFiltre" value="mesVentes">
+                <label for="mesVentes">Mes ventes</label>
+            </div>
+            
+            <div id="enchereFiltreForm" class="achats hidden" >
+                <input type="checkbox" id="enchereOuverts" name="enchereType" value="enchereOuverts">
+                <label for="enchereOuverts">Enchères ouvertes</label>
+                <input type="checkbox" id="mesEncheres" name="enchereType" value="mesEncheres">
+                <label for="mesEncheres">Mes enchères en cours</label>
+                <input type="checkbox" id="mesEncheresRemportees" name="enchereType" value="mesEncheresRemportees">
+                <label for="mesEncheresRemportees">Mes enchères remportées</label>
+            </div>
+            
+            <div id="venteFiltreForm" class="mesVentes hidden" >
+                <input type="checkbox" id="venteEnCours" name="venteType" value="venteEnCours">
+                <label for="venteEnCours">Ventes en cours</label>
+                <input type="checkbox" id="venteNonDebutees" name="venteType" value="venteNonDebutees">
+                <label for="venteNonDebutees">Ventes non débutées</label>
+                <input type="checkbox" id="venteTerminees" name="venteType" value="venteTerminees">
+                <label for="venteTerminees">Ventes terminées</label>
+            </div>
+            
+            <button type="submit">Rechercher</button>
+        </form>
 </div>
 
 <div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
