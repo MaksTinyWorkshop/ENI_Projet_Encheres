@@ -54,7 +54,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	
 	//resquête de mise à jour du prix final si une enchère a été faite
 	private static final String MODIF_ARTICLE = "UPDATE ARTICLES_A_VENDRE "
-													+ " SET nom_article = :nom, description = :description, date_debut_encheres = :startEnchere, date_fin_encheres = :endEnchere "
+													+ " SET nom_article = :nom, description = :description, date_debut_encheres = :startEnchere, date_fin_encheres = :endEnchere, statu_enchere = :statu "
 													+ " WHERE no_article = :no_article";
 	
 	//resquête de mise à jour du prix final si une enchère a été faite
@@ -71,9 +71,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("boutNom", "%" + boutNom + "%");
 	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
-
-
-
 
 	@Override																		//filtre par catégories
 	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
@@ -154,6 +151,12 @@ public class ArticleDAOImpl implements ArticleDAO {
 		np.addValue("prixDep",newArticle.getPrixInitial());
 		np.addValue("startEnchere", newArticle.getDateDebutEncheres());
 		np.addValue("endEnchere", newArticle.getDateFinEncheres());
+		
+		if (newArticle.getDateDebutEncheres().isAfter(LocalDate.now())) {			//assignation du statu en fonction de la date de début d'enchère
+			np.addValue("statu", "0");
+		}else {
+			np.addValue("statu", "1");
+		}
 				
 		jdbcTemp.update(MODIF_ARTICLE, np);
 	}
