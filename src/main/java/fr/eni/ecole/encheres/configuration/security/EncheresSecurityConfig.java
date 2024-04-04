@@ -59,10 +59,10 @@ public class EncheresSecurityConfig {
 				.permitAll()
 				.requestMatchers(HttpMethod.POST, "/articles/articleDetail/**")
 				.authenticated();// autorisation pour la page de détail des articles
-			
+
 			auth.requestMatchers(HttpMethod.GET, "/modifier-Article/**")
 				.authenticated();
-			
+
 			auth.requestMatchers(HttpMethod.GET, "/articles/supprimer/**")
 				.authenticated();
 			auth.requestMatchers("/*")
@@ -71,6 +71,8 @@ public class EncheresSecurityConfig {
 				.permitAll();// CSS pour tout le monde
 			auth.requestMatchers("/images/*")
 				.permitAll();// images pour tout le monde
+			auth.requestMatchers("/JavaScript/*")// JS pour tout le monde
+				.permitAll();
 
 //			auth.anyRequest().denyAll();//accès refusé pour toutes les autres URL.
 		});
