@@ -63,32 +63,32 @@
 			</div>
 
 
-			<div data-th-if="${not #lists.isEmpty(messageDErreur)}" class="errors">
+			<div data-th-if="${not #lists.isEmpty(globalError)}" class="errors">
 				<ul>
-					<li data-th-each="errorMsg : ${messageDErreur}" data-th-text="#{${errorMsg}}"></li>
+					<li data-th-each="errorMsg : ${globalError}" data-th-text="#{${errorMsg}}"></li>
 				</ul>
 			</div>
 			
 
-			<div data-th-if="${#authorization.expression('isAuthenticated()')}" class="btn-box">
-				<span data-th-if="${#authorization.expression('hasRole(''USER'')')}">
+			<div data-th-if="${#authorization.expression('hasRole(''USER'')')}" class="btn-box">
+				<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
 				
 					<label for="enchere" data-th-text="#{form.article.monoffre}"></label>
 					<input type="number" id="enchere" data-th-min="*{prixVente} + 1" name="enchere" data-th-placeholder="*{prixVente} +1" required/>
 					
 					<button type="submit" data-th-text="#{article.button.enchere}"></button>
 				</span>
-					<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
-	       		<span data-th-if="*{statu} == 0">
-			       	<a data-th-href="@{|/modifier-Article/*{id}|}" >
-			           	<button type="button" data-th-text="#{article.button.modif}" ></button>
-			       	</a>
+				<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
+	       			<span data-th-if="*{statu} == 0">
+				       	<a data-th-href="@{|/modifier-Article/*{id}|}" >
+				           	<button type="button" data-th-text="#{article.button.modif}" ></button>
+				       	</a>
 			       	
-			       	<a data-th-href="@{|/articles/supprimer/*{id}|}" >
-			           	<button type="button" data-th-text="#{article.button.suppr}" ></button>
-			       	</a>
-				</span>
-		    </span>
+				       	<a data-th-href="@{|/articles/supprimer/*{id}|}" >
+				           	<button type="button" data-th-text="#{article.button.suppr}" ></button>
+				       	</a>
+					</span>
+		    	</span>
 			</div>
 		</form>
 	</main>
