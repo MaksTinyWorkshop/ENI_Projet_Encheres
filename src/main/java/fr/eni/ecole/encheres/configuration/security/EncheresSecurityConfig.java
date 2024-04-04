@@ -44,7 +44,7 @@ public class EncheresSecurityConfig {
 //				.requestMatchers(HttpMethod.POST, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
 //				.requestMatchers(" ").hasRole("ADMINISTRATEUR");
 			
-			auth.requestMatchers(HttpMethod.GET, "/user/**")
+			auth.requestMatchers(HttpMethod.GET, "/user/profil")
 				.authenticated()
 				.requestMatchers(HttpMethod.POST, "/user/profil")
 				.authenticated()
