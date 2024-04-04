@@ -1,11 +1,14 @@
 <div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-list-articles" class="items-cards">
-<script src="chemin/vers/votre/fichier/filtres.js"></script>
 <div>			
 	
 	    <select name="categorie" id="categorie">
-    			<option value="">Sélectionnez une catégorie</option>
-   			    <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
- 		</select>
+    		<option value="">Sélectionnez une catégorie</option>
+    		<option value="Ameublement">Ameublement</option>
+    		<option value="Informatique">Informatique</option>
+    		<option value="Sport & Loisirs">Sport et Loisirs</option>
+    		<option value="Vêtements">Vêtements</option>
+    		<option value="Toutes les catégories">Toutes les catégories</option>
+		</select>
 	
 
     <!-- Ajout de liens pour filtrer par nom d'article et par catégorie -->

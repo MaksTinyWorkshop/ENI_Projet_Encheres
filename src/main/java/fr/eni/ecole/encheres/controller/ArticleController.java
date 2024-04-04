@@ -97,22 +97,6 @@ public class ArticleController {
 		}
 		return "view-article-creation";
 	}
-	
-
-	/////// GET MAPPING DES FILTRES DU FOMRULAIRE HTML 
-	@GetMapping("/filtrer-par-nom-article")
-	public String filtrerParNomArticle(Model model, @RequestParam("nomArticle") String nomArticle) {
-	    try {
-	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByName(nomArticle);
-	        model.addAttribute("articlesList", articlesFiltres);
-	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par nom
-	    } catch (BusinessException e) {
-	        model.addAttribute("listArticleError", e.getClefsExternalisations());
-	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
-	    }
-	}
-
-
 
 
 	
@@ -138,5 +122,18 @@ public class ArticleController {
 	    List<Categorie> categories = ArticleService.getAllCategories();
 	    model.addAttribute("categories", categories);
 	    return "fragment-liste-articles";
+	}
+	
+    /////// GET MAPPING DES FILTRES DU FOMRULAIRE HTML 
+	@GetMapping("/filtrer-par-nom-article")
+	public String filtrerParNomArticle(Model model, @RequestParam("nomArticle") String nomArticle) {
+	    try {
+	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByName(nomArticle);
+	        model.addAttribute("articlesList", articlesFiltres);
+	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par nom
+	    } catch (BusinessException e) {
+	        model.addAttribute("listArticleError", e.getClefsExternalisations());
+	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
+	    }
 	}
 }

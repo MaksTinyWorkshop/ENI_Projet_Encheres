@@ -60,3 +60,7 @@ button:hover {
   background-color: rgba(#ABB2BF, 0.3);
   color: rgb(29, 28, 28);
 }
+
+.hidden {
+            display: none;
+        }
