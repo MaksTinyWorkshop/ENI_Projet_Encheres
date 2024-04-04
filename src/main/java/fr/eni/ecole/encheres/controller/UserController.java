@@ -48,7 +48,6 @@ public class UserController {
 	    } else {
 	        try {
 	            // Enregistre l'utilisateur
-
 	            utilisateurService.save(user);
 	            return "redirect:/"; // Redirige vers al page d'accueil
 	        
