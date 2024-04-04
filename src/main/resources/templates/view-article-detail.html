@@ -71,7 +71,7 @@
 			
 
 			<div data-th-if="${#authorization.expression('isAuthenticated()')}" class="btn-box">
-				<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
+				<span data-th-if="${#authorization.expression('hasRole(''USER'')')}">
 				
 					<label for="enchere" data-th-text="#{form.article.monoffre}"></label>
 					<input type="number" id="enchere" data-th-min="*{prixVente} + 1" name="enchere" data-th-placeholder="*{prixVente} +1" required/>
