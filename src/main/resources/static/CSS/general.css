@@ -62,6 +62,7 @@ button:hover {
   color: rgb(29, 28, 28);
 }
 
+
 @media screen and (max-width: 760px) {
 body {
 
@@ -69,3 +70,9 @@ body {
 
 }
 	}
+
+
+.hidden {
+            display: none;
+        }
+
