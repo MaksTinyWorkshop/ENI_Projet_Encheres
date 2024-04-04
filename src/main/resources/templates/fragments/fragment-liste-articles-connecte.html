@@ -1,7 +1,59 @@
 <div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-list-articles-connecte" class="items-cards">
-	<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
+<div>
+	
+  <form method="get" action="/filtrer-par-nom-article" id="filtreForm">
+                <select name="categorie" id="categorie">
+                    <option value="">Sélectionnez une catégorie</option>
+                    <option value="Ameublement">Ameublement</option>
+                    <option value="Informatique">Informatique</option>
+                    <option value="Sport & Loisirs">Sport et Loisirs</option>
+                    <option value="Vêtements">Vêtements</option>
+                    <option value="Toutes les catégories">Toutes les catégories</option>
+                </select>
+                
+                <input type="text" name="nomArticle" placeholder="Nom de l'article">
+                
+                <div id="typeFiltreForm">
+                    <input type="radio" id="achats" name="typeFiltre" value="achats" checked>
+                    <label for="achats">ACHATS</label>
+                    <input type="radio" id="mesVentes" name="typeFiltre" value="mesVentes">
+                    <label for="mesVentes">MES VENTES</label>
+                </div>
+                
+                <div id="enchereFiltreForm" class="achats hidden" th:classappend="${typeFiltre == 'achats'} ? '' : 'hidden'">
+                    <input type="checkbox" id="enchereOuverts" name="enchereType" value="enchereOuverts">
+                    <label for="enchereOuverts">ENCHERES OUVERTES</label>
+                    <input type="checkbox" id="mesEncheres" name="enchereType" value="mesEncheres">
+                    <label for="mesEncheres">MES ENCHERES EN COURS</label>
+                    <input type="checkbox" id="mesEncheresRemportees" name="enchereType" value="mesEncheresRemportees">
+                    <label for="mesEncheresRemportees">MES ENCHERES REMPORTEES</label>
+                </div>
+                
+                <div id="venteFiltreForm" class="mesVentes hidden" th:classappend="${typeFiltre == 'mesVentes'} ? '' : 'hidden'">
+                    <input type="checkbox" id="venteEnCours" name="venteType" value="venteEnCours">
+                    <label for="venteEnCours">VENTES EN COURS</label>
+                    <input type="checkbox" id="venteNonDebutees" name="venteType" value="venteNonDebutees">
+                    <label for="venteNonDebutees">VENTES NON DEBUTEES</label>
+                    <input type="checkbox" id="venteTerminees" name="venteType" value="venteTerminees">
+                    <label for="venteTerminees">VENTES TERMINEES</label>
+                </div>
+                
+                <button type="submit">Rechercher</button>
+            </form>
+</div>
+
+<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
+	
 		<div class="img-box"></div>
+		
+	
+		
 		<div class="details">
+
+	<div data-th-if="${listArticleError != null}">
+		<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
+	</div>
+		
 			<h2>
 				<a data-th-href="@{|/articles/articleDetail/${article.id}|}" data-th-text="${article.nom}"></a>
 			</h2>
@@ -17,21 +69,5 @@
 <div data-th-if="${listArticleError != null}">
 		<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
 </div>
-	
-	
-<div>
-	    <select name="categorie" id="categorie">
-       		 <option value="">Sélectionnez une catégorie</option>
-       		 <option th:each="categorie : ${categories}" th:value="${categorie.noCategorie}" th:text="${categorie.libelle}"></option>
-    	</select>
+
 </div>
-
-    <!-- Ajout de liens pour filtrer par nom d'article et par catégorie -->
-    <form method="get" action="/filtrer-par-nom-article">
-        <input type="text" name="nomArticle" placeholder="Nom de l'article">
-        <button type="submit">Filtrer par nom d'article</button>
-    </form>
-
-  
-
-     

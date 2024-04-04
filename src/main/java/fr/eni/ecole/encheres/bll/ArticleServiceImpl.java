@@ -163,17 +163,10 @@ public class ArticleServiceImpl implements ArticleService {
 		return null;
 	}
 
-	@Override
-	public Categorie getCategorieByName(String categorie) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Categorie> getAllCategories() {
+	    return articleDAO.getAllCategories();
 	}
 
-	@Override
-	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorieObj) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }

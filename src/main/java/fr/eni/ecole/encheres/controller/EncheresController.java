@@ -40,7 +40,6 @@ public class EncheresController {
 			Model model) {
 
 		// Création de "coquille" pour transporter les infos
-
 		Enchere enchere = new Enchere();
 		Utilisateur user = new Utilisateur();
 		article = articleService.consulterArticleById(article.getId());
