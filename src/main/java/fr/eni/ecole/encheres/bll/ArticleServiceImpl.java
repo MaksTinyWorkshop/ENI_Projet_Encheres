@@ -167,17 +167,17 @@ public class ArticleServiceImpl implements ArticleService {
 	    return articleDAO.getAllCategories();
 	}
 
-	@Override
-	public Object findArticlesByCategorie(String categorie) {
-		// filtre les articles grâce au libelle de leur catégorie
-		return null;
-	}
-
-	@Override
-	public Object findAllArticles() {
-		//// retourne tous les articles en enchères actives
-		return null;
-	}
+//	@Override
+//	public Object findArticlesByCategorie(String categorie) {
+//		// filtre les articles grâce au libelle de leur catégorie
+//		return null;
+//	}
+//
+//	@Override
+//	public Object findAllArticles() {
+//		//// retourne tous les articles en enchères actives
+//		return null;
+//	}
 
 
 
