@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -74,7 +73,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	@Override																		//filtre par nom
 	public List<ArticleAVendre> getArticlesByName(String boutNom) {
 	    
-		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom";
+		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom AND statu_enchere = 1";
 	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("boutNom", "%" + boutNom + "%");
 	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
@@ -82,7 +81,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	@Override																		//filtre par catégories
 	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
 	    
-		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE no_categorie = :idCategorie";
+		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE no_categorie = :idCategorie AND statu_enchere = 1";
 	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("idCategorie", categorie.getId());
 	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
@@ -255,22 +254,22 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 	
-	//////// RECUPERATION DE LA LISTE POUR FILTRE
-	//////// recupération liste catégorie
-	public List<Categorie> getAllCategories() {
-
-	    String lstcategorie = "SELECT libelle FROM CATEGORIES where no_categorie = :no_categorie";
-	    return jdbcTemp.query(lstcategorie, BeanPropertyRowMapper.newInstance(Categorie.class));
-	}
-
-	/////////
-	public List<ArticleAVendre> getArticlesByFilters(String nomArticle, String categorieId) {
-	    String sql = "SELECT * FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :nomArticle AND no_categorie = :categorieId";
-	    MapSqlParameterSource params = new MapSqlParameterSource();
-	    params.addValue("nomArticle", "%" + nomArticle + "%");
-	    params.addValue("categorieId", categorieId); // Assurez-vous de gérer la conversion de String à Long si nécessaire
-	    return jdbcTemp.query(sql, params, new ArticleRowMapper());
-	}
+//	//////// RECUPERATION DE LA LISTE POUR FILTRE
+//	//////// recupération liste catégorie
+//	public List<Categorie> getAllCategories() {
+//
+//	    String lstcategorie = "SELECT libelle FROM CATEGORIES where no_categorie = :no_categorie";
+//	    return jdbcTemp.query(lstcategorie, BeanPropertyRowMapper.newInstance(Categorie.class));
+//	}
+//
+//	/////////
+//	public List<ArticleAVendre> getArticlesByFilters(String nomArticle, String categorieId) {
+//	    String sql = "SELECT * FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :nomArticle AND no_categorie = :categorieId";
+//	    MapSqlParameterSource params = new MapSqlParameterSource();
+//	    params.addValue("nomArticle", "%" + nomArticle + "%");
+//	    params.addValue("categorieId", categorieId); // Assurez-vous de gérer la conversion de String à Long si nécessaire
+//	    return jdbcTemp.query(sql, params, new ArticleRowMapper());
+//	}
 
 
 }

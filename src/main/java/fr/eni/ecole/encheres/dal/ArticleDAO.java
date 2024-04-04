@@ -24,7 +24,7 @@ public interface ArticleDAO {
 	void updatePrix(Enchere enchere);
 	void modifierArticle(ArticleAVendre newArticle);
 	
-	List<Categorie> getAllCategories();
+//	List<Categorie> getAllCategories();
 	void updateStatus(ArticleAVendre article);
 
 }

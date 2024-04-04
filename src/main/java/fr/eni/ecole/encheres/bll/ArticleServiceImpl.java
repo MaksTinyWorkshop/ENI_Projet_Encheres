@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
-import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.dal.AdresseDAOImpl;
 import fr.eni.ecole.encheres.dal.ArticleDAOImpl;
 import fr.eni.ecole.encheres.exceptions.BusinessCode;
@@ -156,29 +155,24 @@ public class ArticleServiceImpl implements ArticleService {
 		return true;
 	}
 
-	////////////////////// FILTRES ARTICLES
 	@Override
-	public List<ArticleAVendre> getArticlesByName(String nomArticle) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data) {
+		List <ArticleAVendre> listeArticle = new ArrayList<>();
+		if (data.getNom() != null) {
+			List <ArticleAVendre> listeString = articleDAO.getArticlesByName(data.getNom());
+			for (ArticleAVendre e : listeString) {
+                listeArticle.add(e);
+            }
+		} 
+		if (data.getCategorie() != null) {
+			List <ArticleAVendre> listeCategorie = articleDAO.getArticlesByCategorie(data.getCategorie());
+			for (ArticleAVendre e : listeCategorie) {
+                listeArticle.add(e);
+            }
+		}
+		return listeArticle;
 	}
 
-	public List<Categorie> getAllCategories() {
-	    return articleDAO.getAllCategories();
-	}
-
-	@Override
-	public Object findArticlesByCategorie(String categorie) {
-		// filtre les articles grâce au libelle de leur catégorie
-		return null;
-	}
-
-	@Override
-	public Object findAllArticles() {
-		//// retourne tous les articles en enchères actives
-		return null;
-	}
-
-
+	
 
 }

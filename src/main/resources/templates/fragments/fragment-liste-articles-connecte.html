@@ -14,13 +14,13 @@
             <input type="text" name="nomArticle" placeholder="Nom de l'article">
             
             <div id="typeFiltreForm">
-                <input type="radio" id="achats" name="typeFiltre" value="achats" checked onchange="this.form.submit()">
+                <input type="radio" id="achats" name="typeFiltre" value="achats">
                 <label for="achats">Achats</label>
-                <input type="radio" id="mesVentes" name="typeFiltre" value="mesVentes" onchange="this.form.submit()">
+                <input type="radio" id="mesVentes" name="typeFiltre" value="mesVentes">
                 <label for="mesVentes">Mes ventes</label>
             </div>
             
-            <div id="enchereFiltreForm" class="achats hidden" th:classappend="${typeFiltre == 'achats'} ? '' : 'hidden'">
+            <div id="enchereFiltreForm" class="achats hidden" >
                 <input type="checkbox" id="enchereOuverts" name="enchereType" value="enchereOuverts">
                 <label for="enchereOuverts">Enchères ouvertes</label>
                 <input type="checkbox" id="mesEncheres" name="enchereType" value="mesEncheres">
@@ -29,7 +29,7 @@
                 <label for="mesEncheresRemportees">Mes enchères remportées</label>
             </div>
             
-            <div id="venteFiltreForm" class="mesVentes hidden" th:classappend="${typeFiltre == 'mesVentes'} ? '' : 'hidden'">
+            <div id="venteFiltreForm" class="mesVentes hidden" >
                 <input type="checkbox" id="venteEnCours" name="venteType" value="venteEnCours">
                 <label for="venteEnCours">Ventes en cours</label>
                 <input type="checkbox" id="venteNonDebutees" name="venteType" value="venteNonDebutees">
