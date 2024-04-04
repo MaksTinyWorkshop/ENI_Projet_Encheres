@@ -98,6 +98,25 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 	}
 	
+	@Override
+	public List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data) {
+		List<ArticleAVendre> listeArticles = new ArrayList<>();
+ 		if (data.getNom() != null ) {
+			List<ArticleAVendre> lstName = articleDAO.getArticlesByName(data.getNom());
+			for (ArticleAVendre e : lstName) {
+				listeArticles.add(e);
+			}
+		}
+		if (data.getCategorie() != null) {
+			List<ArticleAVendre> lstCtg = articleDAO.getArticlesByCategorie(data.getCategorie());
+			for (ArticleAVendre e : lstCtg) {
+				listeArticles.add(e);
+			}
+		}
+
+		return listeArticles;
+	}
+	
 	//////////////////////////////// VALIDATIONS BLL /////////////////////////////////////////////
 	
 	////// 1 // Création d'article ///////////
@@ -156,16 +175,8 @@ public class ArticleServiceImpl implements ArticleService {
 		return true;
 	}
 
-	/////////// FILTRES ARTICLES
-	@Override
-	public List<ArticleAVendre> getArticlesByName(String nomArticle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public List<Categorie> getAllCategories() {
-	    return articleDAO.getAllCategories();
-	}
+
 
 
 

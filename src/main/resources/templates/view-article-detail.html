@@ -13,82 +13,116 @@
 <title data-th-text="#{enregistrer.title}"></title>
 <th:block id="ressources-css">
 	<link rel="stylesheet" data-th-href="@{/css/profil.css}" />
+	<link rel="stylesheet" data-th-href="@{/css/form.css}" />
 	<link rel="stylesheet" data-th-href="@{/css/error.css}" />
 </th:block>
 </head>
 <body>
 	<main>
-
-		<form class="userProfil" data-th-object="${articleSelect}" method="post"
+		<form class="form-poly" data-th-object="${articleSelect}" method="post"
 			data-th-action="@{|/articles/articleDetail/*{id}|}">
 
-			<h1 data-th-text="*{nom}"></h1>
+			<h1 data-th-text="'Article : ' + *{nom}"></h1>
 
-			<div class="profilGrid">
+			<div class="bloc-colonnes">
+				<div class="colonne profil">
+					<div class="item">
+						<div class="input-label">
+							<label for="description" data-th-text=#{form.article.description}></label>
+							<textarea rows="3" cols="30" id="description" data-th-field="*{description}" disabled></textarea>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="bestOffer" data-th-text=#{form.article.bestOffer}></label>
+							<input type="text" id="bestOffer" data-th-field="*{prixVente}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="initOffre" data-th-text=#{form.article.prixInit}>:</label>
+							<input type="text" id="initOffre" data-th-field="*{prixInitial}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="vendeur" data-th-text=#{form.article.vendeur}></label>
+							<a data-th-href="@{|/user/profil/*{vendeur.pseudo}|}" data-th-text="*{vendeur.pseudo}"></a>
+						</div>
+					</div>
+				</div>
 
+				<div class="colonne profil">
+					<div class="item">
+						<div class="input-label">
+							<label for="debEnchere" data-th-text=#{form.article.enchere.debut}></label>
+							<input type="text" id="debEnchere" data-th-field="*{dateDebutEncheres}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="finEnchere" data-th-text=#{form.article.enchere.fin}></label>
+							<input type="text" id="finEnchere" data-th-field="*{dateFinEncheres}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<p data-th-text="#{form.article.retrait}"></p>
+						<div class="input-label">
+
+							<label for="rue" data-th-text=#{form.rue}></label>
+							<input type="text" id="rue" data-th-field="*{retrait.rue}" disabled>
+						</div>
+						<div class="item">
+							<div class="input-label">
+								<label for="complement" data-th-text=#{form.complement}></label>
+								<textarea rows="3" cols="30" id="complement" data-th-field="*{retrait.complement}" disabled></textarea>
+							</div>
+						</div>
+						<div class="item">
+							<div class="input-label">
+								<label for="codePostal" data-th-text=#{form.codePostal}></label>
+								<input type="number" id="codePostal" data-th-field="*{retrait.codePostal}" disabled>
+							</div>
+						</div>
+						<div class="item">
+							<div class="input-label">
+								<label for="ville" data-th-text=#{form.ville}></label>
+								<input type="text" id="ville" data-th-field="*{retrait.ville}" disabled>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="bloc-offre" data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<div data-th-replace="~{fragments/errors/fragment-error-custom :: frag-error-custom}"></div>
+				<div class="item" data-th-if="${#authorization.expression('hasRole(''USER'')')}">
+					<div class="input-label">
+						<label for="enchere" data-th-text="#{form.article.monoffre}"></label>
+						<input type="number" id="enchere" data-th-min="*{prixVente} + 1" name="enchere"
+							data-th-placeholder="*{prixVente} +1" required />
+					</div>
+				</div>
+			</div>
+
+			<div class="bloc-boutons">
+				<button type="submit" data-th-text="#{article.button.enchere}"></button>
+				<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
+					<span data-th-if="*{statu} == 0">
+						<a data-th-href="@{|/modifier-Article/*{id}|}">
+							<button type="button" data-th-text="#{article.button.modif}"></button>
+						</a>
+
+						<a data-th-href="@{|/articles/supprimer/*{id}|}">
+							<button type="button" data-th-text="#{article.button.suppr}"></button>
+						</a>
+					</span>
+				</span>
+
+			</div>
+
+			<div class="hidden">
 				<input type="hidden" id="id" data-th-field="*{id}" required>
-			
-				<label for="description" data-th-text=#{form.article.description}></label>
-				<textarea rows="3" cols="40" id="description" data-th-field="*{description}" disabled></textarea>
-
-				<label for="bestOffer" data-th-text=#{form.article.bestOffer}></label>
-				<input type="text" id="bestOffer" data-th-field="*{prixVente}" disabled>
-
-				<label for="initOffre" data-th-text=#{form.article.prixInit}>:</label>
-				<input type="text" id="initOffre" data-th-field="*{prixInitial}" disabled>
-
-				<label for="debEnchere" data-th-text=#{form.article.enchere.debut}></label>
-				<input type="text" id="debEnchere" data-th-field="*{dateDebutEncheres}" disabled>
-
-				<label for="finEnchere" data-th-text=#{form.article.enchere.fin}></label>
-				<input type="text" id="finEnchere" data-th-field="*{dateFinEncheres}" disabled>
-
-				<label for="vendeur" data-th-text=#{form.article.vendeur}></label>
-				<a data-th-href="@{|/user/profil/*{vendeur.pseudo}|}" data-th-text="*{vendeur.pseudo}"></a>
-
-				<fieldset class="fieldset">
-					<legend data-th-text="#{form.article.retrait}"></legend>
-					<label for="rue" data-th-text=#{form.rue}></label>
-					<input type="text" id="rue" data-th-field="*{retrait.rue}" disabled>
-
-					<label for="complement" data-th-text=#{form.complement}></label>
-					<textarea rows="3" cols="50" id="complement" data-th-field="*{retrait.complement}" disabled></textarea>
-
-					<label for="codePostal" data-th-text=#{form.codePostal}></label>
-					<input type="number" id="codePostal" data-th-field="*{retrait.codePostal}" disabled>
-
-					<label for="ville" data-th-text=#{form.ville}></label>
-					<input type="text" id="ville" data-th-field="*{retrait.ville}" disabled>
-				</fieldset>
-			</div>
-
-
-			<div data-th-if="${not #lists.isEmpty(messageDErreur)}" class="errors">
-				<ul>
-					<li data-th-each="errorMsg : ${messageDErreur}" data-th-text="#{${errorMsg}}"></li>
-				</ul>
-			</div>
-			
-
-			<div data-th-if="${#authorization.expression('isAuthenticated()')}" class="btn-box">
-				<span data-th-if="${#authorization.expression('hasRole(''USER'')')}">
-				
-					<label for="enchere" data-th-text="#{form.article.monoffre}"></label>
-					<input type="number" id="enchere" data-th-min="*{prixVente} + 1" name="enchere" data-th-placeholder="*{prixVente} +1" required/>
-					
-					<button type="submit" data-th-text="#{article.button.enchere}"></button>
-				</span>
-					<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
-	       		<span data-th-if="*{statu} == 0">
-			       	<a data-th-href="@{|/modifier-Article/*{id}|}" >
-			           	<button type="button" data-th-text="#{article.button.modif}" ></button>
-			       	</a>
-			       	
-			       	<a data-th-href="@{|/articles/supprimer/*{id}|}" >
-			           	<button type="button" data-th-text="#{article.button.suppr}" ></button>
-			       	</a>
-				</span>
-		    </span>
 			</div>
 		</form>
 	</main>

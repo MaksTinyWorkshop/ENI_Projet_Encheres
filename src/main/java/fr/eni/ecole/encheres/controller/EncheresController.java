@@ -56,7 +56,7 @@ public class EncheresController {
 			List<String> messagesDErreur = be	.getClefsExternalisations()
 												.stream()
 												.collect(Collectors.toList());
-			model.addAttribute("messageDErreur", messagesDErreur);
+			model.addAttribute("globalError", messagesDErreur);
 
 			// Re-préparation du modèle pour la vue en cas d'erreur
 			model.addAttribute("articleSelect", articleService.consulterArticleById(article.getId()));
