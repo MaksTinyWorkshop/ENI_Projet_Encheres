@@ -24,22 +24,6 @@ header {
 	margin-left: 1rem;
 }
 
-nav li {
-  margin-right: 1rem;
-  width: calc(4rem + 5vw);
-  height: 2.5rem;
-  background-color: #134A7F;
-  border: 1px solid rgb(29, 28, 28);
-  border-radius: 10px;
-  box-shadow: 5px 5px 15px 3px rgba(19, 74, 127, 0.85);
-  cursor: pointer;
-}
-
-nav li:hover {
-  transform: translateY(-2px);
-  background-color: rgba(#ABB2BF, 0.3);
-  color: rgb(29, 28, 28);
-}
 
 .nav-box {
   height: 100%;
@@ -52,6 +36,23 @@ nav li:hover {
   display: flex;
   justify-content: space-around;
   margin-bottom: 1rem;
+}
+
+.nav-list li {
+  margin-right: 1rem;
+  width: calc(4rem + 5vw);
+  height: 2.5rem;
+  background-color: #134A7F;
+  border: 1px solid rgb(29, 28, 28);
+  border-radius: 10px;
+  box-shadow: 5px 5px 15px 3px rgba(19, 74, 127, 0.85);
+  cursor: pointer;
+}
+
+.nav-list li:hover {
+  transform: translateY(-2px);
+  background-color: rgba(#ABB2BF, 0.3);
+  color: rgb(29, 28, 28);
 }
 
 .nav-list li a {
@@ -76,3 +77,9 @@ nav li:hover {
 .header-card span {
 	color: rgb(29, 28, 28);
 }
+
+@media screen and (max-width: 760px) {
+.nav-box .nav-list {
+	display: none;
+}
+	}

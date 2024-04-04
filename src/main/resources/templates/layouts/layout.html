@@ -9,6 +9,7 @@
 <!-- Déclaration des CSS par défaut : -->
 <link rel="stylesheet" data-th-href="@{/css/general.css}">
 <link rel="stylesheet" data-th-href="@{/css/header.css}">
+<link rel="stylesheet" data-th-href="@{/css/sidebar.css}">
 
 <!-- Permettre d’ajouter ou non des ressources CSS -->
 <th:block data-th-replace="${ressourcesSupp} ?: ~{}"></th:block>
@@ -21,6 +22,6 @@
 	<div data-th-replace="~{fragments/fragment-entete :: frag-entete}"></div>
 
 	<main data-th-replace="${contenuPage} ?: ~{}">Contenu de la page à construire</main>
-
+	<script src="/JavaScript/sidebar.js"></script>
 </body>
 </html>

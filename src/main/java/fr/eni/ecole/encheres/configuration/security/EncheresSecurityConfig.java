@@ -69,7 +69,9 @@ public class EncheresSecurityConfig {
 				.requestMatchers("/css/*")
 				.permitAll()// CSS pour tout le monde
 				.requestMatchers("/images/*")
-				.permitAll();// images pour tout le monde
+				.permitAll()// images pour tout le monde
+				.requestMatchers("/JavaScript/*")// JS pour tout le monde
+				.permitAll();
 
 //			auth.anyRequest().denyAll();//accès refusé pour toutes les autres URL.
 		});
