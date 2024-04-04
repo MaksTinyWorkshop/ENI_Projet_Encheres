@@ -6,10 +6,9 @@
 }
 
 .profilGrid {
-	margin: 0 auto;
-	width: 35rem;
+	width: calc(10rem + 40vw);
 	display: grid;
-	gap: 2rem;
+	gap: calc(1rem + 1vw);
 	grid-template-columns: repeat(2, 1fr);
 }
 
@@ -17,7 +16,7 @@ input, textarea {
 	background-color: #282c34;
 	color: #ABB2BF;
 	font-family: roboto;
-	font-size: 1.2rem;
+	font-size: calc(.5rem + 1vw);
 	text-align: left;
 }
 

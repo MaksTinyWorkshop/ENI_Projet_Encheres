@@ -225,16 +225,12 @@ public class ArticleDAOImpl implements ArticleDAO {
 	
 	//////// RECUPERATION DE LA LISTE POUR FILTRE
 	public List<Categorie> getAllCategories() {
-<<<<<<< HEAD
-		// TODO Auto-generated method stub
-		return null;
-	}
-=======
+
         String sql = "SELECT [no_categorie] AS noCategorie, [libelle] FROM [dbo].[CATEGORIES]";
         return jdbcTemp.query(sql, BeanPropertyRowMapper.newInstance(Categorie.class));
     }
 	
 
->>>>>>> d7373e73881d338a0fce814fa7d54f44feb579bd
+
 }
 

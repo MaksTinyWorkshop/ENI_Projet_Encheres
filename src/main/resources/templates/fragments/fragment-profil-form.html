@@ -15,13 +15,14 @@
 		</th:block>
 	</div>
 
+
 	<div class="bloc-colonnes">
 		<div class="colonne colonne-user">
 			<!-- Première colonne -->
 			<div class="item">
 				<div class="input-label">
 					<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-						<label for="pseudo" data-th-text=#{form.pseudo}></label>
+						<label for="pseudo" data-th-text="#{form.pseudo}"></label>
 						<input type="text" id="pseudo" data-th-field="*{pseudo}" required>
 					</th:block>
 				</div>
@@ -30,7 +31,7 @@
 
 			<div class="item">
 				<div class="input-label">
-					<label for="prenom" data-th-text=#{form.prenom}></label>
+					<label for="prenom" data-th-text="#{form.prenom}"></label>
 					<input type="text" id="prenom" data-th-field="*{prenom}" required>
 				</div>
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prenom')}"></div>
@@ -38,7 +39,7 @@
 
 			<div class="item">
 				<div class="input-label">
-					<label for="nom" data-th-text=#{form.nom}></label>
+					<label for="nom" data-th-text="#{form.nom}"></label>
 					<input type="text" id="nom" data-th-field="*{nom}" required>
 				</div>
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
@@ -46,7 +47,7 @@
 
 			<div class="item">
 				<div class="input-label">
-					<label for="telephone" data-th-text=#{form.telephone}></label>
+					<label for="telephone" data-th-text="#{form.telephone}"></label>
 					<input type="text" id="telephone" data-th-field="*{telephone}">
 				</div>
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('telephone')}"></div>
@@ -54,7 +55,7 @@
 
 			<div class="item">
 				<div class="input-label">
-					<label for="email" data-th-text=#{form.email}>:</label>
+					<label for="email" data-th-text="#{form.email}">:</label>
 					<input type="text" id="email" data-th-field="*{email}" required>
 				</div>
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('email')}"></div>
@@ -65,21 +66,21 @@
 			<!-- Deuxième colonne -->
 			<div class="item">
 				<div class="input-label">
-					<label for="rue" data-th-text=#{form.rue}></label>
+					<label for="rue" data-th-text="#{form.rue}"></label>
 					<input type="text" id="rue" data-th-field="*{adresse.rue}" required>
 				</div>
 			</div>
 
 			<div class="item">
 				<div class="input-label">
-					<label for="complement" data-th-text=#{form.complement}></label>
+					<label for="complement" data-th-text="#{form.complement}"></label>
 					<input type="text" id="complement" name="complement" data-th-field="*{adresse.complement}" required>
 				</div>
 			</div>
 
 			<div class="item">
 				<div class="input-label">
-					<label for="codePostal" data-th-text=#{form.codePostal}></label>
+					<label for="codePostal" data-th-text="#{form.codePostal}"></label>
 					<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" required>
 				</div>
 				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('adresse.codePostal')}"></div>
@@ -87,7 +88,7 @@
 
 			<div class="item">
 				<div class="input-label">
-					<label for="ville" data-th-text=#{form.ville}></label>
+					<label for="ville" data-th-text="#{form.ville}"></label>
 					<input type="text" id="ville" data-th-field="*{adresse.ville}" required>
 				</div>
 			</div>
@@ -101,36 +102,44 @@
 	</div>
 
 	<div class="bloc-password">
-		<!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
-		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-			<label for="motDePasse" data-th-text=#{form.mdpNewUser}></label>
-			<input type="password" id="motDePasse" data-th-field="*{motDePasse}" required>
-		</th:block>
+		<div class="password">
+			<div class="pass">
+				<!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
+				<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
+					<label for="motDePasse" data-th-text="#{form.mdpNewUser}"></label>
+					<input type="password" id="motDePasse" data-th-field="*{motDePasse}" required>
+				</th:block>
 
-		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-			<label for="motDePasse" data-th-text=#{form.mdpCurrent}></label>
-			<input type="password" id="motDePasse" data-th-field="*{motDePasse}" required>
-		</th:block>
+				<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+					<label for="motDePasse" data-th-text="#{form.mdpCurrent}"></label>
+					<input type="password" id="motDePasse" data-th-field="*{motDePasse}" required>
+				</th:block>
+			</div>
 
-		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-			<label for="motDePasseNew" data-th-text=#{form.newMdp}></label>
-			<input type="password" id="motDePasseNew" name="motDePasseNew">
-		</th:block>
+			<div class="pass" data-th-if="${#authorization.expression('isAuthenticated()')}">
+				<label for="motDePasseNew" data-th-text="#{form.newMdp}"></label>
+				<input type="password" id="motDePasseNew" name="motDePasseNew">
+			</div>
+		</div>
 
-		<label for="confirmation" data-th-text=#{form.mdpConfirm}></label>
-		<input type="password" id="confirmation" name="confirmation" required>
+		<div class="pass">
+			<label for="confirmation" data-th-text="#{form.mdpConfirm}"></label>
+			<input type="password" id="confirmation" name="confirmation" required>
+			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('motDePasse')}"></div>
+		</div>
+
 	</div>
 
 	<div class="bloc-boutons">
 		<!-- Construire fonction JS pour le ONCLICK  -->
 		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-			<button type="submit" id="submitButton" data-th-text=#{form.enregistrer}></button>
+			<button type="submit" id="submitButton" data-th-text="#{form.enregistrer}"></button>
 		</th:block>
 		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
-			<button type="submit" id="submitButton" data-th-text=#{form.creer}></button>
+			<button type="submit" id="submitButton" data-th-text="#{form.creer}"></button>
 		</th:block>
 		<a data-th-href="@{/}">
-			<button type="button" data-th-text=#{form.annuler}></button>
+			<button type="button" data-th-text="#{form.annuler}"></button>
 		</a>
 	</div>
 

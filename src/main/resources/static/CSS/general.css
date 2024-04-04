@@ -14,7 +14,8 @@ body {
   font-weight: 400;
   font-size: calc(.5rem + 1vw);
   background-color: #282c34;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 h1 {
@@ -60,3 +61,11 @@ button:hover {
   background-color: rgba(#ABB2BF, 0.3);
   color: rgb(29, 28, 28);
 }
+
+@media screen and (max-width: 760px) {
+body {
+
+  font-size: calc(.5rem + 3vw);
+
+}
+	}

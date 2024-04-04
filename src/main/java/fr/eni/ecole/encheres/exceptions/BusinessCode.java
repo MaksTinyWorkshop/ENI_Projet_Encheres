@@ -11,9 +11,9 @@ public class BusinessCode {
 	public static final String VALIDATION_USER_LOGIN_FORM = "Pattern.user.pseudo";
 	public static final String VALIDATION_USER_EMAIL_BLANK = "Notblank.user.email";
 	public static final String VALIDATION_USER_EMAIL_FORM = "Email.user.email";
-	public static final String VALIDATION_USER_PASSWORD_BLANK = "Notblank.user.password";
-	public static final String VALIDATION_USER_PASSWORD_LENGTH = "Size.user.password";
-	public static final String VALIDATION_USER_PASSWORD_FORM = "Pattern.user.password";
+	public static final String VALIDATION_USER_PASSWORD_BLANK = "Notblank.user.motDePasse";
+	public static final String VALIDATION_USER_PASSWORD_LENGTH = "Size.user.motDePasse";
+	public static final String VALIDATION_USER_PASSWORD_FORM = "Pattern.user.motDePasse";
 	public static final String VALIDATION_USER_USER_EXISTS = "validation.user.usernameUnicity";
 	public static final String VALIDATION_USER_EMAIL_EXISTS = "validation.user.emailUnicity";
 	public static final String VALIDATION_ADDRESS_INVALID = "validation.adress.invalid";
