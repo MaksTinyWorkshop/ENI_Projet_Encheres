@@ -107,8 +107,9 @@
 
 			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
 						<div class="bloc-boutons">
-
-				<button type="submit" data-th-text="#{article.button.enchere}"></button>
+				<span data-th-if="${#authentication.principal.username != articleSelect.vendeur.pseudo}">
+					<button type="submit" data-th-text="#{article.button.enchere}"></button>
+				</span>
 				
 					<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
 						<span data-th-if="*{statu} == 0">
