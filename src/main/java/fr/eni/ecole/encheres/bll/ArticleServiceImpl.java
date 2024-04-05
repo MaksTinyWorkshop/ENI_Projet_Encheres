@@ -169,12 +169,12 @@ public class ArticleServiceImpl implements ArticleService {
 				listeArticle.add(e);
 			}
 		}
-//		if (data.getCategorie() != null) {
-//			List<ArticleAVendre> listeCategorie = articleDAO.getArticlesByCategorie(data.getCategorie());
-//			for (ArticleAVendre e : listeCategorie) {
-//				listeArticle.add(e);
-//			}
-//		}
+		if (data.getCategorie() != null) {
+			List<ArticleAVendre> listeCategorie = articleDAO.getArticlesByCategorie(data.getCategorie().getId());
+			for (ArticleAVendre e : listeCategorie) {
+				listeArticle.add(e);
+			}
+		}
 		return listeArticle;
 	}
 
@@ -192,6 +192,12 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<ArticleAVendre> chargerArticlesParCategorie(long idCategorie) {
 		return articleDAO.getArticlesByCategorie(idCategorie);
+	}
+
+	@Override
+	public List<Categorie> getAllCategories() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -17,6 +17,8 @@ public interface ArticleService {
 
 	void supprArticleById(Long id);
 
+	List<Categorie> getAllCategories();
+	
 	void creerArticle(ArticleAVendre newArticle, boolean create);
 	
 	List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data);
@@ -26,4 +28,5 @@ public interface ArticleService {
 	Categorie chargerCategorie(long idCategorie);
 	
 	List<ArticleAVendre> chargerArticlesParCategorie(long idCategorie);
+
 }

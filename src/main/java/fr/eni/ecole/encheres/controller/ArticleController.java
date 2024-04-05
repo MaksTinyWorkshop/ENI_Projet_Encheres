@@ -28,6 +28,7 @@ import jakarta.validation.Valid;
 public class ArticleController {
 
 ///////////////////////////////////////////// Attributs
+
 	private static LocalDate lastCheck = LocalDate.now();
 	private SynchroService synchoService;
 	private ArticleService articleService;//dépendance
@@ -148,9 +149,5 @@ public class ArticleController {
 		articleService.supprArticleById(articleId);
 		return "redirect:/";
 	}
-	
-	
-
-
 }
 
