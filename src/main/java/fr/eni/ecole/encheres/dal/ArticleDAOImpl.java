@@ -29,7 +29,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private NamedParameterJdbcTemplate jdbcTemp;
 	
 	//!!!! NB !!!!! notice des status :  0 : PAS COMMENCEE, 1 : EN COURS, 2 : CLOTUREE, 100 : ANNULEE
-	private final String FIND_ALL = "SELECT no_article, prix_vente, date_fin_encheres"
+	private final String FIND_ALL = "SELECT no_article, date_debut_encheres, date_fin_encheres "
 										+ " FROM ARTICLES_A_VENDRE ";
 	//requête de mise à jour des status
 	private final String UPDATE_STATU = "UPDATE ARTICLES_A_VENDRE "
@@ -103,7 +103,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	
 	@Override
 	public List<ArticleAVendre> getAllArticles() {									//remplit la liste avec TOUS les articles
-		return jdbcTemp.query(FIND_ALL, new ArticleRowMapper());
+		return jdbcTemp.query(FIND_ALL, new ArticleLightRowMapper());
 	}
 	
 	@Override
@@ -255,6 +255,18 @@ public class ArticleDAOImpl implements ArticleDAO {
 		}
 	}
 	
+	class ArticleLightRowMapper implements RowMapper<ArticleAVendre> {							// 3. pour l'affichage de la liste restreinte
+		@Override
+		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ArticleAVendre a = new ArticleAVendre();
+			a.setId(rs.getLong("no_article"));
+			a.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());//date finale convertie en LocalDate
+			a.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());//date finale convertie en LocalDate
+	
+			return a;
+		}
+	}
+	
 	//////// RECUPERATION DE LA LISTE POUR FILTRE
 	//////// recupération liste catégorie
 	public List<Categorie> getAllCategories() {
@@ -271,7 +283,5 @@ public class ArticleDAOImpl implements ArticleDAO {
 	    params.addValue("categorieId", categorieId); // Assurez-vous de gérer la conversion de String à Long si nécessaire
 	    return jdbcTemp.query(sql, params, new ArticleRowMapper());
 	}
-
-
 }
 

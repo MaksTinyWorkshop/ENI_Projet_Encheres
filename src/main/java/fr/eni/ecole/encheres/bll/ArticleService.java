@@ -19,14 +19,8 @@ public interface ArticleService {
 	ArticleAVendre consulterArticleById(Long articleId);
 	void supprArticleById(Long id);
 
-	static List<Categorie> getAllCategories() {
-		return null;
-	}
+	List<Categorie> getAllCategories();
+	
 	void creerArticle(ArticleAVendre newArticle, boolean create);
 
-	Object findArticlesByCategorie(String categorie);
-
-	Object findAllArticles();
-
-	
 }

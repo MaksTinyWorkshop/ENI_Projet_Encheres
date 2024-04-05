@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,12 +28,9 @@ public class ArticleController {
 
 ///////////////////////////////////////////// Attributs
 	
-<<<<<<< HEAD
+
 	private static LocalDate lastCheck = LocalDate.now();
 	private SynchroService synchoService;
-=======
-	@Autowired
->>>>>>> d38d07ce8403c52688490e93e464348020c1209a
 	private ArticleService articleService;//dépendance
 	
 ///////////////////////////////////////////// Constructeurs
@@ -152,24 +148,24 @@ public class ArticleController {
 
 
 
-	    @GetMapping("/fragments-liste-articles-connecte")
-	    public String listArticles(Model model) {
-	        model.addAttribute("categories", ArticleService.getAllCategories());
-	        model.addAttribute("articles", articleService.findAllArticles());
-	        return "articles"; 
-	    }
-
-	    @PostMapping("/fragments-liste-articles-connecte")
-	    public String filterArticles(@RequestParam("categorie") String categorie, Model model) {
-	        if (categorie.equals("Toutes")) {
-	            model.addAttribute("articles", articleService.findAllArticles());
-	        } else {
-	            model.addAttribute("articles", articleService.findArticlesByCategorie(categorie));
-	        }
-	        model.addAttribute("categories", ArticleService.getAllCategories());
-	        model.addAttribute("selectedCategorie", categorie);
-	        return "fragment-liste-	articles-connecte"; // Réutilisation de la vue avec les articles filtrés
-	    }
+//	    @GetMapping("/fragments-liste-articles-connecte")
+//	    public String listArticles(Model model) {
+//	        model.addAttribute("categories", ArticleService.getAllCategories());
+//	        model.addAttribute("articles", articleService.findAllArticles());
+//	        return "articles"; 
+//	    }
+//
+//	    @PostMapping("/fragments-liste-articles-connecte")
+//	    public String filterArticles(@RequestParam("categorie") String categorie, Model model) {
+//	        if (categorie.equals("Toutes")) {
+//	            model.addAttribute("articles", articleService.findAllArticles());
+//	        } else {
+//	            model.addAttribute("articles", articleService.findArticlesByCategorie(categorie));
+//	        }
+//	        model.addAttribute("categories", ArticleService.getAllCategories());
+//	        model.addAttribute("selectedCategorie", categorie);
+//	        return "fragment-liste-	articles-connecte"; // Réutilisation de la vue avec les articles filtrés
+//	    }
 	    
 }
 
