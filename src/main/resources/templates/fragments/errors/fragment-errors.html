@@ -1,6 +1,11 @@
 <!-- Affichage d'un message global s'il y a des erreurs -->
 
 
+<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-errors" data-th-if="${#fields.hasErrors('*')}" >
+	<h2 class="errorsh2" data-th-text="#{frag-errors.h2}"></h2>
+	<ul class="errorsul" data-th-if="${#fields.hasGlobalErrors()}">
+		<li data-th-each="err : ${#fields.globalErrors()}" data-th-text="#{${err}}"></li>
+	</ul>
 <!-- <div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-errors" data-th-if="${#fields.hasGlobalErrors()}"> -->
 <!-- 	<h2 class="errorsh2" data-th-text="#{frag-errors.h2}"></h2> -->
 <!-- 	<ul class="errorsul"> -->
@@ -8,9 +13,5 @@
 <!-- 	</ul> -->
 <!-- </div> -->
 
-<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-errors" data-th-if="${#fields.hasErrors('*')}" >
-    <h2 class="errorsh2" data-th-text="#{frag-errors.h2}"></h2>
-    <ul class="errorsul" data-th-if="${#fields.hasGlobalErrors()}">
-        <li data-th-each="err : ${#fields.globalErrors()}" data-th-text="#{${err}}"></li>
-    </ul>
+
 </div>

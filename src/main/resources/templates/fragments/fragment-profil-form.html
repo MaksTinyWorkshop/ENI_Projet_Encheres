@@ -101,9 +101,9 @@
 		<p data-th-text="#{form.credit} + ' ' + *{credit}"></p>
 	</div>
 
-	<div class="bloc-password">
-		<div class="password">
-			<div class="pass">
+	<div class="bloc-trio">
+		<div class="items">
+			<div class="item">
 				<!-- Gestion de l'affichage des formulaires de mots de passe en fonction de l'authentification -->
 				<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
 					<label for="motDePasse" data-th-text="#{form.mdpNewUser}"></label>
@@ -116,13 +116,13 @@
 				</th:block>
 			</div>
 
-			<div class="pass" data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<div class="item" data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<label for="motDePasseNew" data-th-text="#{form.newMdp}"></label>
 				<input type="password" id="motDePasseNew" name="motDePasseNew">
 			</div>
 		</div>
 
-		<div class="pass">
+		<div class="item">
 			<label for="confirmation" data-th-text="#{form.mdpConfirm}"></label>
 			<input type="password" id="confirmation" name="confirmation" required>
 			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('motDePasse')}"></div>
@@ -143,8 +143,11 @@
 		</a>
 	</div>
 
-	<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-		<input type="hidden" id="pseudoHidden" data-th-field="*{pseudo}">
-	</th:block>
-	<input type="hidden" id="adresseId" data-th-field="*{adresse.id}" />
+	<div class="hidden">
+		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+			<input type="hidden" id="pseudoHidden" data-th-field="*{pseudo}">
+		</th:block>
+		<input type="hidden" id="adresseId" data-th-field="*{adresse.id}" />
+	</div>
+
 </form>

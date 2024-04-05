@@ -1,11 +1,7 @@
 /*Formulaire d'inscription & Vue Profil*/
-.form-poly, 
-.form-poly .bloc-colonnes, 
-.form-poly .bloc-colonnes .colonne .item .input-label,
-.form-poly .bloc-password,
-.form-poly .bloc-password .pass, 
-.form-poly .bloc-password .password,
-.form-poly .bloc-boutons {
+.form-poly, .form-poly .bloc-colonnes, .form-poly .bloc-colonnes .colonne .item .input-label,
+	.form-poly .bloc-trio, .form-poly .bloc-trio .item, .form-poly .bloc-trio .items,
+	.form-poly .bloc-boutons {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -23,11 +19,23 @@
 	width: 100%;
 }
 
+.form-poly .bloc-colonnes .colonne.article,
+.form-poly .bloc-colonnes .colonne.profil {
+	width: 45%;
+}
+
+.form-poly .bloc-colonnes .colonne.article p,
+.form-poly .bloc-colonnes .colonne.profil p {
+	text-align: center;
+	font-weight: 800;
+}
+
 .form-poly .bloc-colonnes .colonne {
 	width: 35%;
 }
 
-.form-poly .bloc-colonnes .colonne .item {
+.form-poly .bloc-colonnes .colonne .item,
+.form-poly .bloc-colonnes .colonne.profil .item {
 	margin-bottom: 1rem;
 }
 
@@ -35,35 +43,49 @@
 	justify-content: space-between;
 }
 
-.form-poly .bloc-colonnes .colonne .item .input-label input,
-.form-poly .bloc-password input {
+
+.form-poly .bloc-colonnes .colonne.profil .item .input-label input, 
+.form-poly .bloc-colonnes .colonne.profil .item .input-label textarea, #enchere {
+	background-color: #282c34;
+	color: #ABB2BF;
+	font-family: roboto;
+	font-size: calc(.5rem + 1vw);
+	text-align: center;
+}
+
+.form-poly .bloc-colonnes .colonne .item .input-label input, 
+.form-poly .bloc-colonnes .colonne .item .input-label textarea,
+.form-poly .bloc-colonnes .colonne .item .input-label select,
+.form-poly .bloc-trio input {
 	padding: 10px;
-	color: #282c34;
-	background-color: #ABB2BF;
 	color: #282c34;
 	background-color: #ABB2BF;
 	border-radius: 15px;
 }
 
-.form-poly .bloc-password input {
+
+
+
+.form-poly .bloc-trio input {
 	margin-top: 5px;
 }
+
 .form-poly .bloc-credit {
 	margin: 1rem;
 }
 
-.form-poly .bloc-password {
+.form-poly .bloc-trio {
 	margin: 2rem 0 1rem 0;
 	position: relative;
 	flex-direction: column;
 }
 
-.form-poly .bloc-password .pass {
+.form-poly .bloc-trio .item {
 	margin: 1rem 1rem;
 	flex-direction: column;
 }
 
-.form-poly .bloc-password::before {
+.form-poly .bloc-trio::before {
 	content: "";
 	position: absolute;
 	background-color: #134A7F;
@@ -85,11 +107,34 @@
 	.form-poly .bloc-colonnes {
 		flex-direction: column;
 	}
-	.form-poly .bloc-colonnes .colonne {
+	.form-poly .bloc-colonnes .colonne, .form-poly .bloc-colonnes .colonne.article
+		{
 		width: 80%;
 	}
+	.form-poly .bloc-colonnes .colonne.article .item .input-label,
+	.form-poly .bloc-colonnes .colonne.profil .item .input-label {
+		flex-direction: column;
+	}
+	.form-poly .bloc-colonnes .colonne.article p,
+	.form-poly .bloc-colonnes .colonne.profil p {
+		position: relative;
+		margin: 1rem;
+	}
+	.form-poly .bloc-colonnes .colonne.article p::before,
+	.form-poly .bloc-colonnes .colonne.profil p::before {
+		content: "";
+		position: absolute;
+		background-color: #134A7F;
+		height: 2px;
+		width: 50%;
+		top: -.5rem;
+		left: 0;
+		transform: translateX(50%);
+	}
 	.form-poly .bloc-colonnes .colonne .item .input-label input,
-		.bloc-password input {
+	.form-poly .bloc-colonnes .colonne.profil .item .input-label input,
+		.bloc-password input, #enchere {
+		text-align: center;
 		font-size: calc(.5rem + 2vw);
 	}
 	.form-poly .bloc-password .password {

@@ -28,7 +28,7 @@ public class EncheresSecurityConfig {
 		// 2. Requête recherchant les utilisateurs par leurs rôles, en utilisant un
 		// paramètre positionnel (?)
 		jdbcUserManager.setAuthoritiesByUsernameQuery(
-			"SELECT u.pseudo, r.role FROM UTILISATEURS u INNER JOIN ROLES r ON u.administrateur = r.is_admin WHERE pseudo = ?");
+				"SELECT u.pseudo, r.role FROM UTILISATEURS u INNER JOIN ROLES r ON u.administrateur = r.is_admin WHERE pseudo = ?");
 		return jdbcUserManager;
 	}
 
@@ -43,7 +43,7 @@ public class EncheresSecurityConfig {
 //				.requestMatchers(HttpMethod.GET, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
 //				.requestMatchers(HttpMethod.POST, " ").hasAnyRole("VENDEUR", "AQUEREUR", "ADMINISTRATEUR")
 //				.requestMatchers(" ").hasRole("ADMINISTRATEUR");
-			
+
 			auth.requestMatchers(HttpMethod.GET, "/user/profil")
 				.authenticated()
 				.requestMatchers(HttpMethod.POST, "/user/profil")
@@ -76,20 +76,22 @@ public class EncheresSecurityConfig {
 //			auth.anyRequest().denyAll();//accès refusé pour toutes les autres URL.
 		});
 
-		http.formLogin(form -> {					//page de connexion 
+		http.formLogin(form -> { // page de connexion
 			form.loginPage("/login")
 				.permitAll();
 			form.defaultSuccessUrl("/");
 		});
 
-		//logout pour vider la session et le contexte de sécurité
-		http.logout(logout -> logout										// lambda utilisée pour lancer la série d'instructions
-				.invalidateHttpSession(true)								// invalide la session
-				.clearAuthentication(true)									// l'authentification sera effacée après la déconnexion
-				.deleteCookies("JSESSIONID")								// suppression des cookies utilisateur
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))	// fait correspondre la procédure de déconnexion
-				.logoutSuccessUrl("/")										// redirection sur la page racine
-				.permitAll()												// authorisation de se déconnecter pour tous les profils et non profils
+		// logout pour vider la session et le contexte de sécurité
+		http.logout(logout -> logout // lambda utilisée pour lancer la série d'instructions
+									.invalidateHttpSession(true) // invalide la session
+									.clearAuthentication(true) // l'authentification sera effacée après la déconnexion
+									.deleteCookies("JSESSIONID") // suppression des cookies utilisateur
+									.logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // fait correspondre la
+																								// procédure de
+																								// déconnexion
+									.logoutSuccessUrl("/") // redirection sur la page racine
+									.permitAll() // authorisation de se déconnecter pour tous les profils et non profils
 		);
 		return http.build();
 	}

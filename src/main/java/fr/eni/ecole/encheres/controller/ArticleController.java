@@ -3,6 +3,7 @@ package fr.eni.ecole.encheres.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +28,11 @@ import jakarta.validation.Valid;
 public class ArticleController {
 
 ///////////////////////////////////////////// Attributs
+<<<<<<< HEAD
 	
 
+=======
+>>>>>>> cb01855c81f91396a548fe1db9f437f12863c42a
 	private static LocalDate lastCheck = LocalDate.now();
 	private SynchroService synchoService;
 	private ArticleService articleService;//dépendance
@@ -45,14 +49,41 @@ public class ArticleController {
 	public String accueil(Model model, Principal user) {								//Gère l'affichage des articles en cours de vente sur l'accueil.
 		try {
 			synchoService.updateStatus(lastCheck);
+			ArticleAVendre article = new ArticleAVendre();
 			List<ArticleAVendre> articles = articleService.charger(user);				//appel du service pour charger la liste
+			List<Categorie> lstCat = articleService.chargerCategories();
+
+			model.addAttribute("article", article);
 			model.addAttribute("articlesList", articles);
+			model.addAttribute("categorie", lstCat);
 			return "index";																//retour à l'index
 		}catch (BusinessException e){													//ici récupération de la BusinessException chargée dans le service
 			model.addAttribute("listArticleError", e.getClefsExternalisations());		//transfer au model de la liste codes erreurs retournée
 			return "index";
 		}
 	}
+	
+
+	
+	@PostMapping("/")
+    public String filterArticles(
+    		@RequestParam("categorie") Optional<Long> categorieId,
+            @RequestParam("nom") Optional<String> nom,
+       		Model model
+    		) {
+
+		if(categorieId.isPresent()) {
+	        // Logique pour filtrer par categorieId
+	        List<ArticleAVendre> filteredArticles = articleService.chargerArticlesParCategorie(categorieId.get());
+	        model.addAttribute("filteredArticles", filteredArticles);
+	    }
+	    // Assurez-vous d'ajouter à nouveau les attributs nécessaires pour le formulaire
+	    model.addAttribute("categories", articleService.chargerCategories());
+		
+        return "index"; 
+    }
+	
+	
 	
 	
 	@GetMapping("/Creer-Article")														//Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
@@ -123,30 +154,10 @@ public class ArticleController {
 		return "redirect:/";
 	}
 	
-//	//////// filtre par catégorie et mapping vers la vue :
-//	@GetMapping("/fragment-liste-articles")
-//	public String getAllCategories(Model model) {
-//	    List<Categorie> categories = ArticleService.getAllCategories();
-//	    model.addAttribute("categories", categories);
-//	    return "fragment-liste-articles";
-//	}
-//	
-//    /////// GET MAPPING DES FILTRES DU FOMRULAIRE HTML 
-//	@GetMapping("/filtrer-par-nom-article")
-//	public String filtrerParNomArticle(Model model, @RequestParam("nomArticle") String nomArticle) {
-//	    try {
-//	        List<ArticleAVendre> articlesFiltres = articleService.getArticlesByName(nomArticle);
-//	        model.addAttribute("articlesList", articlesFiltres);
-//	        return "index"; // Retourne la vue de la page d'accueil avec les articles filtrés par nom
-//	    } catch (BusinessException e) {
-//	        model.addAttribute("listArticleError", e.getClefsExternalisations());
-//	        return "index"; // Retourne la vue de la page d'accueil en cas d'erreur
-//	    }
-//	}
-	
 	
 
 
+<<<<<<< HEAD
 
 //	    @GetMapping("/fragments-liste-articles-connecte")
 //	    public String listArticles(Model model) {
@@ -167,5 +178,7 @@ public class ArticleController {
 //	        return "fragment-liste-	articles-connecte"; // Réutilisation de la vue avec les articles filtrés
 //	    }
 	    
+=======
+>>>>>>> cb01855c81f91396a548fe1db9f437f12863c42a
 }
 

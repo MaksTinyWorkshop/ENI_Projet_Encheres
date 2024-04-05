@@ -1,76 +1,118 @@
 
-<form xmlns:th="http://www.thymeleaf.org" 
-		data-th-fragment="frag-article-form(titre)" 
-		class="form-poly"
-		method="post"
-		data-th-object="${article}"
-		data-th-action="@{/Creer-Article}" >
-		
-		<h1 data-th-text="#{form.article.titre}"></h1>
+<form xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-article-form(titre)" class="form-poly" method="post"
+	data-th-object="${article}" data-th-action="@{/Creer-Article}">
 
-       	<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
-    	
-        <!-- Partie détails de l'article -->
-        <input type="hidden" id="id" data-th-field="*{id}" required>
-        <input type="hidden" id="pseudo" data-th-field="*{vendeur.pseudo}" required>
-        
-        <label for="nom" data-th-text="#{form.nom}"></label>
-        <input type="text" id="nom" data-th-field="*{nom}"  autofocus>
-        
-        <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
-		
-        <label for="description" data-th-text="#{form.article.description}"></label>
-        <textarea id="description" rows="4" cols="50" data-th-field="*{description}" required></textarea>
-        
-        <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('description')}"></div>
-        
-        <label for="categorie" data-th-text="#{form.article.categorie}"></label>
-        <select id="categorie" name="categorie" data-th-field="*{categorie.id}" required>
-	        <option value="1" data-th-text="#{categorie.ameublement}"></option>
-	        <option value="2" data-th-text="#{categorie.informatique}"></option>
-	        <option value="3" data-th-text="#{categorie.sportLoisir}"></option>
-	        <option value="4" data-th-text="#{categorie.vetements}"></option>
-    	</select>
-        
-        <label for="photo" data-th-text="#{form.article.photo}"></label>
-        <input type="file" id="photo">
+	<h1 data-th-text="#{form.article.titre}"></h1>
 
-        <label for="prixInit" data-th-text="#{form.article.prixInit}"></label>
-        <input type="number" id="prixInit" data-th-field="*{prixInitial}" min="0" required>
-        
-         <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prixInitial')}"></div>
-        
-        <label for="enchereStart" data-th-text="#{form.article.enchere.debut}"></label>
-        <input type="date" id="enchereStart" data-th-value="*{dateDebutEncheres}" name="dateDebutEncheres" required>
-        
-        <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateDebutEncheres')}"></div>
- 
-        <label for="enchereEnd" data-th-text="#{form.article.enchere.fin}"></label>
-        <input type="date" id="enchereEnd" data-th-value="*{dateFinEncheres}" name="dateFinEncheres" required>
-        
-        <!-- ERROR --> <div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateFinEncheres')}"></div>
+	<div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
 
-        <!-- Partie retrait -->
-		<fieldset>
-		    <legend data-th-text="#{form.article.retrait}"></legend>
-		    
-		    <input type="hidden" id="id" data-th-field="*{retrait.id}" required>
-			<label for="rue" data-th-text="#{form.adresse.rue}"></label>
-        	<input type="text" id="rue" data-th-field="*{retrait.rue}" required>
-        	
-        	<label for="codePostal" data-th-text="#{form.adresse.cp}"></label>
-        	<input type="text" id="codePostal" data-th-field="*{retrait.codePostal}" required>
-        	
-        	<label for="ville" data-th-text="#{form.adresse.ville}"></label>
-        	<input type="text" id="ville" data-th-field="*{retrait.ville}" required>
-        	
-		</fieldset>
-		<!-- Partie BOUTONS -->
-        <div class="btn-box">
-            <!-- Construire fonction JS pour le ONCLICK  -->
-            <button type="submit" id="submitButton" data-th-text="#{button.save}"></button>
-            <a data-th-href="@{/}" >
-            	<button type="button" data-th-text="#{button.cancel}" ></button>
-            </a>
-        </div>
+
+	<div class="bloc-colonnes">
+		<div class="colonne article">
+			<div class="item">
+				<div class="input-label">
+					<label for="nom" data-th-text="#{form.nom}"></label>
+					<input type="text" id="nom" data-th-field="*{nom}" autofocus>
+				</div>
+
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('nom')}"></div>
+			</div>
+			<div class="item">
+				<div class="input-label">
+					<label for="description" data-th-text="#{form.article.description}"></label>
+					<textarea id="description" rows="4" cols="30" data-th-field="*{description}" required></textarea>
+				</div>
+				<!-- ERROR -->
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('description')}"></div>
+			</div>
+			<div class="item">
+				<div class="input-label">
+					<label for="categorie" data-th-text="#{form.article.categorie}"></label>
+					<select id="categorie" name="categorie" data-th-field="*{categorie.id}" required>
+						<option value="1" data-th-text="#{categorie.ameublement}"></option>
+						<option value="2" data-th-text="#{categorie.informatique}"></option>
+						<option value="3" data-th-text="#{categorie.sportLoisir}"></option>
+						<option value="4" data-th-text="#{categorie.vetements}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="item">
+				<div class="input-label">
+					<label for="photo" data-th-text="#{form.article.photo}"></label>
+					<input type="file" id="photo">
+				</div>
+			</div>
+		</div>
+
+		<div class="colonne article">
+			<!-- Partie retrait -->
+			<p data-th-text="#{form.article.retrait}"></p>
+			<div class="item">
+				<div class="input-label">
+					<label for="rue" data-th-text="#{form.adresse.rue}"></label>
+					<input type="text" id="rue" data-th-field="*{retrait.rue}" required>
+				</div>
+			</div>
+			<div class="item">
+				<div class="input-label">
+					<label for="codePostal" data-th-text="#{form.adresse.cp}"></label>
+					<input type="text" id="codePostal" data-th-field="*{retrait.codePostal}" required>
+				</div>
+			</div>
+			<div class="item">
+				<div class="input-label">
+					<label for="ville" data-th-text="#{form.adresse.ville}"></label>
+					<input type="text" id="ville" data-th-field="*{retrait.ville}" required>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="bloc-trio">
+		<div class="items">
+			<div class="item">
+				<label for="enchereStart" data-th-text="#{form.article.enchere.debut}"></label>
+				<input type="date" id="enchereStart" data-th-value="*{dateDebutEncheres}" name="dateDebutEncheres" required>
+
+				<!-- ERROR -->
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateDebutEncheres')}"></div>
+			</div>
+			<div class="item">
+				<label for="enchereEnd" data-th-text="#{form.article.enchere.fin}"></label>
+				<input type="date" id="enchereEnd" data-th-value="*{dateFinEncheres}" name="dateFinEncheres" required>
+
+				<!-- ERROR -->
+				<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('dateFinEncheres')}"></div>
+			</div>
+		</div>
+
+		<div class="item">
+			<label for="prixInit" data-th-text="#{form.article.prixInit}"></label>
+			<input type="number" id="prixInit" data-th-field="*{prixInitial}" min="0" required>
+
+			<!-- ERROR -->
+			<div data-th-replace="~{fragments/errors/fragment-error :: frag-error('prixInitial')}"></div>
+
+		</div>
+
+	</div>
+
+
+	<!-- Partie BOUTONS -->
+	<div class="bloc-boutons">
+		<!-- Construire fonction JS pour le ONCLICK  -->
+		<button type="submit" id="submitButton" data-th-text="#{button.save}"></button>
+		<a data-th-href="@{/}">
+			<button type="button" data-th-text="#{button.cancel}"></button>
+		</a>
+	</div>
+
+	<div class="hidden">
+		<!-- Partie détails de l'article -->
+		<input type="hidden" id="id" data-th-field="*{id}" required>
+		<input type="hidden" id="pseudo" data-th-field="*{vendeur.pseudo}" required>
+		<input type="hidden" id="id" data-th-field="*{retrait.id}" required>
+	</div>
+
 </form>

@@ -9,7 +9,7 @@
 
 <head>
 <meta charset="UTF-8">
-<script src="script.js"></script>
+
 <title data-th-text="#{enregistrer.title}"></title>
 <th:block id="ressources-css">
 	<link rel="stylesheet" data-th-href="@{/css/form.css}" />
@@ -20,5 +20,6 @@
 	<main>
 		<div data-th-replace="~{fragments/fragment-profil-form :: frag-prof-form(#{view-register-form.h1}, '/user/register')}"></div>
 	</main>
+	<script src="/JavaScript/script.js"></script>
 </body>
 </html>

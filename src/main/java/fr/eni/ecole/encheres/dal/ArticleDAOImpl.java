@@ -74,16 +74,16 @@ public class ArticleDAOImpl implements ArticleDAO {
 	@Override																		//filtre par nom
 	public List<ArticleAVendre> getArticlesByName(String boutNom) {
 	    
-		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom";
+		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom AND statu_enchere = 1";
 	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("boutNom", "%" + boutNom + "%");
 	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
 
 	@Override																		//filtre par catégories
-	public List<ArticleAVendre> getArticlesByCategorie(Categorie categorie) {
+	public List<ArticleAVendre> getArticlesByCategorie(long idCategorie) {
 	    
-		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur FROM ARTICLES_A_VENDRE WHERE no_categorie = :idCategorie";
-	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("idCategorie", categorie.getId());
+		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur, no_article FROM ARTICLES_A_VENDRE WHERE no_categorie = :idCategorie AND statu_enchere = 1";
+	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("idCategorie", idCategorie);
 	    return jdbcTemp.query(query, params, new ArticleRowMapper());
 	}
 	
@@ -254,7 +254,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 	}
-	
+
 	class ArticleLightRowMapper implements RowMapper<ArticleAVendre> {							// 3. pour l'affichage de la liste restreinte
 		@Override
 		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {

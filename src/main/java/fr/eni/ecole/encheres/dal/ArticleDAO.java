@@ -13,7 +13,7 @@ public interface ArticleDAO {
 	List<ArticleAVendre> getUserAndActiveArticles(String pseudo);
 	List<ArticleAVendre> getActiveArticles();//pour afficher tous les articles par date
 	List<ArticleAVendre> getArticlesByName(String boutNom);
-	List<ArticleAVendre> getArticlesByCategorie(Categorie categorie);
+	List<ArticleAVendre> getArticlesByCategorie(long idCategorie);
 	
 	//2. récupération d'un article complet
 	ArticleAVendre getArticleById(Long articleId);
@@ -24,7 +24,9 @@ public interface ArticleDAO {
 	void updatePrix(Enchere enchere);
 	void modifierArticle(ArticleAVendre newArticle);
 	
-	List<Categorie> getAllCategories();
+
+//	List<Categorie> getAllCategories();
 	void updateStatus(ArticleAVendre article);
+
 
 }
