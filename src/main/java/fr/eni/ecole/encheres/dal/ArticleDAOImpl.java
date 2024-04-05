@@ -196,7 +196,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 		np.addValue("id", article.getId());
 		if (article.getDateDebutEncheres().isAfter(LocalDate.now())) {
 			np.addValue("statu", "0");
-		}else if (article.getDateFinEncheres().isAfter(LocalDate.now())) {
+		}else if (article.getDateFinEncheres().isBefore(LocalDate.now())) {
 			np.addValue("statu", "2");
 		}else {
 			np.addValue("statu", "1");
