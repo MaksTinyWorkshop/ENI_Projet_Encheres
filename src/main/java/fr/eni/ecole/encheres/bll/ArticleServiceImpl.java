@@ -160,23 +160,25 @@ public class ArticleServiceImpl implements ArticleService {
 		return true;
 	}
 
-	@Override
-	public List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data) {
-		List<ArticleAVendre> listeArticle = new ArrayList<>();
-		if (data.getNom() != null) {
-			List<ArticleAVendre> listeString = articleDAO.getArticlesByName(data.getNom());
-			for (ArticleAVendre e : listeString) {
-				listeArticle.add(e);
-			}
-		}
-		if (data.getCategorie() != null) {
-			List<ArticleAVendre> listeCategorie = articleDAO.getArticlesByCategorie(data.getCategorie().getId());
-			for (ArticleAVendre e : listeCategorie) {
-				listeArticle.add(e);
-			}
-		}
-		return listeArticle;
-	}
+
+//	@Override
+//	public List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data) {
+//		List<ArticleAVendre> listeArticle = new ArrayList<>();
+//		if (data.getNom() != null) {
+//			List<ArticleAVendre> listeString = articleDAO.getArticlesByName(data.getNom());
+//			for (ArticleAVendre e : listeString) {
+//				listeArticle.add(e);
+//			}
+//		}
+//		if (data.getCategorie() != null) {
+//			List<ArticleAVendre> listeCategorie = articleDAO.getArticlesByCategorie(data.getCategorie());
+//			for (ArticleAVendre e : listeCategorie) {
+//				listeArticle.add(e);
+//			}
+//		}
+//		return listeArticle;
+//	}
+
 
 	@Override
 	public List<Categorie> chargerCategories() {
@@ -195,9 +197,16 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<Categorie> getAllCategories() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<ArticleAVendre> chargerArticlesParNom(String nom) {
+		return articleDAO.getArticlesByName(nom);
+	}
+
+	@Override
+	public List<ArticleAVendre> chargerArticlesByFiltres(long idCategorie, String nom) {
+		System.out.println("Etape Service");
+		return articleDAO.getArticleByFiltres(idCategorie, nom);
+
+
 	}
 
 }

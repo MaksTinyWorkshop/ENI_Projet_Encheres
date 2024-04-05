@@ -3,7 +3,6 @@ package fr.eni.ecole.encheres.dal;
 import java.util.List;
 
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
-import fr.eni.ecole.encheres.bo.Categorie;
 import fr.eni.ecole.encheres.bo.Enchere;
 
 public interface ArticleDAO {
@@ -14,6 +13,7 @@ public interface ArticleDAO {
 	List<ArticleAVendre> getActiveArticles();//pour afficher tous les articles par date
 	List<ArticleAVendre> getArticlesByName(String boutNom);
 	List<ArticleAVendre> getArticlesByCategorie(long idCategorie);
+	List<ArticleAVendre> getArticleByFiltres(long idCategorie, String nom);
 	
 	//2. récupération d'un article complet
 	ArticleAVendre getArticleById(Long articleId);

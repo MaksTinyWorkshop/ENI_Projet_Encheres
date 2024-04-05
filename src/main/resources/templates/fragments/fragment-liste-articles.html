@@ -5,27 +5,52 @@
 
 		<!-- Ajout de liens pour filtrer par nom d'article et par catégorie -->
 
-<!-- 		<select data-th-field="*{categories}"> -->
-<!-- 			<option value="">Sélectionnez une catégorie</option> -->
-<!-- 			<option data-th-each="option : ${categories}" data-th-value="${option.id}" data-th-text="${option.libelle}"> -->
-<!-- 			</option> -->
-<!-- 		</select> -->
+		<!-- 		<select data-th-field="*{categories}"> -->
+		<!-- 			<option value="">Sélectionnez une catégorie</option> -->
+		<!-- 			<option data-th-each="option : ${categories}" data-th-value="${option.id}" data-th-text="${option.libelle}"> -->
+		<!-- 			</option> -->
+		<!-- 		</select> -->
 
 		<form method="post" data-th-action="@{/}" data-th-object="${article}">
-		
+
 			<select data-th-field="*{categorie}">
-				<option value="">Sélectionnez une catégorie</option>
+				<option value="" disabled>Sélectionnez une catégorie</option>
 				<option data-th-each="option : ${categorie}" data-th-value="${option.id}" data-th-text="${option.libelle}"></option>
+				<option value="5">Tout</option>
 			</select>
-			
-			<input type="text" data-th-field="*{nom}"  placeholder="Nom de l'article">
-			
-<!-- 			<input type="text" name="nomArticle" placeholder="Nom de l'article"> -->
+
+			<input type="text" data-th-field="*{nom}" placeholder="Nom de l'article">
+
+			<!-- 			<input type="text" name="nomArticle" placeholder="Nom de l'article"> -->
 			<button type="submit">Rechercher</button>
 		</form>
 	</div>
 
-	<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card">
+
+
+<!-- 		<div data-th-if="${articlesList != null}" data-th-each="article : ${articlesList}" class="card"> -->
+<!-- 			<div class="img-box"></div> -->
+<!-- 			<div class="details"> -->
+
+<!-- 				<div data-th-if="${listArticleError != null}"> -->
+<!-- 					<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2> -->
+<!-- 				</div> -->
+
+<!-- 				<h2> -->
+<!-- 					<a data-th-href="@{|/articles/articleDetail/${article.id}|}" data-th-text="${article.nom}"></a> -->
+<!-- 				</h2> -->
+
+<!-- 				<p data-th-text="#{form.article.bestOffer} + ' '  + ${article.prixVente}"></p> -->
+<!-- 				<p data-th-text="#{form.article.enchere.fin} + ' '  + ${article.dateFinEncheres}"></p> -->
+
+<!-- 				<p> -->
+<!-- 					<a data-th-href="@{|/user/profil/${article.vendeur.pseudo}|}" -->
+<!-- 						data-th-text="#{form.article.vendeur} + ' '  + ${article.vendeur.pseudo}"></a> -->
+<!-- 				</p> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+
+	<div data-th-if="${filteredArticles != null}" data-th-each="article : ${filteredArticles}" class="card">
 		<div class="img-box"></div>
 		<div class="details">
 
