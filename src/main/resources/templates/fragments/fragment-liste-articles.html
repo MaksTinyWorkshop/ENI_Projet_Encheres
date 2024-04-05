@@ -1,49 +1,54 @@
-<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-list-articles" class="items-cards">
-
-	<div>
-
-
-
-		<form method="post" data-th-action="@{/}" data-th-object="${article}">
-
-			<select data-th-field="*{categorie}">
-				<option value="" disabled>Sélectionnez une catégorie</option>
-				<option value="5" selected>Tout</option>
-				<option data-th-each="option : ${categorie}" data-th-value="${option.id}" data-th-text="${option.libelle}"></option>
-				
-			</select>
-
-			<input type="text" data-th-field="*{nom}" placeholder="Nom de l'article">
-
-			<button type="submit">Rechercher</button>
-		</form>
-	</div>
+<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-list-articles" class="accueil">
 
 
 
 
-	<div data-th-if="${filteredArticles != null}" data-th-each="article : ${filteredArticles}" class="card">
-		<div class="img-box"></div>
-		<div class="details">
-
-			<div data-th-if="${listArticleError != null}">
-				<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
+	<form method="post" data-th-action="@{/}" data-th-object="${article}" class="form-index">
+		<div class="items">
+			<div class="input-label">
+				<label for="categories" data-th-text="#{filtrage.categorie}"></label>
+				<select data-th-field="*{categorie}" id="categories">
+					<option value="" disabled data-th-text="#{filtrage.select}"></option>
+					<option value="5" selected data-th-text="#{filtrage.tout}"></option>
+					<option data-th-each="option : ${categorie}" data-th-value="${option.id}" data-th-text="${option.libelle}"></option>
+				</select>
 			</div>
 
-			<h2>
-				<a data-th-href="@{|/articles/articleDetail/${article.id}|}" data-th-text="${article.nom}"></a>
-			</h2>
+			<div class="input-label">
+				<label for="nom" data-th-text="#{filtrage.nom}"></label>
+				<input type="text" id="nom" data-th-field="*{nom}" placeholder="Nom de l'article">
+			</div>
+		</div>
+		<div class=bloc-boutons>
+			<button type="submit" data-th-text="#{button.rechercher}"></button>
+		</div>
+	</form>
 
-			<p data-th-text="#{form.article.bestOffer} + ' '  + ${article.prixVente}"></p>
-			<p data-th-text="#{form.article.enchere.fin} + ' '  + ${article.dateFinEncheres}"></p>
 
-			<p>
-				<a data-th-href="@{|/user/profil/${article.vendeur.pseudo}|}"
-					data-th-text="#{form.article.vendeur} + ' '  + ${article.vendeur.pseudo}"></a>
-			</p>
+
+	<div class="items-cards">
+		<div data-th-if="${filteredArticles != null}" data-th-each="article : ${filteredArticles}" class="card">
+			<div class="img-box"></div>
+			<div class="details">
+
+				<div data-th-if="${listArticleError != null}">
+					<h2 data-th-each="err : ${listArticleError}" data-th-text="#{${err}}"></h2>
+				</div>
+
+				<h2>
+					<a data-th-href="@{|/articles/articleDetail/${article.id}|}" data-th-text="${article.nom}"></a>
+				</h2>
+
+				<p data-th-text="#{form.article.bestOffer} + ' '  + ${article.prixVente}"></p>
+				<p data-th-text="#{form.article.enchere.fin} + ' '  + ${article.dateFinEncheres}"></p>
+
+				<p>
+					<a data-th-href="@{|/user/profil/${article.vendeur.pseudo}|}"
+						data-th-text="#{form.article.vendeur} + ' '  + ${article.vendeur.pseudo}"></a>
+				</p>
+			</div>
 		</div>
 	</div>
-
 </div>
 
 

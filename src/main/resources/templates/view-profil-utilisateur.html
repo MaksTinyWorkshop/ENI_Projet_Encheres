@@ -12,39 +12,68 @@
 
 <title data-th-text="#{enregistrer.title}"></title>
 <th:block id="ressources-css">
-	<link rel="stylesheet" data-th-href="@{/css/profil.css}" />
+	<link rel="stylesheet" data-th-href="@{/css/form.css}" />
 </th:block>
 </head>
 <body>
 	<main>
-		<form class="userProfil" data-th-object="${user}">
+		<form class="form-poly" data-th-object="${user}">
 
-			<h1 data-th-text="'Profil de ' + *{pseudo}"></h1>
+			<div class="bloc-titre">
+				<h1 data-th-text="'Profil de ' + *{pseudo}"></h1>
+			</div>
 
-			<div class="profilGrid">
-				<label for="nom" data-th-text=#{form.nom}></label>
-				<input type="text" id="nom" data-th-field="*{nom}" disabled>
-
-				<label for="prenom" data-th-text=#{form.prenom}></label>
-				<input type="text" id="prenom" data-th-field="*{prenom}" disabled>
-
-				<label for="email" data-th-text=#{form.email}>:</label>
-				<input type="text" id="email" data-th-field="*{email}" disabled>
-
-				<label for="telephone" data-th-text=#{form.telephone}></label>
-				<input type="text" id="telephone" data-th-field="*{telephone}" disabled>
-
-				<label for="rue" data-th-text=#{form.rue}></label>
-				<input type="text" id="rue" data-th-field="*{adresse.rue}" disabled>
-
-				<label for="complement" data-th-text=#{form.complement}></label>
-				<textarea rows="3" cols="50"  id="complement" name="complement" data-th-field="*{adresse.complement}" disabled></textarea>
-
-				<label for="codePostal" data-th-text=#{form.codePostal}></label>
-				<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" disabled>
-
-				<label for="ville" data-th-text=#{form.ville}></label>
-				<input type="text" id="ville" data-th-field="*{adresse.ville}" disabled>
+			<div class="bloc-colonnes">
+				<div class="colonne profil">
+					<div class="item">
+						<div class="input-label">
+							<label for="nom" data-th-text=#{form.nom}></label>
+							<input type="text" id="nom" data-th-field="*{nom}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="prenom" data-th-text=#{form.prenom}></label>
+							<input type="text" id="prenom" data-th-field="*{prenom}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="email" data-th-text=#{form.email}>:</label>
+							<input type="text" id="email" data-th-field="*{email}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="telephone" data-th-text=#{form.telephone}></label>
+							<input type="text" id="telephone" data-th-field="*{telephone}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="rue" data-th-text=#{form.rue}></label>
+							<input type="text" id="rue" data-th-field="*{adresse.rue}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="complement" data-th-text=#{form.complement}></label>
+							<textarea rows="3" cols="30" id="complement" name="complement" data-th-field="*{adresse.complement}" disabled></textarea>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="codePostal" data-th-text=#{form.codePostal}></label>
+							<input type="number" id="codePostal" data-th-field="*{adresse.codePostal}" disabled>
+						</div>
+					</div>
+					<div class="item">
+						<div class="input-label">
+							<label for="ville" data-th-text=#{form.ville}></label>
+							<input type="text" id="ville" data-th-field="*{adresse.ville}" disabled>
+						</div>
+					</div>
+				</div>
 			</div>
 
 		</form>

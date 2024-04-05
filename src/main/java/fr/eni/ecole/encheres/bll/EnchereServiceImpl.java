@@ -69,13 +69,12 @@ public class EnchereServiceImpl implements EnchereService {
 
 	private boolean validerCreditUtilisateur(Enchere enchere, BusinessException be) {
 		Utilisateur u = enchere.getAcquereur();
-		ArticleAVendre a = enchere.getArticleAVendre();
-
+	
 		int creditUtilisateur = utilisateurDAO	.read(u.getPseudo())
 												.getCredit();
-		int prixVente = a.getPrixVente();
+		int enchereProposee = enchere.getMontant();
 
-		if (creditUtilisateur < prixVente) {
+		if (creditUtilisateur < enchereProposee ) {
 			be.add(BusinessCode.VALIDATION_ENCHERE_CREDIT);
 			return false;
 		}
