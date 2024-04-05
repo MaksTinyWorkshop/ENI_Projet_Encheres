@@ -6,21 +6,21 @@
 	<form method="post" data-th-action="@{/}" data-th-object="${article}" class="form-index">
 		<div class="items">
 			<div class="input-label">
-				<label for="categories"> Filtrage par catégories :</label>
+				<label for="categories" data-th-text="#{filtrage.categorie}"></label>
 				<select data-th-field="*{categorie}" id="categories">
-					<option value="" disabled>Sélectionnez une catégorie</option>
-					<option value="5" selected>Tout</option>
+					<option value="" disabled data-th-text="#{filtrage.select}"></option>
+					<option value="5" selected data-th-text="#{filtrage.tout}"></option>
 					<option data-th-each="option : ${categorie}" data-th-value="${option.id}" data-th-text="${option.libelle}"></option>
 				</select>
 			</div>
 
 			<div class="input-label">
-				<label for="nom"> Filtrage par Nom :</label>
+				<label for="nom" data-th-text="#{filtrage.nom}"></label>
 				<input type="text" id="nom" data-th-field="*{nom}" placeholder="Nom de l'article">
 			</div>
 		</div>
 		<div class=bloc-boutons>
-			<button type="submit">Rechercher</button>
+			<button type="submit" data-th-text="#{button.rechercher}"></button>
 		</div>
 	</form>
 
