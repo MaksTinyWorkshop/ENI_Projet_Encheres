@@ -114,7 +114,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	
 	@Override
 	public List<ArticleAVendre> getArticleByFiltres(long idCategorie, String nom) {
-		System.out.println("nom = " + nom);
+		
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		np.addValue("nom_article", "%" + nom + "%" );
 		np.addValue("idCategorie", idCategorie);

@@ -203,9 +203,13 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public List<ArticleAVendre> chargerArticlesByFiltres(long idCategorie, String nom) {
-		System.out.println("Etape Service");
 		return articleDAO.getArticleByFiltres(idCategorie, nom);
 
+	}
+
+	@Override
+	public List<ArticleAVendre> chargerArticlesActifs() {
+		return articleDAO.getActiveArticles();
 	}
 
 }

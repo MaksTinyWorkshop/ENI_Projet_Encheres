@@ -17,6 +17,8 @@ public interface ArticleService {
 	
 	List<ArticleAVendre> chargerArticlesByFiltres(long idCategorie, String nom);
 	
+	List<ArticleAVendre> chargerArticlesActifs();
+	
 	List<Categorie> chargerCategories();
 
 	Adresse getAdress(String pseudo);
@@ -26,9 +28,7 @@ public interface ArticleService {
 	void supprArticleById(Long id);
 	
 	void creerArticle(ArticleAVendre newArticle, boolean create);
-	
-//	List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data);
-	
+		
 	Categorie chargerCategorie(long idCategorie);
 	
 

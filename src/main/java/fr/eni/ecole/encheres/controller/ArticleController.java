@@ -52,52 +52,71 @@ public class ArticleController {
 			List<Categorie> lstCat = articleService.chargerCategories();
 
 			model.addAttribute("article", article);
-			model.addAttribute("articlesList", articles);
+			model.addAttribute("filteredArticles", articles);
 			model.addAttribute("categorie", lstCat);
-			
+
 			return "index"; // retour à l'index
 		} catch (BusinessException e) { // ici récupération de la BusinessException chargée dans le service
 			model.addAttribute("listArticleError", e.getClefsExternalisations()); // transfer au model de la liste codes
-														// erreurs retournée
+			// erreurs retournée
 			return "index";
 		}
 	}
 
 	@PostMapping("/")
-	public String filterArticles(
-			@RequestParam("categorie") Optional<Long> categorieId,
+	public String filterArticles(@RequestParam("categorie") Optional<Long> categorieId,
 			@RequestParam("nom") Optional<String> nom, Model model) {
 
 		List<ArticleAVendre> filteredArticles = new ArrayList<>();
-		if(categorieId.isPresent() && !nom.get().isEmpty() ) {
 
-			
-			filteredArticles = articleService.chargerArticlesByFiltres(categorieId.get(), nom.get());
-			System.out.println(filteredArticles);
-//		} 
-		
-
-//			if (categorieId.isPresent() && categorieId	.filter(val -> val <= 4)
-//														.isPresent()) {
-//				List<ArticleAVendre> listeByCategories = articleService.chargerArticlesParCategorie(categorieId.get());
-//				for (ArticleAVendre e : listeByCategories) {
-//					filteredArticles.add(e);
-//				}		
-//
-//
-//			}
-//			if (nom.isPresent() && !nom.get().isEmpty()) {
-//				
-//				List<ArticleAVendre> listeByNom = articleService.chargerArticlesParNom(nom.get());
-//				for (ArticleAVendre e : listeByNom) {
-//					filteredArticles.add(e);
-//				}
-//			}
+		if (categorieId.isPresent() && categorieId	.filter(val -> val <= 4) 								// Cas 1 : Les deux filtres sont actifs
+													.isPresent()
+				&& !nom	.get()
+						.isEmpty()) {
+			List<ArticleAVendre> listeFiltree = articleService.chargerArticlesByFiltres(categorieId.get(), nom.get());
+			for (ArticleAVendre e : listeFiltree) {
+				filteredArticles.add(e);
+			}
 			model.addAttribute("filteredArticles", filteredArticles);
+
 		}
 
-	
-		// Assurez-vous d'ajouter à nouveau les attributs nécessaires pour le formulaire
+		if (categorieId.isPresent() && categorieId	.filter(val -> val <= 4) 								// Cas 2 : Seul le filtre de catégorie
+													.isPresent()
+				&& nom	.get()
+						.isEmpty()) {
+			List<ArticleAVendre> listeByCategories = articleService.chargerArticlesParCategorie(categorieId.get());
+			for (ArticleAVendre e : listeByCategories) {
+				filteredArticles.add(e);
+				model.addAttribute("filteredArticles", filteredArticles);
+
+			}
+
+		}
+		if (categorieId.isPresent() && categorieId	.filter(val -> val > 4) 								// Cas 3 : Seul le filtre par nom
+													.isPresent()
+				&& !nom	.get()
+						.isEmpty()) {
+			List<ArticleAVendre> listeByNom = articleService.chargerArticlesParNom(nom.get());
+			for (ArticleAVendre e : listeByNom) {
+				filteredArticles.add(e);
+				model.addAttribute("filteredArticles", filteredArticles);
+			}
+
+		}
+
+		if (categorieId.isPresent() && categorieId	.filter(val -> val > 4) 								// Cas 4 : Sans filtres
+													.isPresent()
+				&& nom	.get()
+						.isEmpty()) {
+			List<ArticleAVendre> listeArticlesActifs = articleService.chargerArticlesActifs();
+			for (ArticleAVendre e : listeArticlesActifs) {
+				filteredArticles.add(e);
+				model.addAttribute("filteredArticles", filteredArticles);
+			}
+
+		}
+
 		model.addAttribute("article", new ArticleAVendre());
 		model.addAttribute("categorie", articleService.chargerCategories());
 
