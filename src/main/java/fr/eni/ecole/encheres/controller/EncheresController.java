@@ -23,23 +23,25 @@ import fr.eni.ecole.encheres.exceptions.BusinessException;
 @Controller
 public class EncheresController {
 
+///////////////////////////////////////////// Attributs
+	
 	private final EnchereService enchereService;
 	private final ArticleService articleService;
 
+///////////////////////////////////////////// Constructeurs
 
 	public EncheresController(EnchereService enchereService, ArticleService articleService) {
 		this.enchereService = enchereService;
 		this.articleService = articleService;
-
 	}
  
+////////////////////////////////////////////Méthodes
 	
-	@PostMapping("/articles/articleDetail/{id}")
+	@PostMapping("/articles/articleDetail/{id}")											// Permet de faire une enchère
 	public String faireUneEnchere(@ModelAttribute("articleSelect") ArticleAVendre article,
 			@RequestParam(name = "enchere", required = true) int montantEnchere, Principal ppal,
 			Model model) {
 
-		// Création de "coquille" pour transporter les infos
 		Enchere enchere = new Enchere();
 		Utilisateur user = new Utilisateur();
 		article = articleService.consulterArticleById(article.getId());
@@ -57,11 +59,10 @@ public class EncheresController {
 												.stream()
 												.collect(Collectors.toList());
 			model.addAttribute("globalError", messagesDErreur);
-
+			
 			// Re-préparation du modèle pour la vue en cas d'erreur
 			model.addAttribute("articleSelect", articleService.consulterArticleById(article.getId()));
 			return "view-article-detail";
-
 		}
 		return "redirect:/";
 	}

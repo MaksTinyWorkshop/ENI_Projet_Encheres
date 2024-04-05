@@ -10,16 +10,12 @@ public class ContexteServiceImpl implements ContexteService {
 	
 	private UtilisateurDAO utilisateurDAO;
 	
-	
-
 	public ContexteServiceImpl(UtilisateurDAO utilisateurDAO) {
 		this.utilisateurDAO = utilisateurDAO;
 	}
-
 
 	@Override
 	public Utilisateur charger(String pseudo) {
 		return utilisateurDAO.read(pseudo);
 	}
-
 }

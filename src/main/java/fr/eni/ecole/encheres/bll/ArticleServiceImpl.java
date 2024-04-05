@@ -37,8 +37,7 @@ public class ArticleServiceImpl implements ArticleService {
 //////////////////////////////////////////// Méthodes
 
 	@Override
-	public List<ArticleAVendre> charger(Principal user) { // appel la méthode de chargement de la liste des articles
-															// actifs via la DAO
+	public List<ArticleAVendre> charger(Principal user) { 						// appel la méthode de chargement de la liste des articles actifs via la DAO
 		List<ArticleAVendre> listeArticles = new ArrayList<>();
 		listeArticles = articleDAO.getActiveArticles();
 		if (user != null) {
@@ -48,33 +47,33 @@ public class ArticleServiceImpl implements ArticleService {
 				listeArticles.add(e);
 			}
 		}
-		BusinessException be = new BusinessException(); // création d'une instance de la classe d'exception
+		BusinessException be = new BusinessException(); 						// création d'une instance de la classe d'exception
 		if (listeArticles == null || listeArticles.isEmpty()) {
-			be.add(BusinessCode.ENCHERE_AUCUNE); // ajout de la clé erreur
-			throw be; // propage l'exception
+			be.add(BusinessCode.ENCHERE_AUCUNE); 								// ajout de la clé erreur
+			throw be; 															// propage l'exception
 		}
 		return listeArticles;
 	}
 
 	@Override
-	public ArticleAVendre consulterArticleById(Long articleId) {
+	public ArticleAVendre consulterArticleById(Long articleId) {				// récupération d'un article par son ID
 		return articleDAO.getArticleById(articleId);
 	}
 
 	@Override
-	public void supprArticleById(Long id) {
+	public void supprArticleById(Long id) {										// suppression d'un article par son ID
 		articleDAO.supprArticleById(id);
 	}
 
 	@Override
-	public Adresse getAdress(String pseudo) { // récupère l'adresse du Principal pour le formulaire de créa d'article
-		Adresse adress = adresseDAO.read(pseudo); // tranfère la demande à la DAL
+	public Adresse getAdress(String pseudo) { 									// récupère l'adresse du Principal pour le formulaire de créa d'article
+		Adresse adress = adresseDAO.read(pseudo);
 		return adress;
 	}
 
 	@Override
 	@Transactional
-	public void creerArticle(ArticleAVendre newArticle, boolean create) {
+	public void creerArticle(ArticleAVendre newArticle, boolean create) {		// crée un nouvel article / édite un article existant
 		BusinessException be = new BusinessException();
 		boolean isValid = true;
 		isValid &= validerArticle(newArticle, be);
@@ -100,11 +99,41 @@ public class ArticleServiceImpl implements ArticleService {
 			throw be;
 		}
 	}
+	
+	@Override
+	public List<Categorie> chargerCategories() {								// charge la liste des catégories
+		List<Categorie> listeCategories = categorieDAO.getAllCategories();
+		return listeCategories;
+	}
 
-	//////////////////////////////// VALIDATIONS BLL
-	//////////////////////////////// /////////////////////////////////////////////
+	@Override
+	public Categorie chargerCategorie(long idCategorie) {						// charge une catégorie par ID
+		return categorieDAO.getCategorieById(idCategorie);
+	}
 
-	////// 1 // Création d'article ///////////
+	@Override
+	public List<ArticleAVendre> chargerArticlesParCategorie(long idCategorie) {	// charge une liste d'article par catégtorie
+		return articleDAO.getArticlesByCategorie(idCategorie);
+	}
+
+	@Override
+	public List<ArticleAVendre> chargerArticlesParNom(String nom) {				// charge une liste d'article par nom
+		return articleDAO.getArticlesByName(nom);
+	}
+
+	@Override
+	public List<ArticleAVendre> chargerArticlesByFiltres(long idCategorie, String nom) { // charge une liste d'article par nom et catégorie
+		return articleDAO.getArticleByFiltres(idCategorie, nom);
+
+	}
+
+	@Override
+	public List<ArticleAVendre> chargerArticlesActifs() {						// charge la liste des articles actifs
+		return articleDAO.getActiveArticles();
+	}
+	
+	//////////////////////////////// LES VALIDATIONS ////////////////////////////////
+
 
 	private boolean validerDateFin(LocalDate dI, LocalDate dF, BusinessException be) {
 		if (dF == null) {
@@ -159,57 +188,4 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 		return true;
 	}
-
-
-//	@Override
-//	public List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data) {
-//		List<ArticleAVendre> listeArticle = new ArrayList<>();
-//		if (data.getNom() != null) {
-//			List<ArticleAVendre> listeString = articleDAO.getArticlesByName(data.getNom());
-//			for (ArticleAVendre e : listeString) {
-//				listeArticle.add(e);
-//			}
-//		}
-//		if (data.getCategorie() != null) {
-//			List<ArticleAVendre> listeCategorie = articleDAO.getArticlesByCategorie(data.getCategorie());
-//			for (ArticleAVendre e : listeCategorie) {
-//				listeArticle.add(e);
-//			}
-//		}
-//		return listeArticle;
-//	}
-
-
-	@Override
-	public List<Categorie> chargerCategories() {
-		List<Categorie> listeCategories = categorieDAO.getAllCategories();
-		return listeCategories;
-	}
-
-	@Override
-	public Categorie chargerCategorie(long idCategorie) {
-		return categorieDAO.getCategorieById(idCategorie);
-	}
-
-	@Override
-	public List<ArticleAVendre> chargerArticlesParCategorie(long idCategorie) {
-		return articleDAO.getArticlesByCategorie(idCategorie);
-	}
-
-	@Override
-	public List<ArticleAVendre> chargerArticlesParNom(String nom) {
-		return articleDAO.getArticlesByName(nom);
-	}
-
-	@Override
-	public List<ArticleAVendre> chargerArticlesByFiltres(long idCategorie, String nom) {
-		return articleDAO.getArticleByFiltres(idCategorie, nom);
-
-	}
-
-	@Override
-	public List<ArticleAVendre> chargerArticlesActifs() {
-		return articleDAO.getActiveArticles();
-	}
-
 }
