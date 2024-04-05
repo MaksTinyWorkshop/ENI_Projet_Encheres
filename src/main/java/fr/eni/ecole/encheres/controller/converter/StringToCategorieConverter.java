@@ -8,21 +8,23 @@ import fr.eni.ecole.encheres.bo.Categorie;
 
 @Component
 public class StringToCategorieConverter implements Converter<String, Categorie> {
-	//Injection du Service
+
+///////////////////////////////////////////// Attributs
+	
 	private ArticleService articleService;
+	
+///////////////////////////////////////////// Constructeurs
 	
 	public StringToCategorieConverter(ArticleService articleService) {
 		this.articleService = articleService;
 	}
+	
+////////////////////////////////////////////Méthodes
 
 	@Override
 	public Categorie convert(String idCategorie) {
 		Long theId = Long.parseLong(idCategorie);
 		
 			return articleService.chargerCategorie(theId);
-
-		
 	}
-	
-
 }

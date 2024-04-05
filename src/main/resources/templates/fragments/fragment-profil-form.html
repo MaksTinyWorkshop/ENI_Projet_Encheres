@@ -133,7 +133,7 @@
 	<div class="bloc-boutons">
 		<!-- Construire fonction JS pour le ONCLICK  -->
 		<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
-			<button type="submit" id="submitButton" data-th-text="#{form.enregistrer}"></button>
+			<button type="submit" id="submitButton" data-th-text="#{button.save}"></button>
 		</th:block>
 		<th:block data-th-if="${!#authorization.expression('isAuthenticated()')}">
 			<button type="submit" id="submitButton" data-th-text="#{form.creer}"></button>

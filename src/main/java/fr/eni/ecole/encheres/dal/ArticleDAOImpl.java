@@ -48,7 +48,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 												+ " FROM ARTICLES_A_VENDRE a "
 												+ " INNER JOIN ADRESSES d ON a.no_adresse_retrait = d.no_adresse "
 												+ " WHERE a.no_article = :articleId";
-	
 	//requête de récup des articles selon les deux filtres
 	private final String FIND_BY_FILTRES = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur, no_article, no_categorie "
 								            + " FROM ARTICLES_A_VENDRE "
@@ -59,43 +58,58 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private final String SUPPR_ARTICLE_BY_ID = "DELETE"
 												+ " FROM ARTICLES_A_VENDRE "
 												+ " WHERE no_article = :articleId ";	
-	
 	//requête de création d'article
 	private final String INSERT_ARTICLE = "INSERT "
 											+ "INTO ARTICLES_A_VENDRE "
 											+ " (nom_article, description, date_debut_encheres, date_fin_encheres, statu_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait) "
 											+ " VALUES (:nom, :description, :dateDebutEncheres, :dateFinEncheres, :statu, :prixInitial, :prixVente, :vendeur, :categorie, :retrait) ";
-	
-	//resquête de mise à jour du prix final si une enchère a été faite
+	//requête de mise à jour d'un article
 	private static final String MODIF_ARTICLE = "UPDATE ARTICLES_A_VENDRE "
 													+ " SET nom_article = :nom, description = :description, date_debut_encheres = :startEnchere, date_fin_encheres = :endEnchere, statu_enchere = :statu "
 													+ " WHERE no_article = :no_article";
 	
-	//resquête de mise à jour du prix final si une enchère a été faite
+	//requête de mise à jour du prix final si une enchère a été faite
 	private static final String UPDATE_PRIX = "UPDATE ARTICLES_A_VENDRE "
 												+ " SET prix_vente= :prix_vente "
 												+ " WHERE no_article= :no_article ";
+	//requête de recherche par nom
+	private static final String FIND_BY_NAME = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur, no_article "
+												+ " FROM ARTICLES_A_VENDRE "
+												+ " WHERE nom_article LIKE :boutNom AND statu_enchere = 1";
+	
+	//requête de recherche par catégorie
+	private static final String FIND_BY_CATEGORIE = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur, no_article "
+													+ " FROM ARTICLES_A_VENDRE "
+													+ " WHERE no_categorie = :idCategorie AND statu_enchere = 1";
+	//requête pour lister les catégories
+	private static final String LIST_ALL_CATEGORIES = "SELECT libelle "
+														+ "FROM CATEGORIES "
+														+ " WHERE no_categorie = :no_categorie";
+	//requête pour lister les articles selon les deux types de filtres possible
+	private static final String LIST_ARTICLES_BY_ALL_FILTERS = "SELECT * "
+																+ "FROM ARTICLES_A_VENDRE "
+																+ " WHERE nom_article LIKE :nomArticle AND no_categorie = :categorieId";
+	
 	
 ///////////////////////////////////////////////////////////////// les méthodes
 	
 	@Override																		//filtre par nom
 	public List<ArticleAVendre> getArticlesByName(String boutNom) {
 	    
-		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur, no_article FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :boutNom AND statu_enchere = 1";
 	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("boutNom", "%" + boutNom + "%" );
-	    return jdbcTemp.query(query, params, new ArticleRowMapper());
+	    return jdbcTemp.query(FIND_BY_NAME, params, new ArticleRowMapper());
 	}
 
 	@Override																		//filtre par catégories
 	public List<ArticleAVendre> getArticlesByCategorie(long idCategorie) {
 	    
-		String query = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur, no_article FROM ARTICLES_A_VENDRE WHERE no_categorie = :idCategorie AND statu_enchere = 1";
 	    MapSqlParameterSource params = new MapSqlParameterSource().addValue("idCategorie", idCategorie);
-	    return jdbcTemp.query(query, params, new ArticleRowMapper());
+	    return jdbcTemp.query(FIND_BY_CATEGORIE, params, new ArticleRowMapper());
 	}
 	
 	@Override
 	public List<ArticleAVendre> getUserAndActiveArticles(String pseudo) {			//remplit la liste des Articles du User
+		
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		np.addValue("pseudo", pseudo);
 		
@@ -104,16 +118,18 @@ public class ArticleDAOImpl implements ArticleDAO {
 	
 	@Override
 	public List<ArticleAVendre> getActiveArticles() {								//remplit la liste des Articles actif
+		
 		return jdbcTemp.query(FIND_ACTIVE, new CustomArticleRowMapper());
 	}
 	
 	@Override
 	public List<ArticleAVendre> getAllArticles() {									//remplit la liste avec TOUS les articles
+		
 		return jdbcTemp.query(FIND_ALL, new ArticleLightRowMapper());
 	}
 	
 	@Override
-	public List<ArticleAVendre> getArticleByFiltres(long idCategorie, String nom) {
+	public List<ArticleAVendre> getArticleByFiltres(long idCategorie, String nom) { //remplit la liste avec les deux types de filtes
 		
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		np.addValue("nom_article", "%" + nom + "%" );
@@ -121,12 +137,24 @@ public class ArticleDAOImpl implements ArticleDAO {
 		return jdbcTemp.query(FIND_BY_FILTRES, np, new CustomArticleRowMapper());
 	}
 	
+	public List<Categorie> getAllCategories() {										// liste chaque catégorie
+	
+	   return jdbcTemp.query(LIST_ALL_CATEGORIES, BeanPropertyRowMapper.newInstance(Categorie.class));
+	}
+	
+	public List<ArticleAVendre> getArticlesByFilters(String nomArticle, String categorieId) { //liste les articles pour les deux types de filtres
+	   
+	   MapSqlParameterSource params = new MapSqlParameterSource();
+	   params.addValue("nomArticle", "%" + nomArticle + "%");
+	   params.addValue("categorieId", categorieId); // Assurez-vous de gérer la conversion de String à Long si nécessaire
+	   return jdbcTemp.query(LIST_ARTICLES_BY_ALL_FILTERS, params, new ArticleRowMapper());
+	}
+	
 	@Override
 	public ArticleAVendre getArticleById(Long articleId) {							//récupère un objet Article par son ID
 		
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		np.addValue("articleId", articleId);
-		
 		return jdbcTemp.queryForObject(FIND_ARTICLE_BY_ID, np, new FullArticleRowMapper());
 	}
 	
@@ -154,20 +182,19 @@ public class ArticleDAOImpl implements ArticleDAO {
 		namedParameters.addValue("categorie", newArticle.getCategorie().getId());
 		namedParameters.addValue("retrait", newArticle.getRetrait().getId());
 		
-		if (newArticle.getDateDebutEncheres().isAfter(LocalDate.now())) {			//assignation du statu en fonction de la date de début d'enchère
+		if (newArticle.getDateDebutEncheres().isAfter(LocalDate.now())) {			// Assignation du statu en fonction de la date de début d'enchère
 			namedParameters.addValue("statu", "0");
 		}else {
 			namedParameters.addValue("statu", "1");
-		}
-				
-		jdbcTemp.update(INSERT_ARTICLE, namedParameters, keyHolder);				//injection dans la BDD
+		}		
+		jdbcTemp.update(INSERT_ARTICLE, namedParameters, keyHolder);				// Injection dans la BDD
 		if (keyHolder != null && keyHolder.getKey() != null) {
-			newArticle.setId(keyHolder.getKey().longValue());						//Injection de l'identifiant par le Keyholder
+			newArticle.setId(keyHolder.getKey().longValue());						// Injection de l'identifiant par le Keyholder
 		}
 	}
 	
 	@Override
-	public void modifierArticle(ArticleAVendre newArticle) {						//Modifier un article
+	public void modifierArticle(ArticleAVendre newArticle) {						// Modifier un article
 		
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		
@@ -179,17 +206,16 @@ public class ArticleDAOImpl implements ArticleDAO {
 		np.addValue("startEnchere", newArticle.getDateDebutEncheres());
 		np.addValue("endEnchere", newArticle.getDateFinEncheres());
 		
-		if (newArticle.getDateDebutEncheres().isAfter(LocalDate.now())) {			//assignation du statu en fonction de la date de début d'enchère
+		if (newArticle.getDateDebutEncheres().isAfter(LocalDate.now())) {			// Assignation du statu en fonction de la date de début d'enchère
 			np.addValue("statu", "0");
 		}else {
 			np.addValue("statu", "1");
-		}
-				
+		}	
 		jdbcTemp.update(MODIF_ARTICLE, np);
 	}
 	
 	@Override
-	public void updateStatus(ArticleAVendre article) {						//Met à jour le statu des articles
+	public void updateStatus(ArticleAVendre article) {								//Met à jour le statu des articles
 		
 		MapSqlParameterSource np = new MapSqlParameterSource();
 		
@@ -200,13 +226,12 @@ public class ArticleDAOImpl implements ArticleDAO {
 			np.addValue("statu", "2");
 		}else {
 			np.addValue("statu", "1");
-		}
-				
+		}		
 		jdbcTemp.update(UPDATE_STATU, np);
 	}
 	
 	@Override
-	public void updatePrix(Enchere enchere) {					// Mise à jour du prix final
+	public void updatePrix(Enchere enchere) {										// Mise à jour du prix final
 		
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		
@@ -277,20 +302,16 @@ public class ArticleDAOImpl implements ArticleDAO {
 			a.setId(rs.getLong("no_article"));
 			a.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());//date finale convertie en LocalDate
 			a.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());//date finale convertie en LocalDate
-
-	
+			
 			return a;
 		}
 	}
 	
-
-
-	class CustomArticleRowMapper implements RowMapper<ArticleAVendre> {
-
+	class CustomArticleRowMapper implements RowMapper<ArticleAVendre> {							// 4. pour l'affichage de la liste filtrée
 		@Override
 		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ArticleAVendre a = new ArticleAVendre();
-			
+	
 			a.setId(rs.getLong("no_article"));
 			a.setNom(rs.getString("nom_article"));
 			a.setPrixVente(rs.getInt("prix_vente"));
@@ -308,27 +329,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 			
 			return a;
 		}
-		
-	}
-
-
-
-
-	//////// RECUPERATION DE LA LISTE POUR FILTRE
-	//////// recupération liste catégorie
-	public List<Categorie> getAllCategories() {
-
-	    String lstcategorie = "SELECT libelle FROM CATEGORIES where no_categorie = :no_categorie";
-	    return jdbcTemp.query(lstcategorie, BeanPropertyRowMapper.newInstance(Categorie.class));
-	}
-
-	/////////
-	public List<ArticleAVendre> getArticlesByFilters(String nomArticle, String categorieId) {
-	    String sql = "SELECT * FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :nomArticle AND no_categorie = :categorieId";
-	    MapSqlParameterSource params = new MapSqlParameterSource();
-	    params.addValue("nomArticle", "%" + nomArticle + "%");
-	    params.addValue("categorieId", categorieId); // Assurez-vous de gérer la conversion de String à Long si nécessaire
-	    return jdbcTemp.query(sql, params, new ArticleRowMapper());
 	}
 }
 

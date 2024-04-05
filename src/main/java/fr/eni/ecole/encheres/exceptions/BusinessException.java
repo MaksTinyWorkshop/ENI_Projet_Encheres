@@ -5,9 +5,13 @@ import java.util.List;
 
 public class BusinessException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
-	// Liste des clefs d'externalisation
-		private List<String> clefsExternalisations;
+	
+///////////////////////////////////////////// Attributs
+	
+		private List<String> clefsExternalisations;				// Liste des clefs d'externalisation
 
+///////////////////////////////////////////// Constructeurs
+		
 		public BusinessException(String string) {
 			super();
 		}
@@ -17,9 +21,10 @@ public class BusinessException extends RuntimeException {
 		}
 
 		public BusinessException() {
-			// TODO Auto-generated constructor stub
 		}
 
+////////////////////////////////////////////Méthodes
+		
 		public List<String> getClefsExternalisations() {
 			return clefsExternalisations;
 		}
