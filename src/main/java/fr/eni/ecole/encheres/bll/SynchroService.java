@@ -26,13 +26,13 @@ public class SynchroService {
     public void updateStatus(LocalDate lastCheck) {
     	LocalDate nowTime = LocalDate.now();
     	if (!lastCheck.equals(nowTime)) {
-        	lastCheck = nowTime;
         	System.out.println("Lancement de la procédure de mise à jour des status");
         	List<ArticleAVendre> articles = articleDAO.getAllArticles();					//constitu une liste de tous les articles
         	for (ArticleAVendre a : articles) {												//envoie une requête de vérification pour chaque article
         		articleDAO.updateStatus(a);
         	}
         	System.out.println("L'actualisation des statu est effective !");
+        	lastCheck = nowTime;
         }
         else {
         	System.out.println("Tous les status sont déjà à jour");

@@ -28,5 +28,4 @@ public interface ArticleDAO {
 //	List<Categorie> getAllCategories();
 	void updateStatus(ArticleAVendre article);
 
-
 }

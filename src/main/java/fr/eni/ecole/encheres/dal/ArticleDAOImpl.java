@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -28,7 +29,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	private NamedParameterJdbcTemplate jdbcTemp;
 	
 	//!!!! NB !!!!! notice des status :  0 : PAS COMMENCEE, 1 : EN COURS, 2 : CLOTUREE, 100 : ANNULEE
-	private final String FIND_ALL = "SELECT no_article, prix_vente, date_fin_encheres"
+	private final String FIND_ALL = "SELECT no_article, date_debut_encheres, date_fin_encheres "
 										+ " FROM ARTICLES_A_VENDRE ";
 	//requête de mise à jour des status
 	private final String UPDATE_STATU = "UPDATE ARTICLES_A_VENDRE "
@@ -109,7 +110,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 	
 	@Override
 	public List<ArticleAVendre> getAllArticles() {									//remplit la liste avec TOUS les articles
-		return jdbcTemp.query(FIND_ALL, new ArticleRowMapper());
+		return jdbcTemp.query(FIND_ALL, new ArticleLightRowMapper());
 	}
 	
 	@Override
@@ -269,6 +270,21 @@ public class ArticleDAOImpl implements ArticleDAO {
 			return a;
 		}
 	}
+	
+	class ArticleLightRowMapper implements RowMapper<ArticleAVendre> {							// 3. pour l'affichage de la liste restreinte
+		@Override
+		public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ArticleAVendre a = new ArticleAVendre();
+			a.setId(rs.getLong("no_article"));
+			a.setDateDebutEncheres(rs.getDate("date_debut_encheres").toLocalDate());//date finale convertie en LocalDate
+			a.setDateFinEncheres(rs.getDate("date_fin_encheres").toLocalDate());//date finale convertie en LocalDate
+
+	
+			return a;
+		}
+	}
+	
+
 
 	class CustomArticleRowMapper implements RowMapper<ArticleAVendre> {
 
@@ -298,24 +314,22 @@ public class ArticleDAOImpl implements ArticleDAO {
 
 
 
-	
-//	//////// RECUPERATION DE LA LISTE POUR FILTRE
-//	//////// recupération liste catégorie
-//	public List<Categorie> getAllCategories() {
-//
-//	    String lstcategorie = "SELECT libelle FROM CATEGORIES where no_categorie = :no_categorie";
-//	    return jdbcTemp.query(lstcategorie, BeanPropertyRowMapper.newInstance(Categorie.class));
-//	}
-//
-//	/////////
-//	public List<ArticleAVendre> getArticlesByFilters(String nomArticle, String categorieId) {
-//	    String sql = "SELECT * FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :nomArticle AND no_categorie = :categorieId";
-//	    MapSqlParameterSource params = new MapSqlParameterSource();
-//	    params.addValue("nomArticle", "%" + nomArticle + "%");
-//	    params.addValue("categorieId", categorieId); // Assurez-vous de gérer la conversion de String à Long si nécessaire
-//	    return jdbcTemp.query(sql, params, new ArticleRowMapper());
-//	}
 
+	//////// RECUPERATION DE LA LISTE POUR FILTRE
+	//////// recupération liste catégorie
+	public List<Categorie> getAllCategories() {
 
+	    String lstcategorie = "SELECT libelle FROM CATEGORIES where no_categorie = :no_categorie";
+	    return jdbcTemp.query(lstcategorie, BeanPropertyRowMapper.newInstance(Categorie.class));
+	}
+
+	/////////
+	public List<ArticleAVendre> getArticlesByFilters(String nomArticle, String categorieId) {
+	    String sql = "SELECT * FROM ARTICLES_A_VENDRE WHERE nom_article LIKE :nomArticle AND no_categorie = :categorieId";
+	    MapSqlParameterSource params = new MapSqlParameterSource();
+	    params.addValue("nomArticle", "%" + nomArticle + "%");
+	    params.addValue("categorieId", categorieId); // Assurez-vous de gérer la conversion de String à Long si nécessaire
+	    return jdbcTemp.query(sql, params, new ArticleRowMapper());
+	}
 }
 

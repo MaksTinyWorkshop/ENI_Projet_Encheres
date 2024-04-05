@@ -160,6 +160,7 @@ public class ArticleServiceImpl implements ArticleService {
 		return true;
 	}
 
+
 //	@Override
 //	public List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data) {
 //		List<ArticleAVendre> listeArticle = new ArrayList<>();
@@ -177,6 +178,7 @@ public class ArticleServiceImpl implements ArticleService {
 //		}
 //		return listeArticle;
 //	}
+
 
 	@Override
 	public List<Categorie> chargerCategories() {
@@ -203,6 +205,8 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<ArticleAVendre> chargerArticlesByFiltres(long idCategorie, String nom) {
 		System.out.println("Etape Service");
 		return articleDAO.getArticleByFiltres(idCategorie, nom);
+
+
 	}
 
 }

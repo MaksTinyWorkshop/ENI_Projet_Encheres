@@ -24,7 +24,7 @@ public interface ArticleService {
 	ArticleAVendre consulterArticleById(Long articleId);
 
 	void supprArticleById(Long id);
-
+	
 	void creerArticle(ArticleAVendre newArticle, boolean create);
 	
 //	List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data);
