@@ -50,7 +50,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 												+ " WHERE a.no_article = :articleId";
 	
 	//requête de récup des articles selon les deux filtres
-	private final String FIND_BY_FILTRES = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur, no_article "
+	private final String FIND_BY_FILTRES = "SELECT nom_article, prix_vente, date_fin_encheres, id_utilisateur, no_article, no_categorie "
 												+ " FROM ARTICLES_A_VENDRE "
 												+ " WHERE nom_article LIKE :nom_article "
 												+ " AND no_categorie = :idCategorie "

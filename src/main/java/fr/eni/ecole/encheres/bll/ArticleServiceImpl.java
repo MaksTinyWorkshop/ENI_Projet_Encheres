@@ -206,7 +206,6 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("Etape Service");
 		return articleDAO.getArticleByFiltres(idCategorie, nom);
 
-
 	}
 
 }
