@@ -43,33 +43,32 @@ public class ArticleController {
 ////////////////////////////////////////////Méthodes
 
 	@GetMapping("/")
-	public String accueil(Model model, Principal user) { // Gère l'affichage des articles en cours de vente sur
-															// l'accueil.
+	public String accueil(Model model, Principal user) { 							// Gère l'affichage des articles en cours de vente sur l'accueil
 		try {
 			synchoService.updateStatus(lastCheck);
 			ArticleAVendre article = new ArticleAVendre();
-			List<ArticleAVendre> articles = articleService.charger(user); // appel du service pour charger la liste
+			List<ArticleAVendre> articles = articleService.charger(user); 			
 			List<Categorie> lstCat = articleService.chargerCategories();
 
 			model.addAttribute("article", article);
 			model.addAttribute("filteredArticles", articles);
 			model.addAttribute("categorie", lstCat);
 
-			return "index"; // retour à l'index
-		} catch (BusinessException e) { // ici récupération de la BusinessException chargée dans le service
-			model.addAttribute("listArticleError", e.getClefsExternalisations()); // transfer au model de la liste codes
+			return "index"; 														
+		} catch (BusinessException e) { 											
+			model.addAttribute("listArticleError", e.getClefsExternalisations()); 	
 			// erreurs retournée
 			return "index";
 		}
 	}
 
 	@PostMapping("/")
-	public String filterArticles(@RequestParam("categorie") Optional<Long> categorieId,
+	public String filterArticles(@RequestParam("categorie") Optional<Long> categorieId, // Gère l'application des filtes pour l'affichage des articles
 			@RequestParam("nom") Optional<String> nom, Model model) {
 
 		List<ArticleAVendre> filteredArticles = new ArrayList<>();
 
-		if (categorieId.isPresent() && categorieId	.filter(val -> val <= 4) 								// Cas 1 : Les deux filtres sont actifs
+		if (categorieId.isPresent() && categorieId	.filter(val -> val <= 4) 			// Cas 1 : Les deux filtres sont actifs
 													.isPresent()
 				&& !nom	.get()
 						.isEmpty()) {
@@ -78,10 +77,9 @@ public class ArticleController {
 				filteredArticles.add(e);
 			}
 			model.addAttribute("filteredArticles", filteredArticles);
-
 		}
 
-		if (categorieId.isPresent() && categorieId	.filter(val -> val <= 4) 								// Cas 2 : Seul le filtre de catégorie
+		if (categorieId.isPresent() && categorieId	.filter(val -> val <= 4) 			// Cas 2 : Seul le filtre de catégorie
 													.isPresent()
 				&& nom	.get()
 						.isEmpty()) {
@@ -89,11 +87,10 @@ public class ArticleController {
 			for (ArticleAVendre e : listeByCategories) {
 				filteredArticles.add(e);
 				model.addAttribute("filteredArticles", filteredArticles);
-
 			}
-
 		}
-		if (categorieId.isPresent() && categorieId	.filter(val -> val > 4) 								// Cas 3 : Seul le filtre par nom
+		
+		if (categorieId.isPresent() && categorieId	.filter(val -> val > 4) 			// Cas 3 : Seul le filtre par nom
 													.isPresent()
 				&& !nom	.get()
 						.isEmpty()) {
@@ -102,10 +99,9 @@ public class ArticleController {
 				filteredArticles.add(e);
 				model.addAttribute("filteredArticles", filteredArticles);
 			}
-
 		}
 
-		if (categorieId.isPresent() && categorieId	.filter(val -> val > 4) 								// Cas 4 : Sans filtres
+		if (categorieId.isPresent() && categorieId	.filter(val -> val > 4) 			// Cas 4 : Sans filtres
 													.isPresent()
 				&& nom	.get()
 						.isEmpty()) {
@@ -114,7 +110,6 @@ public class ArticleController {
 				filteredArticles.add(e);
 				model.addAttribute("filteredArticles", filteredArticles);
 			}
-
 		}
 
 		model.addAttribute("article", new ArticleAVendre());
@@ -123,14 +118,14 @@ public class ArticleController {
 		return "index";
 	}
 
-	@GetMapping("/Creer-Article") // Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
+	@GetMapping("/Creer-Article") 														// Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
 	public String creerArticle(Model model, Principal user) {
 		if (user != null) { // vérifie le USer
 			ArticleAVendre newArticle = new ArticleAVendre();
 			Utilisateur vendeur = new Utilisateur();
 			Categorie categorie = new Categorie();
-			Adresse adresse = articleService.getAdress(user.getName()); // Ajout d'une instance adresse qui va récupérer
-																		// en base l'adresse du Principal
+			Adresse adresse = articleService.getAdress(user.getName()); 
+			
 			newArticle.setVendeur(vendeur);
 			newArticle	.getVendeur()
 						.setPseudo(user.getName());
@@ -146,7 +141,7 @@ public class ArticleController {
 		}
 	}
 
-	@GetMapping("/modifier-Article/{id}") // Prépare un nouvel article à remplir, avec l'adresse pré-Remplie.
+	@GetMapping("/modifier-Article/{id}") 												// Permet de modifier un article
 	public String modifierArticle(@PathVariable(name = "id", required = false) Long id, Model model) {
 		ArticleAVendre newArticle = articleService.consulterArticleById(id);
 		model.addAttribute("article", newArticle);
@@ -154,7 +149,7 @@ public class ArticleController {
 		return "view-article-creation";
 	}
 
-	@PostMapping("/Creer-Article") // Permet d'enregistrer un nouvel article
+	@PostMapping("/Creer-Article") 														// Permet d'enregistrer un nouvel article créé
 	public String newArticle(@Valid @ModelAttribute("article") ArticleAVendre newArticle, BindingResult br) {
 		boolean create = false;
 		if (newArticle.getId() == null) { // si l'ID est null, l'article est nouveau
@@ -176,18 +171,15 @@ public class ArticleController {
 		return "view-article-creation";
 	}
 
-	@GetMapping("/articles/articleDetail/{id}") // Permet d'atteindre la page d'affichage de détail de l'article
-												// sélectionné
+	@GetMapping("/articles/articleDetail/{id}") 										// Permet d'afficher le détail de l'article sélectionné
 	public String articleDetail(@PathVariable(name = "id", required = false) Long articleId, Model model) {
-		ArticleAVendre articleAVoir = articleService.consulterArticleById(articleId); // création d'un coquille que la
-																						// requête va compléter avec le
-																						// paramètre passé
-		model.addAttribute("articleSelect", articleAVoir); // ajoute l'objet chargé pour l'exploitation avec thymleaf
+		ArticleAVendre articleAVoir = articleService.consulterArticleById(articleId);
+		model.addAttribute("articleSelect", articleAVoir);
 		System.out.println(articleAVoir);
-		return "view-article-detail"; // nous envoie sur la page de détail de l'article
+		return "view-article-detail";
 	}
 
-	@GetMapping("/articles/supprimer/{id}")
+	@GetMapping("/articles/supprimer/{id}")												// Permet de supprimer l'article sélectionné
 	public String supprimerArticle(@PathVariable(name = "id", required = false) Long articleId) {
 		articleService.supprArticleById(articleId);
 		return "redirect:/";

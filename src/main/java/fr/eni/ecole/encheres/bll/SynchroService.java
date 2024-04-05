@@ -22,13 +22,15 @@ public class SynchroService {
 	}
 
 ////////////////////////////////////////////Méthodes
+	
 	@Transactional
-    public void updateStatus(LocalDate lastCheck) {
+    public void updateStatus(LocalDate lastCheck) {									// vérifie l'état des status, si la date du dernier check et différente
+																					// de la date du jour
     	LocalDate nowTime = LocalDate.now();
     	if (!lastCheck.equals(nowTime)) {
         	System.out.println("Lancement de la procédure de mise à jour des status");
-        	List<ArticleAVendre> articles = articleDAO.getAllArticles();					//constitu une liste de tous les articles
-        	for (ArticleAVendre a : articles) {												//envoie une requête de vérification pour chaque article
+        	List<ArticleAVendre> articles = articleDAO.getAllArticles();
+        	for (ArticleAVendre a : articles) {	
         		articleDAO.updateStatus(a);
         	}
         	System.out.println("L'actualisation des statu est effective !");

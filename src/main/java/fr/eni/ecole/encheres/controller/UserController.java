@@ -23,16 +23,20 @@ import jakarta.validation.Valid;
 @RequestMapping("/user")
 public class UserController {
 
+///////////////////////////////////////////// Attributs
+	
 	private final UtilisateurService utilisateurService;
+	
+///////////////////////////////////////////// Constructeurs
 
 	public UserController(UtilisateurService utilisateurService) {
 		this.utilisateurService = utilisateurService;
 	}
 
+////////////////////////////////////////////Méthodes
 	
-	/////// Mapping du formulaire User
 	@GetMapping("/register")
-	public String showRegisterForm(Model model) {
+	public String showRegisterForm(Model model) {							// Mapping du formulaire User
 		Utilisateur user = new Utilisateur();
 		
 		model.addAttribute("user", user);
@@ -40,8 +44,7 @@ public class UserController {
 		return "view-register-form";
 	}
 
-	/////// Méthode pour enregistrer l'utilisateur et son adresse
-	@PostMapping("/register") 
+	@PostMapping("/register") 												// Méthode pour enregistrer l'utilisateur et son adresse
 	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
 	    if (bindingResult.hasErrors()) {
 	        return "view-register-form";
@@ -63,9 +66,8 @@ public class UserController {
 	    }
 	}
 
-	///////// METHODE D'AFFICHAGE ET UPDATE DU PROFIL PERSO
 	@GetMapping("/profil")
-	public String afficherMonProfil(Model model, Principal ppal) {
+	public String afficherMonProfil(Model model, Principal ppal) {			// affichage du profil
 		String pseudo = ppal.getName();
 		Utilisateur user = utilisateurService.consulterProfil(pseudo);
 		if (user != null) {
@@ -77,29 +79,24 @@ public class UserController {
 		return "redirect:/";
 	}
 
-	@PostMapping("/profil")
+	@PostMapping("/profil")													// Mise à jour du profil
 	public String mettreAJourMonProfil(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult, 
 			@RequestParam(name = "motDePasseNew") Optional<String> nouveauMdp,
 			@RequestParam(name = "confirmation") Optional<String> confirmNouveauMdp) {
 		
 		if (bindingResult.hasErrors()) {
 			return "view-mon-profil";
-		} else {
-				
+		} else {	
 			try {
-				// Méthode update qui prend en paramètre les données du formulaire et le user en base pour son pseudo et idAdresse
 				utilisateurService.update(user);
-				
 				// Gestion en cas de changement de mot de passe
 				if (bindingResult.hasErrors()) {
 					System.out.println("echec MDP");
 					return "view-mon-profil";
-
-				} else if (nouveauMdp.isPresent() && confirmNouveauMdp.isPresent() && nouveauMdp.get()
-																								.equals(confirmNouveauMdp.get())) {
+				} else if (nouveauMdp.isPresent() && confirmNouveauMdp.isPresent()
+													&& nouveauMdp.get().equals(confirmNouveauMdp.get())) {
 					try {
 						utilisateurService.updatePassword(user.getPseudo(), nouveauMdp.get());
-						
 					} catch (BusinessException e) {
 						e	.getClefsExternalisations()
 							.forEach(key -> {
@@ -107,26 +104,21 @@ public class UserController {
 								bindingResult.addError(error);
 							});
 					}
-
 				}
 				return "redirect:/";
-
 			} catch (BusinessException e) {
-				// Afficher les messages d’erreur - il faut les injecter dans le contexte de
-				// BindingResult
+				// Afficher les messages d’erreur
 				e	.getClefsExternalisations()
 					.forEach(key -> {
 						ObjectError error = new ObjectError("globalError", key);
 						bindingResult.addError(error);
 					});
-
 				return "view-mon-profil";
 			}
 		}
 	}
 	
-	/////// METHODE D'AFFICHAGE DU PROFIL D'UN AUTRE UTILISATEUR
-	@GetMapping("/profil/{pseudo}")
+	@GetMapping("/profil/{pseudo}")												// affichage du profil d'un autre utilisateur
 	public String afficherUnAutreProfil(
 			@PathVariable(name="pseudo", required = false)String pseudo, Model model, Principal ppal) {
 		Utilisateur userEnBase = utilisateurService.consulterProfil(pseudo);

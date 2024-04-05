@@ -1,7 +1,5 @@
 package fr.eni.ecole.encheres.bll;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +13,15 @@ import fr.eni.ecole.encheres.exceptions.BusinessCode;
 import fr.eni.ecole.encheres.exceptions.BusinessException;
 
 @Service
-public class EnchereServiceImpl implements EnchereService { // Enlever $$ acquéreur et recréditer précedent enchérisseur
-															// verifier en base
-	// Les vérifs sont à faire dans cette couche-ci
+public class EnchereServiceImpl implements EnchereService { 
 
-	// Injection des repositories
+///////////////////////////////////////////// Attributs
+	
 	private EnchereDAO enchereDAO;
 	private ArticleDAO articleDAO;
 	private UtilisateurDAO utilisateurDAO;
+	
+///////////////////////////////////////////// Constructeurs
 
 	public EnchereServiceImpl(EnchereDAO enchereDAO, ArticleDAO articleDAO, UtilisateurDAO utilisateurDAO) {
 		this.enchereDAO = enchereDAO;
@@ -30,9 +29,11 @@ public class EnchereServiceImpl implements EnchereService { // Enlever $$ acqué
 		this.utilisateurDAO = utilisateurDAO;
 	}
 
+///////////////////////////////////////////// Méthodes
+	
 	@Override
 	@Transactional
-	public void placerUneEnchere(Enchere enchere) {
+	public void placerUneEnchere(Enchere enchere) {								// permet de faire une enchère
 		BusinessException be = new BusinessException();
 		// Méthodes de vérifiaction
 		boolean isValid = true;
@@ -47,16 +48,14 @@ public class EnchereServiceImpl implements EnchereService { // Enlever $$ acqué
 		//// 1- Vérification de l'existence d'une enchère présente
 		// Remontée d'un user de la base qui ne contient que le pseudo et le "crédit"
 		//// (montant_enchère), s'il existe
-
 		Utilisateur previousEncherisseur = null;
 		previousEncherisseur = enchereDAO.lireEncherisseur(enchere);
+		
 		// Remboursement de l'enchérisseur précédent s'il existe
-
 		if (previousEncherisseur != null) {
 			enchereDAO.supprimerEncherePrecedente(enchere);
 			utilisateurDAO.crediter(previousEncherisseur);
 		}
-
 		// 2 : Placer enchère user connecté
 		enchereDAO.placerUneEnchere(enchere);
 		articleDAO.updatePrix(enchere);
@@ -64,12 +63,9 @@ public class EnchereServiceImpl implements EnchereService { // Enlever $$ acqué
 
 	}
 
-	/**
-	 * Méthodes de validation - Le User doit avoir assez de crédit - Le
-	 * user(enchérisseur) ne doit pas être le vendeur - Le user doit faire une offre
-	 * supérieure au prix de vente actuel - Le user ne doit pas déjà être le
-	 * détenteur de l'enchère
-	 */
+
+	//////////////////////////////// LES VALIDATIONS ////////////////////////////////
+
 
 	private boolean validerCreditUtilisateur(Enchere enchere, BusinessException be) {
 		Utilisateur u = enchere.getAcquereur();
@@ -127,12 +123,7 @@ public class EnchereServiceImpl implements EnchereService { // Enlever $$ acqué
 				be.add(BusinessCode.VALIDATION_ENCHERE_USER_EQUALS_ENCHERISSEUR);
 				return false;
 			}
-		}
-													
-
-	
-
+		}										
 		return true;
 	}
-
 }

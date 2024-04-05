@@ -16,17 +16,22 @@ import fr.eni.ecole.encheres.exceptions.BusinessException;
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
 
-	// Injection des repository
+///////////////////////////////////////////// Attributs
+	
 	private UtilisateurDAO utilisateurDAO;
 	private AdresseDAO adresseDAO;
 
+///////////////////////////////////////////// Constructeurs
+	
 	public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
 		this.utilisateurDAO = utilisateurDAO;
 		this.adresseDAO = adresseDAO;
 	}
 
+////////////////////////////////////////////Méthodes
+	
 	@Override
-	public Utilisateur consulterProfil(String pseudo) {
+	public Utilisateur consulterProfil(String pseudo) {							// Permet de consulter un profil utilisateur
 		// Récup du user par son pseudo
 		Utilisateur u = utilisateurDAO.read(pseudo);
 		if (u != null) {
@@ -36,27 +41,20 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		return u;
 	}
 	
-	/**
-	 * Méthode privée pour centraliser l'association entre un user et son adresse
-	 * 
-	 * @param user
-	 */
-	private void chargerAdresse(Utilisateur u) {
+	private void chargerAdresse(Utilisateur u) {								// Permet de centraliser l'association entre un user et son adresse
 		Adresse adresse = adresseDAO.read(u.getPseudo());
 		u.setAdresse(adresse);
 
 	}
 
-
 	@Override
 	@Transactional
-	public void save(Utilisateur utilisateur) {
+	public void save(Utilisateur utilisateur) {									// Permet d'enregistrer un nouvel utilisateur
 	    BusinessException be = new BusinessException();
 
 	    if (utilisateur == null) {
 	        be.add(BusinessCode.VALIDATION_USER_NULL);
 	        throw be;
-	        
 	    }
 
 	    if (utilisateur.getMotDePasse() == null || utilisateur.getMotDePasse().isEmpty()) {
@@ -64,7 +62,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	        throw be;
 	    }
 
-	    // Validate the user object and collect validation errors
 	    boolean isValid = true;
 	    isValid &= validerUniquePseudo(utilisateur.getPseudo(), be);
 	    isValid &= validerUniqueMail(utilisateur.getEmail(), be);
@@ -73,10 +70,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    isValid &= validerMotDePasse(utilisateur.getMotDePasse(), be);
 
 	    if (!isValid) {
-	        throw be; // Throw exception if any validation fails
+	        throw be; // lève l'exception
 	    }
-
-	    // Encode the password
+	    // Encodage du mot de passe
 	    PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	    String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
 	    utilisateur.setMotDePasse(encodedPassword);
@@ -92,15 +88,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    }
 	}
 	
-	
-	
 	@Override
 	@Transactional
-	public void update(Utilisateur update) {
+	public void update(Utilisateur update) {									// Permet de modifier un utilisateur
 		BusinessException be = new BusinessException();
-		
-		
-		// Méthodes de vérification
+	
 		boolean isValid = true;
 		isValid &= validerUtilisateur(update, be);
 		isValid &= validerEmail(update.getEmail(), be);
@@ -123,10 +115,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		}
 	}
 	
-
 	@Override
 	@Transactional
-	public void updatePassword(String pseudo, String nouveauMdp) {
+	public void updatePassword(String pseudo, String nouveauMdp) {				// Permet de modifier le mot de passe utilisateur
 		// Récup du user par son pseudo
 		BusinessException be = new BusinessException();
 		Utilisateur u = utilisateurDAO.read(pseudo);
@@ -140,13 +131,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			be.add(BusinessCode.BLL_UTILISATEUR_UPDATE_MDP_ERREUR);
 			throw be;
 		}
-
 	}
 
-
-	/**
-	 * Méthodes de validation des BO
-	 */
+////////////////////////////////LES VALIDATIONS ////////////////////////////////
 
 	private boolean validerUtilisateur(Utilisateur u, BusinessException be) {
 		if (u == null) {
@@ -162,7 +149,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			be.add(BusinessCode.VALIDATION_USER_USER_EXISTS);
 			return false;
 		}
-
 		return true;
 	}
 
@@ -172,7 +158,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			be.add(BusinessCode.VALIDATION_USER_EMAIL_EXISTS);
 			return false;
 		}
-
 		return true;
 	}
 
