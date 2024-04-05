@@ -105,19 +105,20 @@
 				</div>
 			</div>
 
-			<div class="bloc-boutons">
+			<div class="bloc-boutons" data-th-if="${#authorization.expression('isAuthenticated()')}">
 				<button type="submit" data-th-text="#{article.button.enchere}"></button>
-				<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
-					<span data-th-if="*{statu} == 0">
-						<a data-th-href="@{|/modifier-Article/*{id}|}">
-							<button type="button" data-th-text="#{article.button.modif}"></button>
-						</a>
-
-						<a data-th-href="@{|/articles/supprimer/*{id}|}">
-							<button type="button" data-th-text="#{article.button.suppr}"></button>
-						</a>
+				
+					<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
+						<span data-th-if="*{statu} == 0">
+							<a data-th-href="@{|/modifier-Article/*{id}|}">
+								<button type="button" data-th-text="#{article.button.modif}"></button>
+							</a>
+	
+							<a data-th-href="@{|/articles/supprimer/*{id}|}">
+								<button type="button" data-th-text="#{article.button.suppr}"></button>
+							</a>
+						</span>
 					</span>
-				</span>
 			</div>
 
 			<div class="hidden">
