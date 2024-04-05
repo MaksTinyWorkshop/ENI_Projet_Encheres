@@ -28,11 +28,7 @@ import jakarta.validation.Valid;
 public class ArticleController {
 
 ///////////////////////////////////////////// Attributs
-<<<<<<< HEAD
-	
 
-=======
->>>>>>> cb01855c81f91396a548fe1db9f437f12863c42a
 	private static LocalDate lastCheck = LocalDate.now();
 	private SynchroService synchoService;
 	private ArticleService articleService;//dépendance
@@ -153,32 +149,5 @@ public class ArticleController {
 		articleService.supprArticleById(articleId);
 		return "redirect:/";
 	}
-	
-	
-
-
-<<<<<<< HEAD
-
-//	    @GetMapping("/fragments-liste-articles-connecte")
-//	    public String listArticles(Model model) {
-//	        model.addAttribute("categories", ArticleService.getAllCategories());
-//	        model.addAttribute("articles", articleService.findAllArticles());
-//	        return "articles"; 
-//	    }
-//
-//	    @PostMapping("/fragments-liste-articles-connecte")
-//	    public String filterArticles(@RequestParam("categorie") String categorie, Model model) {
-//	        if (categorie.equals("Toutes")) {
-//	            model.addAttribute("articles", articleService.findAllArticles());
-//	        } else {
-//	            model.addAttribute("articles", articleService.findArticlesByCategorie(categorie));
-//	        }
-//	        model.addAttribute("categories", ArticleService.getAllCategories());
-//	        model.addAttribute("selectedCategorie", categorie);
-//	        return "fragment-liste-	articles-connecte"; // Réutilisation de la vue avec les articles filtrés
-//	    }
-	    
-=======
->>>>>>> cb01855c81f91396a548fe1db9f437f12863c42a
 }
 
