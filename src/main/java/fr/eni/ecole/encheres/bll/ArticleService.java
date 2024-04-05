@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.eni.ecole.encheres.bo.Adresse;
 import fr.eni.ecole.encheres.bo.ArticleAVendre;
+import fr.eni.ecole.encheres.bo.Categorie;
 
 
 public interface ArticleService {
@@ -19,6 +20,10 @@ public interface ArticleService {
 	void creerArticle(ArticleAVendre newArticle, boolean create);
 	
 	List<ArticleAVendre> chargerArticleFiltre(ArticleAVendre data);
+	
+	List<Categorie> chargerCategories();
 
-
+	Categorie chargerCategorie(long idCategorie);
+	
+	List<ArticleAVendre> chargerArticlesParCategorie(long idCategorie);
 }

@@ -3,6 +3,7 @@ package fr.eni.ecole.encheres.controller;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,8 +44,13 @@ public class ArticleController {
 	public String accueil(Model model, Principal user) {								//Gère l'affichage des articles en cours de vente sur l'accueil.
 		try {
 			synchoService.updateStatus(lastCheck);
+			ArticleAVendre article = new ArticleAVendre();
 			List<ArticleAVendre> articles = articleService.charger(user);				//appel du service pour charger la liste
+			List<Categorie> lstCat = articleService.chargerCategories();
+
+			model.addAttribute("article", article);
 			model.addAttribute("articlesList", articles);
+			model.addAttribute("categorie", lstCat);
 			return "index";																//retour à l'index
 		}catch (BusinessException e){													//ici récupération de la BusinessException chargée dans le service
 			model.addAttribute("listArticleError", e.getClefsExternalisations());		//transfer au model de la liste codes erreurs retournée
@@ -55,14 +61,20 @@ public class ArticleController {
 
 	
 	@PostMapping("/")
-    public String filterArticles(@RequestParam(name = "categories", required = true) long idCategorie,@ModelAttribute("filter") ArticleAVendre article, Model model) {
-		model.addAttribute("filter", article);
-		Categorie categorie = new Categorie();
-		categorie.setId(idCategorie);
+    public String filterArticles(
+    		@RequestParam("categorie") Optional<Long> categorieId,
+            @RequestParam("nom") Optional<String> nom,
+       		Model model
+    		) {
+
+		if(categorieId.isPresent()) {
+	        // Logique pour filtrer par categorieId
+	        List<ArticleAVendre> filteredArticles = articleService.chargerArticlesParCategorie(categorieId.get());
+	        model.addAttribute("filteredArticles", filteredArticles);
+	    }
+	    // Assurez-vous d'ajouter à nouveau les attributs nécessaires pour le formulaire
+	    model.addAttribute("categories", articleService.chargerCategories());
 		
-		article.setCategorie(categorie);
-		article.setNom(article.getNom());
-		System.out.println(article);
         return "index"; 
     }
 	
