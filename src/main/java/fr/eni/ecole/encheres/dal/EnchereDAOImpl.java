@@ -17,17 +17,29 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 @Repository
 public class EnchereDAOImpl implements EnchereDAO {
 
-	private static final String INSERT_ENCHERE = "INSERT into ENCHERES "
-			+ " (id_utilisateur, no_article, date_enchere, montant_enchere) "
-			+ " VALUES (:pseudo, :no_article, :date_enchere, :montant_enchere)";
-	private static final String FIND_ENCHERISSEUR_BY_ID_ARTICLE = "SELECT id_utilisateur, montant_enchere FROM ENCHERES where no_article = :no_article";
-	private static final String DELETE_ENCHERE_BY_ID = "DELETE FROM ENCHERES WHERE no_article = :no_article";
+///////////////////////////////////////////// Attributs
+	
+	private static final String INSERT_ENCHERE = "INSERT "
+												+ " INTO ENCHERES "
+												+ " (id_utilisateur, no_article, date_enchere, montant_enchere) "
+												+ " VALUES (:pseudo, :no_article, :date_enchere, :montant_enchere)";
+	
+	private static final String FIND_ENCHERISSEUR_BY_ID_ARTICLE = "SELECT id_utilisateur, montant_enchere "
+																+ " FROM ENCHERES "
+																+ " WHERE no_article = :no_article ";
+	
+	private static final String DELETE_ENCHERE_BY_ID = "DELETE "
+														+ " FROM ENCHERES "
+														+ " WHERE no_article = :no_article ";
 	
 	@Autowired
 	NamedParameterJdbcTemplate jdbcTemplate;
 
+///////////////////////////////////////////// Les méthodes
+
+	
 	@Override
-	public void placerUneEnchere(Enchere enchere) {
+	public void placerUneEnchere(Enchere enchere) {												// Permet de faire une enchère
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		
 		namedParam.addValue("pseudo", enchere.getAcquereur().getPseudo());
@@ -36,11 +48,10 @@ public class EnchereDAOImpl implements EnchereDAO {
 		namedParam.addValue("date_enchere", enchere.getDate());
 
 		jdbcTemplate.update(INSERT_ENCHERE, namedParam);
-		
 	}
 
 	@Override
-	public Utilisateur lireEncherisseur(Enchere enchere) {
+	public Utilisateur lireEncherisseur(Enchere enchere) {										// permet de consulter une enchère
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("no_article", enchere.getArticleAVendre().getId());
 		
@@ -49,22 +60,17 @@ public class EnchereDAOImpl implements EnchereDAO {
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
-		
 	}
 	
-	
 	@Override
-	public void supprimerEncherePrecedente(Enchere enchere) {
+	public void supprimerEncherePrecedente(Enchere enchere) {									//Permet d'effacer l'enchère précédente
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("no_article", enchere.getArticleAVendre().getId());
 		
 		jdbcTemplate.update(DELETE_ENCHERE_BY_ID, namedParam);
-		
 	}
 
-	/**
-	* Classe de mapping pour gérer le mapping à remonter
-	*/
+///////////////////////////////////////////////////////////////////////// ROWMAPPERS CUSTOM
 	
 	class UtilisateurTemporaireRowMapper implements RowMapper<Utilisateur> {
 

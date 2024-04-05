@@ -16,24 +16,32 @@ import fr.eni.ecole.encheres.bo.Categorie;
 @Repository
 public class CategorieDAOImpl implements CategorieDAO {
 
+///////////////////////////////////////////// Attributs
+	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	
-	private final String FIND_ALL = "Select no_categorie, libelle from CATEGORIES";
-	private final String FIND_BY_ID = "Select no_categorie, libelle from CATEGORIES where no_categorie = :id";
+	private final String FIND_ALL = "SELECT no_categorie, libelle "
+									+ " FROM CATEGORIES ";
 	
+	private final String FIND_BY_ID = "SELECT no_categorie, libelle "
+									+ " FROM CATEGORIES where no_categorie = :id ";
+	
+///////////////////////////////////////////// Les méthodes
 	
 	@Override
-	public List<Categorie> getAllCategories() {
+	public List<Categorie> getAllCategories() {								//récupère la liste des catégories
 		return jdbcTemplate.query(FIND_ALL, new CategorieRowMapper());
 	}
 	
 	@Override
-	public Categorie getCategorieById(long idCategorie) {
+	public Categorie getCategorieById(long idCategorie) {					// récupères une catégorie par ID
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("id",idCategorie);
 		return jdbcTemplate.queryForObject(FIND_BY_ID, namedParam, new CategorieRowMapper());
 	}
+
+///////////////////////////////////////////////////////////////////////// ROWMAPPERS CUSTOM
 
 	class CategorieRowMapper implements RowMapper<Categorie> {
 
@@ -44,10 +52,5 @@ public class CategorieDAOImpl implements CategorieDAO {
 			c.setLibelle(rs.getString("libelle"));
 			return c;
 		}
-		
 	}
-
-
-	
-	
 }
