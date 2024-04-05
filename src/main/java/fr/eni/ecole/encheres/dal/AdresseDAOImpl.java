@@ -14,11 +14,9 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 
 @Repository
 public class AdresseDAOImpl implements AdresseDAO {
-
 	
 	@Autowired
 	private NamedParameterJdbcTemplate jdbcTemplate;
-	
 	
 	//requête de récupération de l'adresse
 	private static final String FIND_BY_PSEUDO = " SELECT U.pseudo, A.rue, A.complement, A.code_postal, A.ville, A.no_adresse "

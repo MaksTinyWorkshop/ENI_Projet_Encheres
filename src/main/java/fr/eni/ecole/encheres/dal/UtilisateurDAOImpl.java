@@ -15,43 +15,57 @@ import fr.eni.ecole.encheres.bo.Utilisateur;
 
 @Repository
 public class UtilisateurDAOImpl implements UtilisateurDAO {
-
-	private static final String FIND_BY_PSEUDO = "select pseudo, nom, prenom, telephone, email, credit, administrateur, no_adresse "
-			+ " from UTILISATEURS where pseudo = :pseudo";
-	private static final String INSERT_USER_QUERY = "INSERT INTO UTILISATEURS "
-			+ " (pseudo, nom, prenom, email, telephone, mot_de_passe, no_adresse) "
-			+ " VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse, :no_adresse )";
 	
-	private static final String UPDATE_USER= "UPDATE UTILISATEURS SET "
-			+ " nom= :nom, prenom= :prenom, email= :email, telephone= :telephone "
-			+ " WHERE pseudo= :pseudo";
+///////////////////////////////////////////// Attributs
+
+	private static final String FIND_BY_PSEUDO = "SELECT pseudo, nom, prenom, telephone, email, credit, administrateur, no_adresse "
+												+ " FROM UTILISATEURS "
+												+ " WHERE pseudo = :pseudo";
+	
+	private static final String INSERT_USER_QUERY = "INSERT "
+													+ " INTO UTILISATEURS "
+													+ " (pseudo, nom, prenom, email, telephone, mot_de_passe, no_adresse) "
+													+ " VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse, :no_adresse )";
+	
+	private static final String UPDATE_USER= "UPDATE UTILISATEURS "
+											+ " SET nom= :nom, prenom= :prenom, email= :email, telephone= :telephone "
+											+ " WHERE pseudo= :pseudo";
+	
 	private static final String UPDATE_MOT_DE_PASSE= "UPDATE utilisateurs "
-			+ " SET mot_de_passe = :nouveauMdp WHERE pseudo = :pseudo";
+													+ " SET mot_de_passe = :nouveauMdp "
+													+ " WHERE pseudo = :pseudo ";
 	
 	private static final String COUNT_EMAIL= "SELECT count(email) "
-			+ " FROM UTILISATEURS WHERE email = :email";
-	private static final String COUNT_PSEUDO= "SELECT count(pseudo) "
-			+ " FROM UTILISATEURS WHERE pseudo = :pseudo";
-	private static final String CREDIT_PRECEDENT_ENCHERISSEUR= "UPDATE UTILISATEURS SET"
-			+ " credit = credit + :credit WHERE pseudo= :pseudo";
-	private static final String DEBIT_PRECEDENT_ENCHERISSEUR= "UPDATE UTILISATEURS SET"
-			+ " credit = credit - :credit WHERE pseudo= :pseudo";
-
+											+ " FROM UTILISATEURS "
+											+ " WHERE email = :email ";
 	
+	private static final String COUNT_PSEUDO= "SELECT count(pseudo) "
+											+ " FROM UTILISATEURS "
+											+ " WHERE pseudo = :pseudo";
+	
+	private static final String CREDIT_PRECEDENT_ENCHERISSEUR= "UPDATE UTILISATEURS "
+																+ " SET credit = credit + :credit "
+																+ " WHERE pseudo= :pseudo";
+	
+	private static final String DEBIT_PRECEDENT_ENCHERISSEUR= "UPDATE UTILISATEURS "
+																+ " SET credit = credit - :credit "
+																+ " WHERE pseudo= :pseudo";
+
 	@Autowired 
 	NamedParameterJdbcTemplate jdbcTemplate;
 	
+////////////////////////////////////////////Méthodes
+	
 	@Override
-	public Utilisateur read(String pseudo) {
+	public Utilisateur read(String pseudo) {										// Permet de récupérer un utilisateur avec son pseudo
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("pseudo", pseudo);
 
 		return jdbcTemplate.queryForObject(FIND_BY_PSEUDO, namedParam, new UtilisateurRowMapper());
 	}
 
-	
 	@Override
-    public void save(Utilisateur utilisateur, long idAdresse) {
+    public void save(Utilisateur utilisateur, long idAdresse) {						// Permet d'insérer en base un utilisateur
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("pseudo", utilisateur.getPseudo());
         params.addValue("nom", utilisateur.getNom());
@@ -61,14 +75,11 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         params.addValue("motDePasse", utilisateur.getMotDePasse());
         params.addValue("no_adresse", idAdresse);
 
-
         jdbcTemplate.update(INSERT_USER_QUERY, params);
     }
   
-
-
 	@Override
-	public void update(Utilisateur utilisateur) {
+	public void update(Utilisateur utilisateur) {									// Permet de mettre à jour les données d'un utilisateur
 		//Update des infos de l'utilisateur
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("pseudo", utilisateur.getPseudo());
@@ -81,7 +92,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 	
 	@Override
-	public void updateMdp(String pseudo, String nouveauMdp) {
+	public void updateMdp(String pseudo, String nouveauMdp) {						// permet de mettre à jour le mot de passe
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("pseudo", pseudo);
 		namedParam.addValue("nouveauMdp", nouveauMdp);
@@ -90,7 +101,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 	
 	@Override
-	public void crediter(Utilisateur utilisateur) {
+	public void crediter(Utilisateur utilisateur) {									// permet d'ajouter des crédits
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("pseudo", utilisateur.getPseudo());
 		namedParam.addValue("credit", utilisateur.getCredit());
@@ -99,7 +110,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 	
 	@Override
-	public void debiter(Enchere enchere) {
+	public void debiter(Enchere enchere) {											// permet de débiter des crédits
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("pseudo", enchere.getAcquereur().getPseudo());
 		namedParam.addValue("credit", enchere.getMontant());
@@ -108,25 +119,21 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	}
 	
 	@Override
-	public int uniqueEmail(String email) {
+	public int uniqueEmail(String email) {											// permet de vérifier l'unicité du mail
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("email", email);
 		return jdbcTemplate.queryForObject(COUNT_EMAIL, namedParam, Integer.class);
 	}
 
-
 	@Override
-	public int uniquePseudo(String pseudo) {
+	public int uniquePseudo(String pseudo) {										// permet de vérifier l'unicité du pseudo
 		MapSqlParameterSource namedParam = new MapSqlParameterSource();
 		namedParam.addValue("pseudo", pseudo);
 		return jdbcTemplate.queryForObject(COUNT_PSEUDO, namedParam, Integer.class);
 	}
 
+///////////////////////////////////////////////////////////////////////// ROWMAPPERS CUSTOM
 	
-	
-	/**
-	* Classe de mapping pour gérer les noms des colonnes
-	*/
 	class UtilisateurRowMapper implements RowMapper<Utilisateur> {
 
 		@Override
@@ -147,27 +154,5 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 		
 			return u;
 		}
-		
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-	
-	
 }
