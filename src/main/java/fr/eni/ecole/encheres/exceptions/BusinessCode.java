@@ -14,9 +14,11 @@ public class BusinessCode {
 	public static final String VALIDATION_USER_PASSWORD_BLANK = "Notblank.user.motDePasse";
 	public static final String VALIDATION_USER_PASSWORD_LENGTH = "Size.user.motDePasse";
 	public static final String VALIDATION_USER_PASSWORD_FORM = "Pattern.user.motDePasse";
+	public static final String VALIDATION_USER_PASSWORD_DIFFERENT= "different.user.motDePasse";
 	public static final String VALIDATION_USER_USER_EXISTS = "validation.user.usernameUnicity";
 	public static final String VALIDATION_USER_EMAIL_EXISTS = "validation.user.emailUnicity";
 	public static final String VALIDATION_ADDRESS_INVALID = "validation.adress.invalid";
+
 	
 	
 	// clefs de validation BLL //////////////////////////////////

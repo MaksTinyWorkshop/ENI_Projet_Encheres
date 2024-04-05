@@ -24,9 +24,9 @@ import jakarta.validation.Valid;
 public class UserController {
 
 ///////////////////////////////////////////// Attributs
-	
+
 	private final UtilisateurService utilisateurService;
-	
+
 ///////////////////////////////////////////// Constructeurs
 
 	public UserController(UtilisateurService utilisateurService) {
@@ -34,40 +34,54 @@ public class UserController {
 	}
 
 ////////////////////////////////////////////Méthodes
-	
+
 	@GetMapping("/register")
-	public String showRegisterForm(Model model) {							// Mapping du formulaire User
+	public String showRegisterForm(Model model) { // Mapping du formulaire User
 		Utilisateur user = new Utilisateur();
-		
+
 		model.addAttribute("user", user);
 
 		return "view-register-form";
 	}
 
-	@PostMapping("/register") 												// Méthode pour enregistrer l'utilisateur et son adresse
-	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult) {
-	    if (bindingResult.hasErrors()) {
-	        return "view-register-form";
-	    } else {
-	        try {
-	            // Enregistre l'utilisateur
-	            utilisateurService.save(user);
-	            return "redirect:/"; // Redirige vers al page d'accueil
-	        
-	        } catch (BusinessException e) {
-	            // Affiche message d'erreur
-	            e.getClefsExternalisations().forEach(key -> {
-	                ObjectError error = new ObjectError("globalError", key);
-	                bindingResult.addError(error);
-	            });
+	@PostMapping("/register") // Méthode pour enregistrer l'utilisateur et son adresse
+	public String registerUser(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult,
+			@RequestParam(name = "confirmation", required = true) String confirm) {
+		if (bindingResult.hasErrors()) {
+			return "view-register-form";
+		} else {
+			try {
+				if (user.getMotDePasse()
+						.equals(confirm)) {
+					try {
+						utilisateurService.save(user);
+						return "redirect:/"; // Redirige vers al page d'accueil
 
-	            return "view-register-form";
-	        }
-	    }
+					} catch (BusinessException e) {
+						// Affiche message d'erreur
+						e	.getClefsExternalisations()
+							.forEach(key -> {
+								ObjectError error = new ObjectError("globalError", key);
+								bindingResult.addError(error);
+							});
+					}
+				}
+				return "view-register-form";
+			} catch (BusinessException e) {
+				// Affiche message d'erreur
+				e	.getClefsExternalisations()
+					.forEach(key -> {
+						ObjectError error = new ObjectError("globalError", key);
+						bindingResult.addError(error);
+					});
+
+				return "view-register-form";
+			}
+		}
 	}
 
 	@GetMapping("/profil")
-	public String afficherMonProfil(Model model, Principal ppal) {			// affichage du profil
+	public String afficherMonProfil(Model model, Principal ppal) { // affichage du profil
 		String pseudo = ppal.getName();
 		Utilisateur user = utilisateurService.consulterProfil(pseudo);
 		if (user != null) {
@@ -79,22 +93,21 @@ public class UserController {
 		return "redirect:/";
 	}
 
-	@PostMapping("/profil")													// Mise à jour du profil
-	public String mettreAJourMonProfil(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult, 
+	@PostMapping("/profil") // Mise à jour du profil
+	public String mettreAJourMonProfil(@Valid @ModelAttribute("user") Utilisateur user, BindingResult bindingResult,
 			@RequestParam(name = "motDePasseNew") Optional<String> nouveauMdp,
 			@RequestParam(name = "confirmation") Optional<String> confirmNouveauMdp) {
-		
+
 		if (bindingResult.hasErrors()) {
 			return "view-mon-profil";
-		} else {	
+		} else {
 			try {
 				utilisateurService.update(user);
 				// Gestion en cas de changement de mot de passe
 				if (bindingResult.hasErrors()) {
-					System.out.println("echec MDP");
 					return "view-mon-profil";
-				} else if (nouveauMdp.isPresent() && confirmNouveauMdp.isPresent()
-													&& nouveauMdp.get().equals(confirmNouveauMdp.get())) {
+				} else if (nouveauMdp.isPresent() && confirmNouveauMdp.isPresent() && nouveauMdp.get()
+																								.equals(confirmNouveauMdp.get())) {
 					try {
 						utilisateurService.updatePassword(user.getPseudo(), nouveauMdp.get());
 					} catch (BusinessException e) {
@@ -117,16 +130,17 @@ public class UserController {
 			}
 		}
 	}
-	
-	@GetMapping("/profil/{pseudo}")												// affichage du profil d'un autre utilisateur
-	public String afficherUnAutreProfil(
-			@PathVariable(name="pseudo", required = false)String pseudo, Model model, Principal ppal) {
+
+	@GetMapping("/profil/{pseudo}") // affichage du profil d'un autre utilisateur
+	public String afficherUnAutreProfil(@PathVariable(name = "pseudo", required = false) String pseudo, Model model,
+			Principal ppal) {
 		Utilisateur userEnBase = utilisateurService.consulterProfil(pseudo);
-		if (userEnBase.getPseudo().equals(ppal.getName())) {
+		if (userEnBase	.getPseudo()
+						.equals(ppal.getName())) {
 			return "redirect:/user/profil";
 		} else {
-		model.addAttribute("user", userEnBase);
-		return "view-profil-utilisateur";
+			model.addAttribute("user", userEnBase);
+			return "view-profil-utilisateur";
 		}
 	}
 }
