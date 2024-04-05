@@ -55,7 +55,6 @@ public class ArticleDAOImpl implements ArticleDAO {
 								            + " WHERE nom_article LIKE :nom_article "
 								            + " AND no_categorie = :idCategorie "
 								            + " AND statu_enchere = 1";
-	 
 	//requête de suppression d'un article
 	private final String SUPPR_ARTICLE_BY_ID = "DELETE"
 												+ " FROM ARTICLES_A_VENDRE "
