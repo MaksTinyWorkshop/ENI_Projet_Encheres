@@ -105,7 +105,8 @@
 				</div>
 			</div>
 
-			<div class="bloc-boutons">
+			<th:block data-th-if="${#authorization.expression('isAuthenticated()')}">
+						<div class="bloc-boutons">
 				<button type="submit" data-th-text="#{article.button.enchere}"></button>
 				<span data-th-if="${#authentication.principal.username == articleSelect.vendeur.pseudo}">
 					<span data-th-if="*{statu} == 0">
@@ -119,6 +120,8 @@
 					</span>
 				</span>
 			</div>
+			</th:block>
+
 
 			<div class="hidden">
 				<input type="hidden" id="id" data-th-field="*{id}" required>
